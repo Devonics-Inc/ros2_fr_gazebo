@@ -1,0 +1,8 @@
+{
+  "package_name": "fairino_msgs",
+  "non_idl_tuples": [
+    "/home/devonics/fr3_gazebo/src/fairino_msgs:srv/RemoteCmdInterface.srv",
+    "/home/devonics/fr3_gazebo/src/fairino_msgs:srv/RemoteScriptContent.srv",
+    "/home/devonics/fr3_gazebo/src/fairino_msgs:msg/RobotNonrtState.msg"
+  ]
+}

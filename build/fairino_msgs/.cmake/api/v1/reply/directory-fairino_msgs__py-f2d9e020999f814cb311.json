@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "fairino_msgs__py",
+		"source" : "/home/devonics/fr3_gazebo/build/fairino_msgs/fairino_msgs__py"
+	}
+}

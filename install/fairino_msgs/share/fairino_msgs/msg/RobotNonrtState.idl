@@ -1,0 +1,131 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from fairino_msgs/msg/RobotNonrtState.msg
+// generated code does not contain a copyright notice
+
+
+module fairino_msgs {
+  module msg {
+    typedef uint8 uint8__6[6];
+    struct RobotNonrtState {
+      double j1_cur_pos;
+
+      double j2_cur_pos;
+
+      double j3_cur_pos;
+
+      double j4_cur_pos;
+
+      double j5_cur_pos;
+
+      double j6_cur_pos;
+
+      double j1_cur_tor;
+
+      double j2_cur_tor;
+
+      double j3_cur_tor;
+
+      double j4_cur_tor;
+
+      double j5_cur_tor;
+
+      double j6_cur_tor;
+
+      double cart_x_cur_pos;
+
+      double cart_y_cur_pos;
+
+      double cart_z_cur_pos;
+
+      double cart_a_cur_pos;
+
+      double cart_b_cur_pos;
+
+      double cart_c_cur_pos;
+
+      double flange_x_cur_pos;
+
+      double flange_y_cur_pos;
+
+      double flange_z_cur_pos;
+
+      double flange_a_cur_pos;
+
+      double flange_b_cur_pos;
+
+      double flange_c_cur_pos;
+
+      double exaxispos1;
+
+      double exaxispos2;
+
+      double exaxispos3;
+
+      double exaxispos4;
+
+      double ft_fx_data;
+
+      double ft_fy_data;
+
+      double ft_fz_data;
+
+      double ft_tx_data;
+
+      double ft_ty_data;
+
+      double ft_tz_data;
+
+      uint8 ft_actstatus;
+
+      uint8 robot_mode;
+
+      uint8 tool_num;
+
+      uint8 work_num;
+
+      uint8 prg_state;
+
+      uint8 abnormal_stop;
+
+      string prg_name;
+
+      uint8 prg_total_line;
+
+      uint8 prg_cur_line;
+
+      uint8 dgt_output_h;
+
+      uint8 dgt_output_l;
+
+      uint8 dgt_input_h;
+
+      uint8 dgt_input_l;
+
+      uint8 tl_dgt_output_l;
+
+      uint8 tl_dgt_input_l;
+
+      uint8 emg;
+
+      @verbatim (language="comment", text=
+        "V2.1 added")
+      uint8__6 safetyboxsig;
+
+      uint8 robot_motion_done;
+
+      uint8 grip_motion_done;
+
+      uint8 weldbreakoffstate;
+
+      uint8 weldarcstate;
+
+      uint8 error_code;
+
+      uint8 check_sum;
+
+      uint64 timestamp;
+
+      string version;
+    };
+  };
+};

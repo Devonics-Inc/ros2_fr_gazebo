@@ -1,0 +1,108 @@
+[0.007s] Invoking command in '/home/devonics/fr3_gazebo/build/fairino_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/devonics/ros2_control_ws/install/rqt_joint_trajectory_controller:/home/devonics/ros2_control_ws/install/rqt_controller_manager:/home/devonics/ros2_control_ws/install/ros2controlcli:/home/devonics/ros2_control_ws/install/ros2_controllers_test_nodes:/opt/ros/humble /usr/bin/cmake /home/devonics/fr3_gazebo/src/fairino_msgs -DCMAKE_INSTALL_PREFIX=/home/devonics/fr3_gazebo/install/fairino_msgs
+[0.049s] -- The C compiler identification is GNU 11.4.0
+[0.087s] -- The CXX compiler identification is GNU 11.4.0
+[0.091s] -- Detecting C compiler ABI info
+[0.148s] -- Detecting C compiler ABI info - done
+[0.153s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.153s] -- Detecting C compile features
+[0.154s] -- Detecting C compile features - done
+[0.155s] -- Detecting CXX compiler ABI info
+[0.217s] -- Detecting CXX compiler ABI info - done
+[0.222s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.222s] -- Detecting CXX compile features
+[0.222s] -- Detecting CXX compile features - done
+[0.226s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.341s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.433s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.444s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.455s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.504s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.709s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[0.845s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.000s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.015s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[1.019s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.039s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[1.039s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.039s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.039s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.054s] -- Found PythonExtra: .so  
+[1.100s] -- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.127s] -- Added test 'lint_cmake' to check CMake code style
+[1.128s] -- Added test 'xmllint' to check XML markup files
+[1.130s] -- Configuring done
+[1.144s] -- Generating done
+[1.150s] -- Build files have been written to: /home/devonics/fr3_gazebo/build/fairino_msgs
+[1.153s] Invoked command in '/home/devonics/fr3_gazebo/build/fairino_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/devonics/ros2_control_ws/install/rqt_joint_trajectory_controller:/home/devonics/ros2_control_ws/install/rqt_controller_manager:/home/devonics/ros2_control_ws/install/ros2controlcli:/home/devonics/ros2_control_ws/install/ros2_controllers_test_nodes:/opt/ros/humble /usr/bin/cmake /home/devonics/fr3_gazebo/src/fairino_msgs -DCMAKE_INSTALL_PREFIX=/home/devonics/fr3_gazebo/install/fairino_msgs
+[1.154s] Invoking command in '/home/devonics/fr3_gazebo/build/fairino_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/devonics/ros2_control_ws/install/rqt_joint_trajectory_controller:/home/devonics/ros2_control_ws/install/rqt_controller_manager:/home/devonics/ros2_control_ws/install/ros2controlcli:/home/devonics/ros2_control_ws/install/ros2_controllers_test_nodes:/opt/ros/humble /usr/bin/cmake --build /home/devonics/fr3_gazebo/build/fairino_msgs -- -j20 -l20
+[1.188s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[1.198s] [  4%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[1.207s] [  4%] Built target ament_cmake_python_copy_fairino_msgs
+[1.353s] running egg_info
+[1.353s] creating fairino_msgs.egg-info
+[1.353s] writing fairino_msgs.egg-info/PKG-INFO
+[1.353s] writing dependency_links to fairino_msgs.egg-info/dependency_links.txt
+[1.353s] writing top-level names to fairino_msgs.egg-info/top_level.txt
+[1.353s] writing manifest file 'fairino_msgs.egg-info/SOURCES.txt'
+[1.354s] reading manifest file 'fairino_msgs.egg-info/SOURCES.txt'
+[1.355s] writing manifest file 'fairino_msgs.egg-info/SOURCES.txt'
+[1.375s] [  4%] Built target ament_cmake_python_build_fairino_msgs_egg
+[1.492s] [  6%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_generator_c.dir/rosidl_generator_c/fairino_msgs/srv/detail/remote_cmd_interface__functions.c.o[0m
+[1.492s] [  8%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_generator_c.dir/rosidl_generator_c/fairino_msgs/msg/detail/robot_nonrt_state__functions.c.o[0m
+[1.492s] [ 10%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_generator_c.dir/rosidl_generator_c/fairino_msgs/srv/detail/remote_script_content__functions.c.o[0m
+[1.499s] [ 10%] Built target fairino_msgs__cpp
+[1.508s] [ 14%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[1.509s] [ 14%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[1.509s] [ 17%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[1.532s] [ 19%] [32m[1mLinking C shared library libfairino_msgs__rosidl_generator_c.so[0m
+[1.565s] [ 19%] Built target fairino_msgs__rosidl_generator_c
+[1.577s] [ 21%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[1.577s] [ 23%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[1.578s] [ 25%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[1.780s] [ 27%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/fairino_msgs/srv/remote_cmd_interface__type_support.cpp.o[0m
+[1.780s] [ 31%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/fairino_msgs/srv/remote_script_content__type_support.cpp.o[0m
+[1.780s] [ 31%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/fairino_msgs/msg/robot_nonrt_state__type_support.cpp.o[0m
+[1.801s] [ 34%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/fairino_msgs/srv/detail/remote_cmd_interface__type_support.cpp.o[0m
+[1.802s] [ 36%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/fairino_msgs/msg/detail/robot_nonrt_state__type_support.cpp.o[0m
+[1.804s] [ 38%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/fairino_msgs/srv/detail/remote_script_content__type_support.cpp.o[0m
+[1.829s] [ 40%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_cmd_interface__type_support.cpp.o[0m
+[1.833s] [ 44%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/msg/detail/dds_fastrtps/robot_nonrt_state__type_support.cpp.o[0m
+[1.833s] [ 44%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_script_content__type_support.cpp.o[0m
+[1.854s] [ 46%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/fairino_msgs/srv/remote_cmd_interface__type_support.cpp.o[0m
+[1.855s] [ 48%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/fairino_msgs/srv/remote_script_content__type_support.cpp.o[0m
+[1.855s] [ 51%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/fairino_msgs/msg/robot_nonrt_state__type_support.cpp.o[0m
+[1.882s] [ 53%] [32m[1mLinking CXX shared library libfairino_msgs__rosidl_typesupport_c.so[0m
+[1.889s] [ 55%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/fairino_msgs/srv/detail/remote_cmd_interface__type_support.c.o[0m
+[1.889s] [ 57%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/fairino_msgs/srv/detail/remote_script_content__type_support.c.o[0m
+[1.892s] [ 59%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/fairino_msgs/msg/detail/robot_nonrt_state__type_support.c.o[0m
+[1.920s] [ 61%] [32m[1mLinking C shared library libfairino_msgs__rosidl_typesupport_introspection_c.so[0m
+[1.927s] [ 61%] Built target fairino_msgs__rosidl_typesupport_c
+[1.952s] [ 61%] Built target fairino_msgs__rosidl_typesupport_introspection_c
+[1.973s] [ 63%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/fairino_msgs/srv/detail/remote_cmd_interface__type_support_c.cpp.o[0m
+[1.976s] [ 65%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/fairino_msgs/msg/detail/robot_nonrt_state__type_support_c.cpp.o[0m
+[1.977s] [ 68%] [32mBuilding CXX object CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/fairino_msgs/srv/detail/remote_script_content__type_support_c.cpp.o[0m
+[2.065s] [ 70%] [32m[1mLinking CXX shared library libfairino_msgs__rosidl_typesupport_cpp.so[0m
+[2.109s] [ 70%] Built target fairino_msgs__rosidl_typesupport_cpp
+[2.126s] [ 72%] [32m[1mLinking CXX shared library libfairino_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[2.128s] [ 74%] [32m[1mLinking CXX shared library libfairino_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[2.177s] [ 74%] Built target fairino_msgs__rosidl_typesupport_introspection_cpp
+[2.186s] [ 74%] Built target fairino_msgs__rosidl_typesupport_fastrtps_cpp
+[2.216s] [ 76%] [32m[1mLinking CXX shared library libfairino_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[2.267s] [ 76%] Built target fairino_msgs__rosidl_typesupport_fastrtps_c
+[2.286s] [ 76%] Built target fairino_msgs
+[2.304s] [ 78%] [34m[1mGenerating Python code for ROS interfaces[0m
+[2.799s] [ 78%] Built target fairino_msgs__py
+[2.817s] [ 80%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_generator_py.dir/rosidl_generator_py/fairino_msgs/srv/_remote_cmd_interface_s.c.o[0m
+[2.817s] [ 82%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_generator_py.dir/rosidl_generator_py/fairino_msgs/msg/_robot_nonrt_state_s.c.o[0m
+[2.817s] [ 85%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_generator_py.dir/rosidl_generator_py/fairino_msgs/srv/_remote_script_content_s.c.o[0m
+[2.896s] [ 87%] [32m[1mLinking C shared library rosidl_generator_py/fairino_msgs/libfairino_msgs__rosidl_generator_py.so[0m
+[2.924s] [ 87%] Built target fairino_msgs__rosidl_generator_py
+[2.945s] [ 91%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/fairino_msgs/_fairino_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[2.945s] [ 91%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/fairino_msgs/_fairino_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[2.945s] [ 93%] [32mBuilding C object CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/fairino_msgs/_fairino_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[3.007s] [ 95%] [32m[1mLinking C shared library rosidl_generator_py/fairino_msgs/fairino_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.008s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/fairino_msgs/fairino_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.008s] [100%] [32m[1mLinking C shared library rosidl_generator_py/fairino_msgs/fairino_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.033s] [100%] Built target fairino_msgs__rosidl_typesupport_introspection_c__pyext
+[3.037s] [100%] Built target fairino_msgs__rosidl_typesupport_c__pyext
+[3.038s] [100%] Built target fairino_msgs__rosidl_typesupport_fastrtps_c__pyext

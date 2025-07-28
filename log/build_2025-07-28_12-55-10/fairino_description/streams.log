@@ -1,0 +1,31 @@
+[0.012s] Invoking command in '/home/devonics/fr3_gazebo/build/fairino_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/devonics/ros2_control_ws/install/rqt_joint_trajectory_controller:/home/devonics/ros2_control_ws/install/rqt_controller_manager:/home/devonics/ros2_control_ws/install/ros2controlcli:/home/devonics/ros2_control_ws/install/ros2_controllers_test_nodes:/opt/ros/humble /usr/bin/cmake --build /home/devonics/fr3_gazebo/build/fairino_description -- -j20 -l20
+[0.045s] Invoked command in '/home/devonics/fr3_gazebo/build/fairino_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/devonics/ros2_control_ws/install/rqt_joint_trajectory_controller:/home/devonics/ros2_control_ws/install/rqt_controller_manager:/home/devonics/ros2_control_ws/install/ros2controlcli:/home/devonics/ros2_control_ws/install/ros2_controllers_test_nodes:/opt/ros/humble /usr/bin/cmake --build /home/devonics/fr3_gazebo/build/fairino_description -- -j20 -l20
+[0.054s] Invoking command in '/home/devonics/fr3_gazebo/build/fairino_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/devonics/ros2_control_ws/install/rqt_joint_trajectory_controller:/home/devonics/ros2_control_ws/install/rqt_controller_manager:/home/devonics/ros2_control_ws/install/ros2controlcli:/home/devonics/ros2_control_ws/install/ros2_controllers_test_nodes:/opt/ros/humble /usr/bin/cmake --install /home/devonics/fr3_gazebo/build/fairino_description
+[0.063s] -- Install configuration: ""
+[0.063s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes
+[0.063s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6
+[0.063s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6/wrist3_link.STL
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6/wrist2_link.STL
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6/forearm_link.STL
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6/wrist1_link.STL
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6/shoulder_link.STL
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6/base_link.STL
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/meshes/fairino3_v6/upperarm_link.STL
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/urdf
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/urdf/fairino3_v6.urdf
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/ament_index/resource_index/package_run_dependencies/fairino_description
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/ament_index/resource_index/parent_prefix_path/fairino_description
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/environment/ament_prefix_path.sh
+[0.064s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/environment/ament_prefix_path.dsv
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/environment/path.sh
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/environment/path.dsv
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/local_setup.bash
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/local_setup.sh
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/local_setup.zsh
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/local_setup.dsv
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/package.dsv
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/ament_index/resource_index/packages/fairino_description
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/cmake/fairino_descriptionConfig.cmake
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/cmake/fairino_descriptionConfig-version.cmake
+[0.065s] -- Up-to-date: /home/devonics/fr3_gazebo/install/fairino_description/share/fairino_description/package.xml
+[0.066s] Invoked command in '/home/devonics/fr3_gazebo/build/fairino_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/devonics/ros2_control_ws/install/rqt_joint_trajectory_controller:/home/devonics/ros2_control_ws/install/rqt_controller_manager:/home/devonics/ros2_control_ws/install/ros2controlcli:/home/devonics/ros2_control_ws/install/ros2_controllers_test_nodes:/opt/ros/humble /usr/bin/cmake --install /home/devonics/fr3_gazebo/build/fairino_description

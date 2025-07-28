@@ -1,0 +1,3 @@
+/home/devonics/fr3_gazebo/build/fairino_msgs/rosidl_adapter/fairino_msgs:srv/RemoteCmdInterface.idl
+/home/devonics/fr3_gazebo/build/fairino_msgs/rosidl_adapter/fairino_msgs:srv/RemoteScriptContent.idl
+/home/devonics/fr3_gazebo/build/fairino_msgs/rosidl_adapter/fairino_msgs:msg/RobotNonrtState.idl

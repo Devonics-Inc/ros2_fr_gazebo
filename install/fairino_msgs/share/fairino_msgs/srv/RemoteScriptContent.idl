@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from fairino_msgs/srv/RemoteScriptContent.srv
+// generated code does not contain a copyright notice
+
+
+module fairino_msgs {
+  module srv {
+    struct RemoteScriptContent_Request {
+      string line_str;
+    };
+    struct RemoteScriptContent_Response {
+      @verbatim (language="comment", text=
+        "创建结果反馈，0-成功，-1-失败")
+      string res;
+    };
+  };
+};

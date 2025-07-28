@@ -1,0 +1,21 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/msg/detail/dds_fastrtps/robot_nonrt_state__type_support.cpp.o"
+  "CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/msg/detail/dds_fastrtps/robot_nonrt_state__type_support.cpp.o.d"
+  "CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_cmd_interface__type_support.cpp.o"
+  "CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_cmd_interface__type_support.cpp.o.d"
+  "CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_script_content__type_support.cpp.o"
+  "CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_script_content__type_support.cpp.o.d"
+  "libfairino_msgs__rosidl_typesupport_fastrtps_cpp.pdb"
+  "libfairino_msgs__rosidl_typesupport_fastrtps_cpp.so"
+  "rosidl_typesupport_fastrtps_cpp/fairino_msgs/msg/detail/dds_fastrtps/robot_nonrt_state__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/fairino_msgs/msg/detail/robot_nonrt_state__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_cmd_interface__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/dds_fastrtps/remote_script_content__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/remote_cmd_interface__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/fairino_msgs/srv/detail/remote_script_content__rosidl_typesupport_fastrtps_cpp.hpp"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/fairino_msgs__rosidl_typesupport_fastrtps_cpp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

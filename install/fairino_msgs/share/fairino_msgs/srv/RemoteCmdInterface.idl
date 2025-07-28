@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from fairino_msgs/srv/RemoteCmdInterface.srv
+// generated code does not contain a copyright notice
+
+
+module fairino_msgs {
+  module srv {
+    struct RemoteCmdInterface_Request {
+      @verbatim (language="comment", text=
+        "ros用户输入的字符串指令，比如movej(p1,100)")
+      string cmd_str;
+    };
+    struct RemoteCmdInterface_Response {
+      @verbatim (language="comment", text=
+        "创建结果反馈，0-成功，-1-失败")
+      string cmd_res;
+    };
+  };
+};

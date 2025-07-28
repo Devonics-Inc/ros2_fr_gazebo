@@ -1,0 +1,97 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-8698dfcf2e07c49886f0.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "fairino_hardware",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "fairino_hardware::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-fairino_hardware-Debug-006f55568820db5034c1.json",
+					"name" : "fairino_hardware",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "fairino_hardware_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-fairino_hardware_uninstall-Debug-64097591ce21c6932796.json",
+					"name" : "fairino_hardware_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ros2_cmd_server::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ros2_cmd_server-Debug-9339f2679e788c94e0b8.json",
+					"name" : "ros2_cmd_server",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "srv_test_client::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-srv_test_client-Debug-464fbe761d6d1bdcdb7c.json",
+					"name" : "srv_test_client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Debug-10495609a68419a39c2f.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/devonics/fr3_gazebo/build/fairino_hardware",
+		"source" : "/home/devonics/fr3_gazebo/src/fairino_hardware"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
