@@ -69,3 +69,11 @@ Now, when you open a terminal and use 'rqt_graph' your setup should look like th
 
 
 Now, you can set up a script using the SDK to control your robot and watch it move in Gazebo!
+
+
+### POSSIBLE ERRORS:
+
+If your robot shows up as an entity in Gazebo but you cannot see the model, it is usually due to a conflicting resource path. To fix this, close gazebo and write in the following command to your terminal before re-opening:
+
+export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/path to directory/fr3_gazebo/install/fairino_description/share
+
