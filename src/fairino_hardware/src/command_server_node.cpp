@@ -3,15 +3,16 @@
 #include "libfairino/include/robot.h"
 
 int main(int argc, char *argv[]){
-    //该main函数用于创建简化指令客户端的app
+    // Main function used to create a simplified command client
     rclcpp::init(argc,argv);
     rclcpp::executors::SingleThreadedExecutor mulexecutor;
-    //创建用户指令节点
+    // Below is the ROS2 command node; ALLOWS ONLY ROS2 COMMANDS, NO SDK
     // auto command_server_node = std::make_shared<robot_command_thread>("fr_command_server");
     // mulexecutor.add_node(command_server_node);
-    //创建非实时状态反馈获取节点
+    
+    // Create a non-real-time status feedback node
     auto robot_state_node = std::make_shared<robot_recv_thread>("fr_state_brodcast");
-    mulexecutor.add_node(robot_state_node);//状态反馈节点加入执行器
+    mulexecutor.add_node(robot_state_node);// Add status feedback node to executable
     mulexecutor.spin();
     rclcpp::shutdown();
     return 0;
