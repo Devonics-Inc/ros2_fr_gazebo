@@ -13,3 +13,4 @@ install(PROGRAMS
   launch/SimJointPublisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
+

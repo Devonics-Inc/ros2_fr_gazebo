@@ -26,7 +26,11 @@ Now, you can build your workspace by running <b>colcon build --symlink-install</
 
 ## Step 2) Commands to run your simulator
 
-As of writing this docuemnt, the launch script to compile all of these commands has not been written. So, unfortunately, you'll have to create a few terminals and run the commands below IN ORDER (Don't forget to use 'source isntall/setup.bash' for each termianl)
+To run the gazebo Sim, use <b>~/fr3_gazebo</b>$ ros2 launch fairino3_moveit2_config fr3_gazebo_sim.launch.py
+
+Below are the steps to run the process manually:
+
+Run the commands below IN ORDER (Don't forget to use 'source isntall/setup.bash' for each termianl)
 
 1) 
     <b>~/fr3_gazebo</b>$ ros2 run fairino_hardware ros2_cmd_server
@@ -73,9 +77,9 @@ Now, you can set up a script using the SDK to control your robot and watch it mo
 
 ### POSSIBLE ERRORS:
 
-If your robot shows up as an entity in Gazebo but you cannot see the model, it is usually due to a conflicting resource path. To fix this, close gazebo and write in the following command to your terminal before re-opening:
+If your robot shows up as an entity in Gazebo but you cannot see the model, it is usually due to a conflicting resource path. To fix this, close gazebo and write in the following command to your terminal before re-running:
 
-export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/path to directory/fr3_gazebo/install/fairino_description/share
+export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/[path to directory]/fr3_gazebo/install/fairino_description/share
 
 If your terminal says it cannot find the SimJointPublisher.py:
 navigate to /src/fairino3_moveit2_config/launch and add an empty folder called "__pycache__"

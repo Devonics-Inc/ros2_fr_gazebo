@@ -54,8 +54,15 @@ class SimJointPublisher(Node):
 		# joint_trajectory.points.append(p5)
 		# joint_trajectory.points.append(p6)
 		self.publisher_2.publish(joint_trajectory)
+    
+	def on_shutdown(self):
+		self.destroy_publisher(self.publisher_)
+		self.destroy_publisher(self.publisher_2)
+		self.destroy_subscription(self.subscription)
 
+		self.get_logger().info('on_shutdown() is called.')
 
+		
 def main(args=None):
 	rclpy.init(args=args)
 	node = SimJointPublisher()

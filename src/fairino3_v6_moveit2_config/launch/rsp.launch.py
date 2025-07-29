@@ -4,4 +4,6 @@ from moveit_configs_utils.launches import generate_rsp_launch
 
 def generate_launch_description():
     moveit_config = MoveItConfigsBuilder("fairino3_v6_robot", package_name="fairino3_v6_moveit2_config").to_moveit_configs()
+    print(moveit_config.robot_description)
+    
     return generate_rsp_launch(moveit_config)
