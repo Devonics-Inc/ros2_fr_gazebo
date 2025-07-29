@@ -77,3 +77,6 @@ If your robot shows up as an entity in Gazebo but you cannot see the model, it i
 
 export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/path to directory/fr3_gazebo/install/fairino_description/share
 
+If your terminal says it cannot find the SimJointPublisher.py:
+navigate to /src/fairino3_moveit2_config/launch and add an empty folder called "__pycache__"
+Now rebuild your workspace.
