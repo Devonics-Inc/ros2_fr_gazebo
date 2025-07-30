@@ -61,6 +61,7 @@ def main(args=None):
 	rclpy.init(args=args)
 	node = SimJointPublisher()
 	rclpy.spin(node)
+	node.destroy_node()
 	rclpy.shutdown()
 
 

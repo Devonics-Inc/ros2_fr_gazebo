@@ -83,10 +83,10 @@ def generate_launch_description():
         nonrt_state_data_node,
         joint_state_pub,
         rsp,
-        gazebo,
-        spawn_robot,
         joint_state_broadcaster,
-        fairino3_controller
+        fairino3_controller,
+        gazebo,
+        spawn_robot
     ])
 
 
