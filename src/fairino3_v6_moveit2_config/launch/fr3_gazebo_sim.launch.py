@@ -45,7 +45,7 @@ def generate_launch_description():
     
     # Translate the /nonnrt_state_data for the /joint_states topic
     joint_state_pub = Node(
-        package="fairino3_v6_moveit2_config",
+        package="fairino_gazebo_config",
         executable="SimJointPublisher.py"
     )
 
