@@ -2,9 +2,17 @@ import os
 from ament_index_python.packages import get_package_share_directory, get_package_prefix
 from launch import LaunchDescription, LaunchContext
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, ExecuteProcess
-from launch.substitutions import LaunchConfiguration, Command, TextSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    TextSubstitution
+)
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.substitutions import FindPackageShare
+import xacro
 
 
 def generate_launch_description():
@@ -41,11 +49,26 @@ def generate_launch_description():
         executable="SimJointPublisher.py"
     )
 
+    # RSP v1 (using moveit2 config)
     # Spawn the robot state publisher
-    rsp = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),
-                            'launch', 'rsp.launch.py')),
+    # rsp = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),
+    #                         'launch', 'rsp.launch.py')),
+    # )
+
+
+    # RSP v2
+    file_subpath = 'config/fairino3_v6_robot.urdf.xacro'
+    # Use xacro to process the file
+    xacro_file = os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),file_subpath)
+    robot_description_raw = xacro.process_file(xacro_file).toxml()
+
+    rsp = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        parameters=[{"robot_description": robot_description_raw}],
     )
 
     # Create an instance of Gazebo
