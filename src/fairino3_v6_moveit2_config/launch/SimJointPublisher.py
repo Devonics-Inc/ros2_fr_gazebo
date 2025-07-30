@@ -45,14 +45,8 @@ class SimJointPublisher(Node):
 		point =JointTrajectoryPoint()
 		point.time_from_start = Duration(sec=1, nanosec=0)
 
-		# p1.positions, p2.positions, p3.positions, p4.positions, p5.positions, p6.positions = joint_positions
 		point.positions = joint_positions
 		joint_trajectory.points.append(point)
-		# joint_trajectory.points.append(p2)
-		# joint_trajectory.points.append(p3)
-		# joint_trajectory.points.append(p4)
-		# joint_trajectory.points.append(p5)
-		# joint_trajectory.points.append(p6)
 		self.publisher_2.publish(joint_trajectory)
     
 	def on_shutdown(self):

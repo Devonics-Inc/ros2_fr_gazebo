@@ -1,8 +1,8 @@
 import os
 from ament_index_python.packages import get_package_share_directory, get_package_prefix
-from launch import LaunchDescription
+from launch import LaunchDescription, LaunchContext
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, ExecuteProcess
-from launch.substitutions import LaunchConfiguration, Command
+from launch.substitutions import LaunchConfiguration, Command, TextSubstitution
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
@@ -10,60 +10,76 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     pkg_share = get_package_share_directory('fairino_description')
     if('IGN_GAZEBO_RESOURCE_PATH' in os.environ):
-        gazebo_resource_path = os.environ['IGN_GAZEBO_RESOURCE_PATH'] + pkg_share
+        gazebo_resource_path = os.environ['IGN_GAZEBO_RESOURCE_PATH'] + ':' + pkg_share
     else:
         gazebo_resource_path = pkg_share
-    # gazebo_resource_path = os.pathsep + get_package_share_directory('fairino_description')
 
-    # # if 'IGN_GAZEBO_RESOURCE_PATH' in os.environ:
-    # os.environ['IGN_GAZEBO_RESOURCE_PATH'] = os.path.join(gazebo_resource_path)
-    # print(gazebo_resource_path)
+   
+    # Declare world file (default to empty)
+    world = LaunchConfiguration('world')
+    world_arg = DeclareLaunchArgument(
+        'world',
+        default_value="empty.sdf",
+        description="Name of world file to spawn robot into"
+    )
+    
+    # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
+    robot_model_arg = DeclareLaunchArgument(
+        'robot_model',
+        default_value="fairino3",
+        description="Name of robot model to spawn (ie. Fairino3)")
 
+    # Connect the ros2_cmd_server for publishing the /nonrt_state_data of the robot
     nonrt_state_data_node = Node(
         package="fairino_hardware",
         executable="ros2_cmd_server",
     )
     
+    # Translate the /nonnrt_state_data for the /joint_states topic
     joint_state_pub = Node(
         package="fairino3_v6_moveit2_config",
         executable="SimJointPublisher.py"
     )
 
+    # Spawn the robot state publisher
     rsp = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),
                             'launch', 'rsp.launch.py')),
     )
 
+    # Create an instance of Gazebo
     gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('ros_gz_sim'),
-                            'launch', 'gz_sim.launch.py')),
+        PythonLaunchDescriptionSource([
+            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
+        ]),
+        #launch_arguments={'gz_args': [ ' -r']}.items()
+        launch_arguments={'gz_args': [world, ' -r']}.items()
     )
     
-    
+    # Spawn the robot into gazebo
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
         arguments=['-topic', 'robot_description'],
     )
 
+    # Spawn the joint_state_broadcaster for the gazebo robot
     joint_state_broadcaster = ExecuteProcess(
         cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
         output="screen"
-
     )
 
+    # Spawn the fairino3_controller for the gazebo robot
     fairino3_controller = ExecuteProcess(
         cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino3_controller'],
         output="screen"
     )
 
     
-    # print(os.environ)
-
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
+        world_arg,
         nonrt_state_data_node,
         joint_state_pub,
         rsp,
