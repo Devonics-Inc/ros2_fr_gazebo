@@ -53,6 +53,7 @@ class SimJointPublisher(Node):
 		self.destroy_publisher(self.publisher_)
 		self.destroy_publisher(self.publisher_2)
 		self.destroy_subscription(self.subscription)
+		self.destroy_node()
 
 		self.get_logger().info('on_shutdown() is called.')
 
