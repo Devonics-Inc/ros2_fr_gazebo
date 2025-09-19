@@ -12,7 +12,7 @@
 #include "libfairino/include/robot.h"
 
 
-#define CONTROLLER_IP_ADDRESS "192.168.56.2"
+#define CONTROLLER_IP_ADDRESS "192.168.55.2"
 
 namespace fairino_hardware
 {

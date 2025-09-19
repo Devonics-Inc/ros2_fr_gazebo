@@ -13,5 +13,54 @@
 
 
 
+    <!-- Custom args -->
+    <!-- <xacro:arg name="gripper" default="None"/>
+
+    <xacro:arg name="mount" default='None'/> -->
+
+
+
+<!--     <xacro:if value="${$(arg gripper) == 'pgc140'}">
+        <link name="world_link">
+            <parent link="world"/>
+            <child
+        </link>
+    </xacro:if> -->
+    
+
+    <!-- <xacro:if value="${$(arg mount) == 'box'}">
+        <link name="mount_link">
+            <joint name="fixed" type="fixed">
+                <parent link="mount_link"/>
+                <child link="world"/>
+            </joint>
+
+            <visual>
+                <geometry>
+                    <box size="1 1 1"/>
+                </geometry>
+                <material name="red">
+                    <color rgba="1 0 0 1"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="1 1 1"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="1.0"/>
+                <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            </inertial>
+        </link>
+    </xacro:if> -->
+
+    <!-- <xacro:if value="${$(arg mount) == 'None'}">
+        <link name="world"/>
+            <joint name="fixed" type="fixed">
+                <parent link="world"/>
+                <child link="base_link"/>
+            </joint>
+    </xacro:if> -->
 
 </robot>

@@ -2,9 +2,17 @@ import os
 from ament_index_python.packages import get_package_share_directory, get_package_prefix
 from launch import LaunchDescription, LaunchContext
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, ExecuteProcess
-from launch.substitutions import LaunchConfiguration, Command, TextSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    TextSubstitution
+)
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.substitutions import FindPackageShare
+import xacro
 
 
 def generate_launch_description():
@@ -23,11 +31,30 @@ def generate_launch_description():
         description="Name of world file to spawn robot into"
     )
     
+    # control_system_arg = DeclareLaunchArgument(
+    #     'control_system',
+    #     default_value='gazebo',
+    #     description='Specify which control system to use (moveit or gazebo mirroring)'
+    # )
+
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
         default_value="fairino3",
         description="Name of robot model to spawn (ie. Fairino3)")
+
+    gripper_arg = DeclareLaunchArgument(
+        'gripper',
+        default_value='None',
+        description='Type of gripper to attach to wrist3_link'
+    )
+
+    mount_arg = DeclareLaunchArgument(
+        'mount',
+        default_value='None',
+        description='Type of mount object to attach under base_link'
+    )
+
 
     # Connect the ros2_cmd_server for publishing the /nonrt_state_data of the robot
     nonrt_state_data_node = Node(
@@ -37,15 +64,34 @@ def generate_launch_description():
     
     # Translate the /nonnrt_state_data for the /joint_states topic
     joint_state_pub = Node(
-        package="fairino3_v6_moveit2_config",
+        package="fairino_gazebo_config",
         executable="SimJointPublisher.py"
     )
 
+    # RSP v1 (using moveit2 config)
     # Spawn the robot state publisher
-    rsp = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),
-                            'launch', 'rsp.launch.py')),
+    # rsp = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),
+    #                         'launch', 'rsp.launch.py')),
+    # )
+
+
+    # RSP v2
+    file_subpath = 'config/fairino3_v6_robot.urdf.xacro'
+    # Use xacro to process the file
+    xacro_file = os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),file_subpath)
+    robot_description_raw = xacro.process_file(
+        xacro_file,
+        mappings={
+            'control_system': 'gazebo'
+    }).toxml()
+
+    rsp = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        parameters=[{"robot_description": robot_description_raw}],
     )
 
     # Create an instance of Gazebo
@@ -80,6 +126,8 @@ def generate_launch_description():
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
         world_arg,
+        # mount_arg,
+        # gripper_arg,
         nonrt_state_data_node,
         joint_state_pub,
         rsp,
