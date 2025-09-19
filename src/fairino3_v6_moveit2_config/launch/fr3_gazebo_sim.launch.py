@@ -31,11 +31,30 @@ def generate_launch_description():
         description="Name of world file to spawn robot into"
     )
     
+    # control_system_arg = DeclareLaunchArgument(
+    #     'control_system',
+    #     default_value='gazebo',
+    #     description='Specify which control system to use (moveit or gazebo mirroring)'
+    # )
+
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
         default_value="fairino3",
         description="Name of robot model to spawn (ie. Fairino3)")
+
+    gripper_arg = DeclareLaunchArgument(
+        'gripper',
+        default_value='None',
+        description='Type of gripper to attach to wrist3_link'
+    )
+
+    mount_arg = DeclareLaunchArgument(
+        'mount',
+        default_value='None',
+        description='Type of mount object to attach under base_link'
+    )
+
 
     # Connect the ros2_cmd_server for publishing the /nonrt_state_data of the robot
     nonrt_state_data_node = Node(
@@ -62,7 +81,11 @@ def generate_launch_description():
     file_subpath = 'config/fairino3_v6_robot.urdf.xacro'
     # Use xacro to process the file
     xacro_file = os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),file_subpath)
-    robot_description_raw = xacro.process_file(xacro_file).toxml()
+    robot_description_raw = xacro.process_file(
+        xacro_file,
+        mappings={
+            'control_system': 'gazebo'
+    }).toxml()
 
     rsp = Node(
         package="robot_state_publisher",
@@ -103,6 +126,8 @@ def generate_launch_description():
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
         world_arg,
+        # mount_arg,
+        # gripper_arg,
         nonrt_state_data_node,
         joint_state_pub,
         rsp,
