@@ -12,12 +12,12 @@ Written and developed by Granger Pasko
 
     ### Step 1a) Configuring your IP
     To change the IP address that the state publisher listens to (the target being your Fairino robot), you need to navigate to:
-    <b> src/fairino_hardware/include/fairino_hardware/data_types_def.h </b>
+    <b> src/fairino_hardware/include/fairino_hardware/data_types_def.h </b> and <b> src/fairino_hardware/include/fairino_hardware/fairino_hardware_interface.hpp</b>
     Find the line that sets the Controller IP and change it to match the robot IP you'd like to target.
 
     ### Step 1b) Choose your control method
     If you prefer to use the ROS2 control interface to command your robot instead of the SDK, you can navigate to:
-    <b> src/fairino_hardware/include/src/command_server_node.cpp </b>
+    <b> src/fairino_hardware/include/src/command_server_node.cpp </b> 
     Here, you can uncomment the ROS2 command Node to re-enable the ros2 control system.
     
     NOTE: this will remove SDK functionality from your robot
