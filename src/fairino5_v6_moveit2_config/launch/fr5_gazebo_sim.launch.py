@@ -69,15 +69,6 @@ def generate_launch_description():
         parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
     )
 
-    # RSP v1 (using moveit2 config)
-    # Spawn the robot state publisher
-    # rsp = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),
-    #                         'launch', 'rsp.launch.py')),
-    # )
-
-
     # RSP v2
     file_subpath = 'config/fairino5_v6_robot.urdf.xacro'
     # Use xacro to process the file
@@ -117,9 +108,9 @@ def generate_launch_description():
         output="screen"
     )
 
-    # Spawn the fairino3_controller for the gazebo robot
-    fairino3_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino3_controller'],
+    # Spawn the fairino5_controller for the gazebo robot
+    fairino5_controller = ExecuteProcess(
+        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino5_controller'],
         output="screen"
     )
 
@@ -134,7 +125,7 @@ def generate_launch_description():
         joint_state_pub,
         rsp,
         joint_state_broadcaster,
-        fairino3_controller,
+        fairino5_controller,
         gazebo,
         spawn_robot
     ])
