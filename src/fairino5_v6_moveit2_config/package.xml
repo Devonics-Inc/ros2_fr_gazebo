@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>fairino3_v6_moveit2_config</name>
+  <name>fairino5_v6_moveit2_config</name>
   <version>0.3.0</version>
   <description>
-     An automatically generated package with all the configuration and launch files for using the fairino3_v6_robot with the MoveIt Motion Planning Framework
+     An automatically generated package with all the configuration and launch files for using the fairino5_v6_robot with the MoveIt Motion Planning Framework
   </description>
   <maintainer email="litao@frtech.fr">litao</maintainer>
 
@@ -45,7 +45,6 @@
   <exec_depend>rviz_common</exec_depend>
   <exec_depend>rviz_default_plugins</exec_depend>
   <exec_depend>warehouse_ros_mongo</exec_depend>
-
 
   <export>
       <build_type>ament_cmake</build_type>

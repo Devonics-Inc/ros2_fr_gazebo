@@ -40,7 +40,7 @@ def generate_launch_description():
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
-        default_value="fairino3",
+        default_value="fairino5",
         description="Name of robot model to spawn (ie. Fairino3)")
 
     gripper_arg = DeclareLaunchArgument(
@@ -79,9 +79,9 @@ def generate_launch_description():
 
 
     # RSP v2
-    file_subpath = 'config/fairino3_v6_robot.urdf.xacro'
+    file_subpath = 'config/fairino5_v6_robot.urdf.xacro'
     # Use xacro to process the file
-    xacro_file = os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),file_subpath)
+    xacro_file = os.path.join(get_package_share_directory('fairino5_v6_moveit2_config'),file_subpath)
     robot_description_raw = xacro.process_file(
         xacro_file,
         mappings={
@@ -138,5 +138,3 @@ def generate_launch_description():
         gazebo,
         spawn_robot
     ])
-
-

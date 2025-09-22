@@ -12,9 +12,13 @@ from builtin_interfaces.msg import Duration # For ROS2
 class SimJointPublisher(Node):
 	def __init__(self):
 		super().__init__('sim_joint_publisher')
+		# Grab parameter value for robot model:
+		self.declare_parameter('robot_model', 'fairino3')
+		fr_model = self.get_parameter('robot_model').value
 		# /joint_state topic
+		self.get_logger().info(f"\n\n\n{fr_model}\n\n\n")
 		self.publisher_ = self.create_publisher(JointState, 'joint_states', 10)
-		self.publisher_2 = self.create_publisher(JointTrajectory, 'fairino3_controller/joint_trajectory', 10)
+		self.publisher_2 = self.create_publisher(JointTrajectory, f'{fr_model}_controller/joint_trajectory', 10)
 		timer_period = 0.1  # seconds
 		self.subscription = self.create_subscription(
 			RobotNonrtState,
@@ -59,6 +63,8 @@ class SimJointPublisher(Node):
 
 		
 def main(args=None):
+	# self.get_logger().info(f"\n\n\n{args}\n\n\n")
+	print(f"\n\n\n\n{args}\n\n\n\n")
 	rclpy.init(args=args)
 	node = SimJointPublisher()
 	rclpy.spin(node)
