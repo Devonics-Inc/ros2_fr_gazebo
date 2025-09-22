@@ -63,8 +63,6 @@ class SimJointPublisher(Node):
 
 		
 def main(args=None):
-	# self.get_logger().info(f"\n\n\n{args}\n\n\n")
-	print(f"\n\n\n\n{args}\n\n\n\n")
 	rclpy.init(args=args)
 	node = SimJointPublisher()
 	rclpy.spin(node)
