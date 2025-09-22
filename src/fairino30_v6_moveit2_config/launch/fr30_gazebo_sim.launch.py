@@ -31,12 +31,17 @@ def generate_launch_description():
         description="Name of world file to spawn robot into"
     )
     
+    # control_system_arg = DeclareLaunchArgument(
+    #     'control_system',
+    #     default_value='gazebo',
+    #     description='Specify which control system to use (moveit or gazebo mirroring)'
+    # )
 
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
-        default_value="fairino10",
-        description="Name of robot model to spawn (ie. fairino10)")
+        default_value="fairino30",
+        description="Name of robot model to spawn (ie. Fairino30)")
 
     gripper_arg = DeclareLaunchArgument(
         'gripper',
@@ -64,11 +69,19 @@ def generate_launch_description():
         parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
     )
 
+    # RSP v1 (using moveit2 config)
+    # Spawn the robot state publisher
+    # rsp = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory('fairino30_v6_moveit2_config'),
+    #                         'launch', 'rsp.launch.py')),
+    # )
+
 
     # RSP v2
-    file_subpath = 'config/fairino10_v6_robot.urdf.xacro'
+    file_subpath = 'config/fairino30_v6_robot.urdf.xacro'
     # Use xacro to process the file
-    xacro_file = os.path.join(get_package_share_directory('fairino10_v6_moveit2_config'),file_subpath)
+    xacro_file = os.path.join(get_package_share_directory('fairino30_v6_moveit2_config'),file_subpath)
     robot_description_raw = xacro.process_file(
         xacro_file,
         mappings={
@@ -104,9 +117,9 @@ def generate_launch_description():
         output="screen"
     )
 
-    # Spawn the fairino10_controller for the gazebo robot
-    fairino10_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino10_controller'],
+    # Spawn the fairino30_controller for the gazebo robot
+    fairino30_controller = ExecuteProcess(
+        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino30_controller'],
         output="screen"
     )
 
@@ -121,7 +134,7 @@ def generate_launch_description():
         joint_state_pub,
         rsp,
         joint_state_broadcaster,
-        fairino10_controller,
+        fairino30_controller,
         gazebo,
         spawn_robot
     ])
