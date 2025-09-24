@@ -6,6 +6,7 @@ find_package(ament_cmake REQUIRED)
 ament_package()
 install(PROGRAMS
   launch/SimJointPublisher.py
+  launch/DigitalTwin_rsp.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
