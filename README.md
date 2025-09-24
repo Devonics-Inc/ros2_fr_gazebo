@@ -1,4 +1,4 @@
-# Porting your FR3 Into Gazebo
+# Porting your Fairino Into Gazebo
 
 ## Introduction
 <p>Hello devs and devinas, in this README I will cover the steps needed to configure your gazebo environment to mirror your Fairino or use the included MoveIt2 module to control your robot. This will also go over the contetns of this directory and how they interact as well as how to manipulate them to your specific needs.</p>
