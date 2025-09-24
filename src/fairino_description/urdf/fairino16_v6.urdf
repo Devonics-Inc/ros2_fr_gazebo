@@ -4,6 +4,11 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="fairino16_v6_robot">
+  <link name="world"/>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
   <link
     name="base_link">
     <inertial>
@@ -99,7 +104,7 @@
     <limit
       lower="-3.0543"
       upper="3.0543"
-      effort="150"
+      effort="330"
       velocity="3.15" />
     <calibration
       rising="0"
@@ -168,7 +173,7 @@
     <limit
       lower="-4.6251"
       upper="1.4835"
-      effort="150"
+      effort="330"
       velocity="3.15" />
     <calibration
       rising="0"
@@ -306,7 +311,7 @@
     <limit
       lower="-4.6251"
       upper="1.4835"
-      effort="28"
+      effort="54"
       velocity="3.2" />
     <calibration
       rising="0"
@@ -375,7 +380,7 @@
     <limit
       lower="-3.0543"
       upper="3.0543"
-      effort="28"
+      effort="54"
       velocity="3.2" />
     <calibration
       rising="0"
@@ -444,7 +449,7 @@
     <limit
       lower="-3.0543"
       upper="3.0543"
-      effort="28"
+      effort="54"
       velocity="3.2" />
     <calibration
       rising="0"

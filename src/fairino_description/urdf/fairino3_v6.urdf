@@ -5,27 +5,11 @@
 <robot
   name="fairino3_v6_robot">
   <!-- Custom colors -->
-  <material name="orange">
-    <color rgba="${255/255} ${165/255} 0 1"/>
-  </material>
-
-  <material name="white">
-    <color rgba="1 1 1 1"/>
-  </material>
-
-  <material name="grey">
-    <color rgba="${192/255} ${192/255} ${192/255} 1"/>
-  </material>
-
-  <material name="blue">
-    <color rgba="0 0 ${192/255} 1"/>
-  </material>
-
   <link name="world"/>
-    <joint name="fixed" type="fixed">
-      <parent link="world"/>
-      <child link="base_link"/>
-    </joint>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
   <link
     name="base_link">
     <inertial>
@@ -50,7 +34,11 @@
         <mesh
           filename="package://fairino_description/meshes/fairino3_v6/base_link.STL" />
       </geometry>
-      <material name="white"/>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
     </visual>
     <collision>
       <origin
@@ -86,7 +74,11 @@
         <mesh
           filename="package://fairino_description/meshes/fairino3_v6/shoulder_link.STL" />
       </geometry>
-      <material name="white"/>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
     </visual>
     <collision>
       <origin
@@ -151,7 +143,11 @@
         <mesh
           filename="package://fairino_description/meshes/fairino3_v6/upperarm_link.STL" />
       </geometry>
-      <material name="white"/>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
     </visual>
     <collision>
       <origin
@@ -216,7 +212,11 @@
         <mesh
           filename="package://fairino_description/meshes/fairino3_v6/forearm_link.STL" />
       </geometry>
-      <material name="white"/>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
     </visual>
     <collision>
       <origin
@@ -281,7 +281,11 @@
         <mesh
           filename="package://fairino_description/meshes/fairino3_v6/wrist1_link.STL" />
       </geometry>
-      <material name="white"/>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
     </visual>
     <collision>
       <origin
@@ -346,7 +350,11 @@
         <mesh
           filename="package://fairino_description/meshes/fairino3_v6/wrist2_link.STL" />
       </geometry>
-      <material name="white"/>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
     </visual>
     <collision>
       <origin
@@ -411,7 +419,11 @@
         <mesh
           filename="package://fairino_description/meshes/fairino3_v6/wrist3_link.STL" />
       </geometry>
-      <material name="white"/>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
     </visual>
     <collision>
       <origin

@@ -65,7 +65,8 @@ def generate_launch_description():
     # Translate the /nonnrt_state_data for the /joint_states topic
     joint_state_pub = Node(
         package="fairino_gazebo_config",
-        executable="SimJointPublisher.py"
+        executable="SimJointPublisher.py",
+        parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
     )
 
     # RSP v1 (using moveit2 config)
@@ -128,6 +129,7 @@ def generate_launch_description():
         world_arg,
         # mount_arg,
         # gripper_arg,
+        robot_model_arg,
         nonrt_state_data_node,
         joint_state_pub,
         rsp,
