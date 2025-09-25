@@ -12,6 +12,7 @@
                 <hardware>
                     <!-- By default, set up controllers for simulation. This won't work on real hardware -->
                     <plugin>fairino_hardware/FairinoHardwareInterface</plugin>
+                    <!-- <plugin>mock_components/GenericSystem</plugin> -->
                 </hardware>
                 <joint name="j1">
                     <command_interface name="position"/>

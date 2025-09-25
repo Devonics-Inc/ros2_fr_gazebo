@@ -7,6 +7,7 @@ ament_package()
 install(PROGRAMS
   launch/SimJointPublisher.py
   launch/DigitalTwin_rsp.py
+  launch/sim_trajectory_pub.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

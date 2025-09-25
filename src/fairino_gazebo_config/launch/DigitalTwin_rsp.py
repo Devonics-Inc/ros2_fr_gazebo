@@ -18,11 +18,11 @@ class DigitalTwin_rsp(Node):
 		# /joint_state topic
 		self.get_logger().info(f"\n\n\n{fr_model}\n\n\n")
 		self.publisher_ = self.create_publisher(JointState, 'joint_states', 10)
-		self.publisher_2 = self.create_publisher(JointTrajectory, f'{fr_model}_controller/joint_trajectory', 10)
+		# self.publisher_2 = self.create_publisher(JointTrajectory, f'{fr_model}_controller/joint_trajectory', 10)
 		timer_period = 0.1  # seconds
 		self.subscription = self.create_subscription(
-			RobotNonrtState,
-			'/nonrt_state_data',
+			JointState,
+			'/joint_states',
 			self.listener_callback,
 			10
 		)
@@ -32,6 +32,7 @@ class DigitalTwin_rsp(Node):
 
 	def listener_callback(self, msg):
 		# Convert joint positions from /nonrt_state_data
+		self.get_logger().info(f"\n\n\n{msg}\n\n\n")
 		joint_positions = [
 			math.radians(msg.j1_cur_pos), math.radians(msg.j2_cur_pos), math.radians(msg.j3_cur_pos),
 			math.radians(msg.j4_cur_pos), math.radians(msg.j5_cur_pos), math.radians(msg.j6_cur_pos)
@@ -51,11 +52,11 @@ class DigitalTwin_rsp(Node):
 
 		point.positions = joint_positions
 		joint_trajectory.points.append(point)
-		self.publisher_2.publish(joint_trajectory)
+		# self.publisher_2.publish(joint_trajectory)
     
 	def on_shutdown(self):
 		self.destroy_publisher(self.publisher_)
-		self.destroy_publisher(self.publisher_2)
+		# self.destroy_publisher(self.publisher_2)
 		self.destroy_subscription(self.subscription)
 		self.destroy_node()
 
@@ -64,7 +65,7 @@ class DigitalTwin_rsp(Node):
 		
 def main(args=None):
 	rclpy.init(args=args)
-	node = SimJointPublisher()
+	node = DigitalTwin_rsp()
 	rclpy.spin(node)
 	node.destroy_node()
 	rclpy.shutdown()

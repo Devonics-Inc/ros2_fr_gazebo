@@ -48,12 +48,11 @@ def generate_launch_description():
             'control_system': 'gazebo'
     }).toxml()
 
-    rsp = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="screen",
-        parameters=[{"robot_description": robot_description_raw}],
-    )
+    # joint_state_pub = Node(
+    #     package="fairino_gazebo_config",
+    #     executable="DigitalTwin_rsp.py",
+    #     parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
+    # )
 
     # Create an instance of Gazebo
     gazebo = IncludeLaunchDescription(
@@ -71,26 +70,61 @@ def generate_launch_description():
         arguments=['-topic', 'robot_description'],
     )
 
-    # Spawn the joint_state_broadcaster for the gazebo robot
-    joint_state_broadcaster = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
-        output="screen"
+    rsp = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        parameters=[{"robot_description": robot_description_raw}],
     )
 
-    # Spawn the fairino5_controller for the gazebo robot
-    fairino5_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino5_controller'],
-        output="screen"
+    # Spawn the joint_state_broadcaster for the gazebo robot
+    # joint_state_broadcaster = ExecuteProcess(
+    #     cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
+    #     output="screen"
+    # )
+    joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
+        output='screen'
     )
+
+    controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
+
+    controller_manager = Node(
+            package='controller_manager',
+            executable='ros2_control_node',
+            parameters=[
+                {'robot_description': robot_description_raw},
+                controllers_yaml
+            ],
+            output='screen'
+        )
+
+        # Spawn the fairino5_controller for the gazebo robot
+    # fairino5_controller = ExecuteProcess(
+    #     cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino5_controller'],
+    #     output="screen"
+    # )
+    fairino5_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['fairino5_controller', '--controller-manager', '/controller_manager'],
+        output='screen'
+    )
+
+
 
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
         world_arg,
         robot_model_arg,
-        rsp,
-        joint_state_broadcaster,
-        fairino5_controller,
+        # joint_state_pub,
         gazebo,
-        spawn_robot
+        spawn_robot,
+        rsp,
+        controller_manager,
+        joint_state_broadcaster,
+        fairino5_controller
     ])
