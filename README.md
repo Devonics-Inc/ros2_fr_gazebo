@@ -1,4 +1,5 @@
-# Porting your Fairino Into Gazebo
+# Porting your Fairino Robot Into Gazebo
+
 
 ## Introduction
 <p>Hello devs and devinas, in this README I will cover the steps needed to configure your gazebo environment to mirror your Fairino or use the included MoveIt2 module to control your robot. This will also go over the contetns of this directory and how they interact as well as how to manipulate them to your specific needs.</p>
@@ -6,89 +7,58 @@
 ## Step 1) Building your workspace
 <p>If you build your workspace as is, you will get the following environment:
 
-- A Gazebo Environment with an FR3 mirroring your targeted IP <b>`(this repo defaults to 192.168.55.2)`</b>
-- The simulated FR3 will follow your Fairino or SimMachine
+- A Gazebo Environment with an Fairino robot mirroring your targeted IP <b>`(this repo defaults to 192.168.55.2)`</b>
+- The simulated Fairino will follow your physical Fairino or SimMachine
 - A MoveIt2 control example that can hook up to your SimMachine or physical hardware
+- A digital Fairino controllable via ROS2 that is separate from any physical robot or SimMachine
 
     ### Step 1a) Configuring your IP
-    To change the IP address that the state publisher listens to (the target being your Fairino robot), you need to navigate to:
-    <b> `src/fairino_hardware/include/fairino_hardware/data_types_def.h` </b>
-    and <b> `src/fairino_hardware/include/fairino_hardware/fairino_hardware_interface.hpp` </b>
+    To change the IP address that the state publisher listens to (the target being your Fairino robot) in the following files:
+    
+    <b> `src/fairino_hardware/include/fairino_hardware/data_types_def.h` </b> 
+    
+    <b> `src/fairino_gazebo_config/launch/rt_state_data.py` </b> 
+    
+    <b> `src/fairino_hardware/include/fairino_hardware/fairino_hardware_interface.hpp` </b>
     
     
-    Find the line that sets the Controller IP and change it to match the robot IP you'd like to target.
+    Find the line that sets the Controller/Robot IP and change it to match the robot IP you'd like to target.
 
     ### Step 1b) Choose your control method
-    If you prefer to use the ROS2 control interface to command your robot instead of the SDK, you can navigate to:
+    If you prefer to use the ROS2 control interface to command your robot, you can navigate to:
     <b> `src/fairino_hardware/include/src/command_server_node.cpp` </b> 
-    Here, you can uncomment the ROS2 command Node to re-enable the ros2 control system.
-    
-    NOTE: this will remove SDK functionality from your robot
+
 
 Now, you can build your workspace by running <b>`colcon build --symlink-install`</b>
 
-## Step 2) Commands to run your Gazebo simulator
+## Step 2) Commands to run your Gazebo simulator:
 
-To run the gazebo Sim, use:
+To run the Gazebo Sim to mirror your robot/SimMachine, use the following command (examples for Fr3):
 
- `$ ros2 launch fairino3_moveit2_config fr3_gazebo_sim.launch.py`
+ `$ ros2 launch fairino3_moveit2_config fr3_gazebo_mirror.launch.py`
 
-Below are the steps to run the process manually:
+To run the Gazebo Sim with a simulated Fairino ONLY, use the following command (examples for Fr3):
 
-Run the commands below IN ORDER (Don't forget to use `source isntall/setup.bash` for each terminal)
+ `$ ros2 launch fairino3_moveit2_config digital_fr3_gazebo_sim.launch.py`
 
-1) 
-    `$ ros2 run fairino_hardware ros2_cmd_server`
-
-    This will create the link from your robot to your ROS system.
-
-2) 
-    `$ ros2 run fairino3_moveit2_config SimJointPublisher.py`
-
-    This node subscribes to /nonrt_state_data and translates the joint positions to radians and publishes them to the /state_data topic
-
-3) 
-    `$ ros2 launch fairino3_moveit2_config rsp.launch.py`
-
-    This node creates the /robot_description and /tf topics. This allows Gazebo to view the 3D model of the robot and links the proper control nodes to said /robot_description
-
-4) 
-    `$ ros2 launch ros_gz_sim gz_sim.launch.py`
-
-    Use this to launch gazebo through ROS
-
-5) 
-    `$ ros2 run ros_gz_sim create -topic robot_description`
-
-    Creates a robot based off the published /robot_description topic and spawns it in gazebo
-
-6) 
-    `$ ros2 control load_controller --set-state active joint_state_broadcaster`
-
-    Sets up communication for ROS2 and Gazebo robot joint states
-
-
-7) 
-    `$ ros2 control load_controller --set-state active fairino3_controller`
-
-    Loads the fairino3_controller to move the simulated robot in gazebo
-
+Note: that this can be done with any of the fairino models
 
 Now, when you open a terminal and use 'rqt_graph' your setup should look like this:
     <img src="src/README_rqt_graph.png" width="1080">
 
 
-Now, you can set up a script using the SDK to control your robot and watch it move in Gazebo!
+Now, you can set up a script using the SDK or ROS2 controllers to control your robot and watch it move in Gazebo!
 
+To command the fully simulated robot, use the ROS2 /joint_trajectory message and send it to the corresponding Fairino ROS2 controller
 
 ### POSSIBLE ERRORS:
 
 If your robot shows up as an entity in Gazebo but you cannot see the model, it is usually due to a conflicting resource path. To fix this, close gazebo and write in the following command to your terminal before re-running:
 
-    export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/[path-to-directory]/fr3_gazebo/install/fairino_description/share
+    export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/[path-to-directory]/ros2_fr_gz/install/fairino_description/share
 
 If your terminal says it cannot find the SimJointPublisher.py:
-navigate to `/src/fairino3_moveit2_config/launch` and add an empty folder called "\_\_pycache\_\_"
+navigate to `/src/fairinoX_moveit2_config/launch` and add an empty folder called "\_\_pycache\_\_"
 Now rebuild your workspace.
 
 ## Option 2: Steps to run MoveIt2
