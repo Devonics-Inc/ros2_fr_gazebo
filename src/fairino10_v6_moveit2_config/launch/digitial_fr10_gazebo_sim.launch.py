@@ -15,9 +15,9 @@ from launch_ros.substitutions import FindPackageShare
 import xacro
 
 """
-THIS CREATES A DIGITAL FAIRINO, THAT MIRRORS THE ROBOT AT THE IP ADDRESS SET IN /rt_state_data
+THIS CREATES A DIGITAL FAIRINO, DETACHED FROM ANY HARDWARE
 
-USE NORMAL CONTROL FOR YOUR ROBOT AND THE GAZEBO BOT WILL FOLLOW
+USE THE /joint_trajectory TO SEND GOAL STATES (use fairino_gazebo_config/launch/sim_trajectory_pub.py for an example) 
 
 """
 
@@ -40,47 +40,19 @@ def generate_launch_description():
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
-        default_value="fairino3",
+        default_value="fairino10",
         description="Name of robot model to spawn (ie. Fairino3)")
 
-    # -------------IGNORE THE FOLLOWING (in development) ----------
-    # gripper_arg = DeclareLaunchArgument(
-    #     'gripper',
-    #     default_value='None',
-    #     description='Type of gripper to attach to wrist3_link'
-    # )
-
-    # mount_arg = DeclareLaunchArgument(
-    #     'mount',
-    #     default_value='None',
-    #     description='Type of mount object to attach under base_link'
-    # )
-    # ------------------------------------------------------------
     
-    # Translate the /nonnrt_state_data for the /joint_states topic
-    """     USING ROBOT_STATE_PKG SOCKET    """
-    joint_state_pub = Node(
-        package="fairino_gazebo_config",
-        executable="rt_state_data.py",
-        parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
-    )
-
     # RSP v2
-    file_subpath = 'config/fairino3_v6_robot.urdf.xacro'
+    file_subpath = 'config/fairino10_v6_robot.urdf.xacro'
     # Use xacro to process the file
-    xacro_file = os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),file_subpath)
+    xacro_file = os.path.join(get_package_share_directory('fairino10_v6_moveit2_config'),file_subpath)
     robot_description_raw = xacro.process_file(
         xacro_file,
         mappings={
             'control_system': 'gazebo'
     }).toxml()
-
-    rsp = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="screen",
-        parameters=[{"robot_description": robot_description_raw}],
-    )
 
     # Create an instance of Gazebo
     gazebo = IncludeLaunchDescription(
@@ -98,29 +70,53 @@ def generate_launch_description():
         arguments=['-topic', 'robot_description'],
     )
 
-    # Spawn the joint_state_broadcaster for the gazebo robot
-    joint_state_broadcaster = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
-        output="screen"
+    rsp = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        parameters=[{"robot_description": robot_description_raw}],
     )
 
-    # Spawn the fairino3_controller for the gazebo robot
-    fairino3_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino3_controller'],
-        output="screen"
+    # Spawn the joint_state_broadcaster for the gazebo robot
+    joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
+        output='screen'
     )
+
+    controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
+
+    controller_manager = Node(
+            package='controller_manager',
+            executable='ros2_control_node',
+            parameters=[
+                {'robot_description': robot_description_raw},
+                controllers_yaml
+            ],
+            output='screen'
+        )
+
+    # Spawn the fairino10_controller for the gazebo robot
+    fairino10_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['fairino10_controller', '--controller-manager', '/controller_manager'],
+        output='screen'
+    )
+
+
 
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
         world_arg,
-        # mount_arg,
-        # gripper_arg,
         robot_model_arg,
-        joint_state_pub,
-        rsp,
-        joint_state_broadcaster,
-        fairino3_controller,
+        # joint_state_pub,
         gazebo,
-        spawn_robot
+        spawn_robot,
+        rsp,
+        controller_manager,
+        joint_state_broadcaster,
+        fairino10_controller
     ])

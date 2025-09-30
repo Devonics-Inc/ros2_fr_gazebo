@@ -9,7 +9,7 @@ import time
 class SimTrajectoryPublisher(Node):
     def __init__(self):
         super().__init__('sim_trajectory_pub')
-        self.publisher = self.create_publisher(JointTrajectory, '/fairino5_controller/joint_trajectory', 10)
+        self.publisher = self.create_publisher(JointTrajectory, '/fairino30_controller/joint_trajectory', 10)
         timer_period = 2.0  # Delay to ensure controller is active
         self.timer = self.create_timer(timer_period, self.send_trajectory)
         self.sent = False

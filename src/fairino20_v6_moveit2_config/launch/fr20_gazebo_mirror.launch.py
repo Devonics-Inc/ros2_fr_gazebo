@@ -40,8 +40,8 @@ def generate_launch_description():
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
-        default_value="fairino3",
-        description="Name of robot model to spawn (ie. Fairino3)")
+        default_value="fairino20",
+        description="Name of robot model to spawn (ie. fairino20)")
 
     # -------------IGNORE THE FOLLOWING (in development) ----------
     # gripper_arg = DeclareLaunchArgument(
@@ -66,9 +66,9 @@ def generate_launch_description():
     )
 
     # RSP v2
-    file_subpath = 'config/fairino3_v6_robot.urdf.xacro'
+    file_subpath = 'config/fairino20_v6_robot.urdf.xacro'
     # Use xacro to process the file
-    xacro_file = os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),file_subpath)
+    xacro_file = os.path.join(get_package_share_directory('fairino20_v6_moveit2_config'),file_subpath)
     robot_description_raw = xacro.process_file(
         xacro_file,
         mappings={
@@ -104,9 +104,9 @@ def generate_launch_description():
         output="screen"
     )
 
-    # Spawn the fairino3_controller for the gazebo robot
-    fairino3_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino3_controller'],
+    # Spawn the fairino20_controller for the gazebo robot
+    fairino20_controller = ExecuteProcess(
+        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino20_controller'],
         output="screen"
     )
 
@@ -120,7 +120,7 @@ def generate_launch_description():
         joint_state_pub,
         rsp,
         joint_state_broadcaster,
-        fairino3_controller,
+        fairino20_controller,
         gazebo,
         spawn_robot
     ])
