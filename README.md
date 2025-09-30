@@ -4,7 +4,7 @@
 <p> This repo is built using ROS2 Humble on Ubuntu 22.04 (Jammy Jellyfish). </p>
 
 ## Introduction
-<p>Hello devs and devinas, in this README I will cover the steps needed to configure your gazebo environment to mirror your Fairino or use the included MoveIt2 module to control your robot. This will also go over the contetns of this directory and how they interact as well as how to manipulate them to your specific needs.</p>
+<p>Hello devs and devinas, in this README I will cover the steps needed to configure your gazebo environment to mirror your Fairino or use the included MoveIt2 module to control your robot. This will also go over the contents of this repository and how they interact as well as how to manipulate them to your specific needs.</p>
 
 ## Step 0) Building and installing ROS2
 - To install ROS2 Humble, you can follow the instructions on either the ROS2 Humble documentation page (https://docs.ros.org/en/humble/Installation.html) or the Fairino ROS2 manual (https://fairino-doc-en.readthedocs.io/latest/ROSGuide/ros2guide.html)
