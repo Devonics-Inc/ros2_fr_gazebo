@@ -55,21 +55,8 @@ def generate_launch_description():
         description='Type of mount object to attach under base_link'
     )
 
-
-    # Connect the ros2_cmd_server for publishing the /nonrt_state_data of the robot
-    nonrt_state_data_node = Node(
-        package="fairino_hardware",
-        executable="ros2_cmd_server",
-    )
     
     # Translate the /nonnrt_state_data for the /joint_states topic
-    """     USING /non_rt_state_data (DEPRECIATED)   """
-    # joint_state_pub = Node(
-    #     package="fairino_gazebo_config",
-    #     executable="SimJointPublisher.py",
-    #     parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
-    # )
-
     """     USING ROBOT_STATE_PKG SOCKET    """
     joint_state_pub = Node(
         package="fairino_gazebo_config",
@@ -129,7 +116,6 @@ def generate_launch_description():
         # mount_arg,
         # gripper_arg,
         robot_model_arg,
-        nonrt_state_data_node,
         joint_state_pub,
         rsp,
         joint_state_broadcaster,

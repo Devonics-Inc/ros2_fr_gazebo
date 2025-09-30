@@ -8,6 +8,12 @@ import math
 import time
 from fairino_msgs.msg import RobotNonrtState  # Replace with actual msg type
 from builtin_interfaces.msg import Duration # For ROS2
+"""
+NOTE: THIS FILE IS DEPRECIATED DUE TO NON_RT STATE DATA BEING NON REAL TIME
+	USE RT_STATE_DATA NODE (rt_state_data.py) INSTEAD
+
+"""
+
 
 class SimJointPublisher(Node):
 	def __init__(self):
