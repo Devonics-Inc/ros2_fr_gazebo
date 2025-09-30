@@ -14,6 +14,12 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
 import xacro
 
+"""
+THIS CREATES A DIGITAL FAIRINO, THAT MIRRORS THE ROBOT AT THE IP ADDRESS SET IN /rt_state_data
+
+USE NORMAL CONTROL FOR YOUR ROBOT AND THE GAZEBO BOT WILL FOLLOW
+
+"""
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('fairino_description')
@@ -30,12 +36,6 @@ def generate_launch_description():
         default_value="empty.sdf",
         description="Name of world file to spawn robot into"
     )
-    
-    # control_system_arg = DeclareLaunchArgument(
-    #     'control_system',
-    #     default_value='gazebo',
-    #     description='Specify which control system to use (moveit or gazebo mirroring)'
-    # )
 
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
@@ -43,17 +43,18 @@ def generate_launch_description():
         default_value="fairino5",
         description="Name of robot model to spawn (ie. Fairino3)")
 
-    gripper_arg = DeclareLaunchArgument(
-        'gripper',
-        default_value='None',
-        description='Type of gripper to attach to wrist3_link'
-    )
+    # -------------IGNORE THE FOLLOWING (in development) ----------
+    # gripper_arg = DeclareLaunchArgument(
+    #     'gripper',
+    #     default_value='None',
+    #     description='Type of gripper to attach to wrist3_link'
+    # )
 
-    mount_arg = DeclareLaunchArgument(
-        'mount',
-        default_value='None',
-        description='Type of mount object to attach under base_link'
-    )
+    # mount_arg = DeclareLaunchArgument(
+    #     'mount',
+    #     default_value='None',
+    #     description='Type of mount object to attach under base_link'
+    # )
 
     
     # Translate the /nonnrt_state_data for the /joint_states topic

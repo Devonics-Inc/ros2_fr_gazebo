@@ -14,6 +14,12 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
 import xacro
 
+"""
+THIS CREATES A DIGITAL FAIRINO, DETACHED FROM ANY HARDWARE
+
+USE THE /joint_trajectory TO SEND GOAL STATES (use fairino_gazebo_config/launch/sim_trajectory_pub.py for an example) 
+
+"""
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('fairino_description')
@@ -48,12 +54,6 @@ def generate_launch_description():
             'control_system': 'gazebo'
     }).toxml()
 
-    # joint_state_pub = Node(
-    #     package="fairino_gazebo_config",
-    #     executable="DigitalTwin_rsp.py",
-    #     parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
-    # )
-
     # Create an instance of Gazebo
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -78,10 +78,6 @@ def generate_launch_description():
     )
 
     # Spawn the joint_state_broadcaster for the gazebo robot
-    # joint_state_broadcaster = ExecuteProcess(
-    #     cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
-    #     output="screen"
-    # )
     joint_state_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
@@ -101,11 +97,7 @@ def generate_launch_description():
             output='screen'
         )
 
-        # Spawn the fairino5_controller for the gazebo robot
-    # fairino5_controller = ExecuteProcess(
-    #     cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino5_controller'],
-    #     output="screen"
-    # )
+    # Spawn the fairino5_controller for the gazebo robot
     fairino5_controller = Node(
         package='controller_manager',
         executable='spawner',
