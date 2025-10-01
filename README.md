@@ -37,6 +37,8 @@
     If you prefer to use the Fairino ROS2 API instead of the /joint_trajectories, you'll need to change the IP address in your workspace to match your SimMachine (defaulted to 192.168.58.2) and use <b> ros2 run fairino_hardware ros2_cmd_server</b> which runs
     <b> `src/fairino_hardware/include/src/command_server_node.cpp` </b> 
 
+    An example program of this is in <b>~/ros2_fr_gz/src/fairino_hardware/examples/src/test_msg.py </b>
+
 
 Now, you can build your workspace by running <b>`colcon build --symlink-install`</b>
 

@@ -65,6 +65,15 @@ install(TARGETS srv_test_client
   DESTINATION lib/${PROJECT_NAME}
 )
 
+# Specify the Python test script
+set(PYTHON_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/src/test_msg.py)
+
+# Install the Python script
+install(PROGRAMS ${PYTHON_SCRIPT}
+  DESTINATION lib/${PROJECT_NAME}
+  PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ
+)
+
 #ros2_control hardware
 install(TARGETS fairino_hardware
   EXPORT fairino_hardware
