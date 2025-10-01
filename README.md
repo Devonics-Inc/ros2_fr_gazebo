@@ -9,8 +9,9 @@
 
 ## Step 0) Building and installing ROS2
 - To install ROS2 Humble, you can follow the instructions on either the ROS2 Humble documentation page (https://docs.ros.org/en/humble/Installation.html) or the Fairino ROS2 manual (https://fairino-doc-en.readthedocs.io/latest/ROSGuide/ros2guide.html)
-- If you choose the latter, then follow instructions until section 2.2 "Compile and build fairino_hardware" since we are going to be using a modified version.
-- Install and Gazebo Fortress 6.17
+    - If you choose the latter, then follow instructions until section 2.2 "Compile and build fairino_hardware" since we are going to be using a modified version.
+- Install Gazebo Fortress 6.17
+- Note that if you are looking to use the ROS2 API commands, you will need to set up a SimMachine to interporate the XML packets sent by the fairino ros2_cmd_server. For SimMachine installation isntructions, follow the guide here (https://fairino-doc-en.readthedocs.io/latest/VMMachine/controller_docker_machine.html)
 
 ## Step 1) Building your Fairino workspace
 <p>If you build your workspace as is, you will get the following environment:
@@ -18,7 +19,7 @@
 - A Gazebo Environment with an Fairino robot mirroring your targeted IP <b>`(this repo defaults to 192.168.55.2)`</b>
 - The simulated Fairino will follow your physical Fairino or SimMachine
 - A MoveIt2 control example that can hook up to your SimMachine or physical hardware
-- A digital Fairino controllable via ROS2 that is separate from any physical robot or SimMachine
+- A digital Fairino controllable via ROS2s /joint_trajectory that is separate from any physical robot or SimMachine
 
     ### Step 1a) Configuring your IP
     To change the IP address that the state publisher listens to (the target being your Fairino robot) in the following files:
@@ -33,7 +34,7 @@
     Find the line that sets the Controller/Robot IP and change it to match the robot IP you'd like to target.
 
     ### Step 1b) Choose your control method
-    If you prefer to use the ROS2 control interface to command your robot, you can navigate to:
+    If you prefer to use the Fairino ROS2 API instead of the /joint_trajectories, you'll need to change the IP address in your workspace to match your SimMachine (defaulted to 192.168.58.2) and use <b> ros2 run fairino_hardware ros2_cmd_server</b> which runs
     <b> `src/fairino_hardware/include/src/command_server_node.cpp` </b> 
 
 
@@ -66,7 +67,7 @@ If your robot shows up as an entity in Gazebo but you cannot see the model, it i
     export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/[path-to-directory]/ros2_fr_gz/install/fairino_description/share
 
 If your terminal says it cannot find the SimJointPublisher.py:
-navigate to `/src/fairinoX_moveit2_config/launch` and add an empty folder called "\_\_pycache\_\_"
+navigate to `/src/fairino{model_number}_moveit2_config/launch` and add an empty folder called "\_\_pycache\_\_"
 Now rebuild your workspace.
 
 ## Option 2: Steps to run MoveIt2
