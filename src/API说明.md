@@ -1,436 +1,973 @@
 /*
-函数功能描述:存储一个关节点位信息
-id - 存储点位id号,从1开始,注意该id与CARTPoint的点位id号各自独立
-double j1-j6 - 6个关节位置,单位是度
+
+Function description: Store a joint point position information
+
+id - Stores the point id, starting with 1, independently of the point id of CARTPoint
+
+double j1−j6 − 6 joint positions in degrees
+
 */
+
 int JNTPoint(int id, double j1, double j2, double j3, double j4, double j5, double j6)
-例子:JNTPoint(1,10,11,12,13,14,15)
 
+// Examples
 
-
-/*
-函数功能描述:存储一个笛卡尔点位信息
-id - 存储点位id号,从1开始,注意该id与JNTPoint的点位id号各自独立
-double x,y,z,rx,ry,yz - 笛卡尔点位信息,位置单位是mm,角度单位是度
-*/
-int CARTPoint(int id, double x,y,z,rx,ry,rz)//存储一个笛卡尔空间点位
-例子：CARTPoint(1,100,110,200,0,0,0)
-
+JNTPoint(1,10,11,12,13,14,15)
 
 
 /*
-函数功能描述:获取指定序号点的关节或者笛卡尔位置信息
-string name - 'JNT'或者'CART',JNT代表获取关节点位信息,'CART'代表获取笛卡尔点位信息
-int id - 点位id,从1开始
-*/
-string GET(string name, int id)//获取对应id序号点位的内容,name可以输入JNT或者CART
-例子：GET(JNT,1)
 
+Function description: Store a Cartesian point position information
+
+id - Stores the point id, starting from 1, independently of the point id of JNTPoint
+
+double x,y,z,rx,ry,yz - Cartesian point position information, position in mm, Angle in degrees
+
+*/
+
+int CARTPoint(int id, double x,y,z,rx,ry,rz)//Store a point in Cartesian space
+
+// Examples
+
+CARTPoint(1,100,110,200,0,0,0)
 
 
 /*
-函数功能描述:拖动模式开关
-uint8_t state - 1-打开拖动模式,0-关闭拖动模式
+
+Function description: Get the joint or Cartesian position information of the specified sequence point
+
+string name - 'JNT' or 'CART', where JNT stands for getting information about joint points and 'CART' stands for getting information about Cartesian points
+
+int id - The point id, starting at 1
+
 */
+
+string GET(string name, int id)//Get the contents of the corresponding id sequence number point; name can be entered as JNT or CART
+
+// Examples
+
+GET(JNT,1)
+
+
+/*
+
+Function description: Drag mode switch
+
+uint8_t state - 1- Enable drag mode,0- disable drag mode
+
+*/
+
 int DragTeachSwitch(uint8_t state)
-例子：DragTeachSwitch(0)
 
+// Examples
+
+DragTeachSwitch(0)
 
 
 /*
-函数功能描述:机械臂使能开关
-uint8_t state - 1-机械臂使能,0-机械臂去使能
+
+Function description: Manipulator enable switch
+
+uint8_t state - 1 -manipulator enabled,0 -manipulator deenabled
+
 */
+
 int RobotEnable(uint8_t state)
-例子：RobotEnable(1)
 
+// Examples
+
+RobotEnable(1)
 
 
 /*
-函数功能描述:模式切换
-uint8_t state - 1-手动模式,0-自动模式
+
+Function description:Mode switching
+
+uint8_t state - 1- Manual mode,0- automatic mode
+
 */
+
 int Mode(uint8_t state)
-例子：Mode(1)
 
+// Examples
+
+Mode(1)
 
 
 /*
-函数功能描述:设置当前模式下机械臂速度
-float vel - 速度百分比,范围为1-100
+
+Function description:Set the manipulator speed in the current mode
+
+float vel - Percentage of speed, ranging from 1-100
+
 */
+
 int SetSpeed(float vel)
-例子：SetSpeed(10)
 
+// Examples
+
+SetSpeed(10)
 
 
 /*
-函数功能描述:设置并加载指定序号的工具坐标系
-int id - 工具坐标系编号,范围1-15
-float x,y,z,rx,ry,rz - 工具坐标系的偏移量信息
+
+Function description:Sets and loads the tool coordinate system with the specified sequence number
+
+int id - Tool coordinate system number, range 1-15
+
+float x,y,z,rx,ry,rz - Offset information for the tool coordinate system
+
 */
+
 int SetToolCoord(int id, float x,float y, float z,float rx,float ry,float rz)
-例子：SetToolCoord(1,0,0,0,0,0,0)
 
+// Examples
+
+SetToolCoord(1,0,0,0,0,0,0)
 
 
 /*
-函数功能描述:设置工具坐标系列表
-int id - 工具坐标系编号,范围1-15
-float x,y,z,rx,ry,rz - 工具坐标系的偏移量信息
+
+Function description:Set the list of tool coordinate systems
+
+int id - Tool coordinate system number, range 1-15
+
+float x,y,z,rx,ry,rz - Offset information for the tool coordinate system
+
 */
+
 int SetToolList(int id, float x,float y, float z,float rx,float ry,float rz );
-例子：SetToolList(1,0,0,0,0,0,0)
 
+// Examples
 
-
-/*
-函数功能描述:设置外部工具坐标系
-int id - 工具坐标系编号,范围1-15
-float x,y,z,rx,ry,rz - 外部工具坐标系的偏移量信息
-*/
-int SetExToolCoord(int id, float x,float y, float z,float rx,float ry,float rz);	
-例子：SetExToolCoord(1,0,0,0,0,0,0)
-
+SetToolList(1,0,0,0,0,0,0)
 
 
 /*
-函数功能描述:设置外部工具坐标系列表
-int id - 工具坐标系编号,范围1-15
-float x,y,z,rx,ry,rz - 外部工具坐标系的偏移量信息
+
+Function description:Set the external tool coordinate system
+
+int id - Tool coordinate system number, range 1-15
+
+float x,y,z,rx,ry,rz - Offset information for the external tool coordinate system
+
 */
+
+int SetExToolCoord(int id, float x,float y, float z,float rx,float ry,float rz);
+
+// Examples
+
+SetExToolCoord(1,0,0,0,0,0,0)
+
+
+/*
+
+Function description:Sets the list of external tool coordinate systems
+
+int id - Tool coordinate system number, range 1-15
+
+float x,y,z,rx,ry,rz - Offset information for the external tool coordinate system
+
+*/
+
 int SetExToolList(int id, float x,float y, float z,float rx,float ry,float rz);
-例子：SetExToolList(1,0,0,0,0,0,0)
 
+// Examples
+
+SetExToolList(1,0,0,0,0,0,0)
 
 
 /*
-函数功能描述:设置工件坐标系
-int id - 工件坐标系编号,范围1-15
-float x,y,z,rx,ry,rz - 工件坐标系的偏移量信息
+
+Function description:Set the workpiece coordinate system
+
+int id - Workpiece coordinate system number, range 1-15
+
+float x,y,z,rx,ry,rz - Offset information of the workpiece coordinate system
+
 */
+
 int SetWObjCoord(int id, float x,float y, float z,float rx,float ry,float rz);
-例子：SetWObjCoord(1,0,0,0,0,0,0)
 
+// Examples
+
+SetWObjCoord(1,0,0,0,0,0,0)
 
 
 /*
-函数功能描述:设置工件坐标系列表
-int id - 工件坐标系编号,范围1-15
-float x,y,z,rx,ry,rz - 工件坐标系的偏移量信息
+
+Function description:Set the list of workpiece coordinate systems
+
+int id - Workpiece coordinate system number, range 1-15
+
+float x,y,z,rx,ry,rz - Offset information of the workpiece coordinate system
+
 */
+
 int SetWObjList(int id, float x,float y, float z,float rx,float ry,float rz);
-例子：SetWObjList(1,0,0,0,0,0,0)
 
+// Examples
+
+SetWObjList(1,0,0,0,0,0,0)
 
 
 /*
-函数功能描述:设置末端负载重量
-float weight - 负载重量,单位kg
+
+Function description:Set the end load weight
+
+float weight - Load weight in kg
+
 */
+
 int SetLoadWeight(float weight);
-例子：SetLoadWeight(3.5)
 
+// Examples
+
+SetLoadWeight(3.5)
 
 
 /*
-函数功能描述:设置末端负载质心坐标
-float x,y,z - 质心坐标,单位为mm
+
+Function description:Set the end-load centroid coordinates
+
+float x,y,z - Coordinates of the center of mass in mm
+
 */
+
 int SetLoadCoord(float x,float y,float z);
-例子：SetLoadCoord(10,20,30)
 
+// Examples
+
+SetLoadCoord(10,20,30)
 
 
 /*
-函数功能描述:设置机器人安装方式
-uint8_t install - 安装方式,0-正装,1-侧装,2-倒装
+
+Function description:Set the robot installation mode
+
+uint8_t install - Installation mode,0- formal,1- side,2- inverted
+
 */
+
 int SetRobotInstallPos(uint8_t install);
-例子：SetRobotInstallPos(0)
 
+// Examples
+
+SetRobotInstallPos(0)
 
 
 /*
-函数功能描述:设置机器人安装角度,自由安装
-double yangle - 倾斜角
-double zangle - 旋转角
+
+Function description:Set the robot installation Angle, free installation
+
+double yangle - Angle of inclination
+
+double zangle - Angle of rotation
+
 */
+
 int SetRobotInstallAngle(double yangle,double zangle);
-例子：SetRobotInstallAngle(90,0)
+
+// Examples
+
+SetRobotInstallAngle(90,0)
 
 
 
+//Security configuration
 
-//安全配置
 /*
-函数功能描述:设置机器人碰撞等级
-float level1-level6 - 1-6轴的碰撞等级,范围是1-10
+
+Function description:Set the robot collision level
+
+float level1-level6 - Collision levels for axes 1-6, ranging from 1-10
+
 */
+
 int SetAnticollision(float level1, float level2, float level3, float level4, float level5, folat level6);
-例子：SetAnticollision(1,1,1,1,1,1)
+
+// Examples
+
+SetAnticollision(1,1,1,1,1,1)
+
+
+/*
+
+     * @brief  Set the post-collision strategy
+
+     * @param  [in] strategy  0-Error and stop, 1-Continue running
+
+     * @param  [in] safeTime  Safe stop time [1000 - 2000] ms
+
+     * @param  [in] safeDistance  Safe stop distance [1-150] mm
+
+     * @param  [in] safeVel  Safe speed [50-250] mm/s
+
+     * @param  [in] safetyMargin  Safety factor for J1-J6 [1-10]
+
+     * @return  Error code
+
+*/
+
+    int SetCollisionStrategy(int strategy, int safeTime, int safeDistance, int safeVel, int safetyMargin[]);
+
+// Example
+
+SetCollisionStrategy(1);
+
+
+/**
+
+* @brief sets the collision detection method of the robot
+
+* @param [in] method Collision detection method: 0- current mode; 1- Dual encoder; 2- Current and dual encoder turn on simultaneously
+
+* @param [in] thresholdMode Collision level threshold method 0-Collision level fixed threshold mode 1- Customize collision detection thresholds
+
+* @return  error code
+
+*/
+
+int SetCollisionDetectionMethod(int method, int thresholdMode);
+
+// Examples
+
+SetCollisionDetectionMethod(0,0)
+
+
+/**
+
+* @brief Indicates that collision detection is disabled in static mode
+
+* @param [in] status 0- Off; 1- Open
+
+* @return  error code
+
+*/
+
+int SetStaticCollisionOnOff(int status);
+
+// Examples
+
+SetStaticCollisionOnOff(1)
+
+
+/**
+
+    * @brief joint torque power detection
+
+    * @param [in] status 0- Off; 1- Open
+
+    * @param [in] power Set maximum power (W);
+
+* @return  error code
+
+*/
+
+    int SetPowerLimit(int status, double power);
+
+//Examples
+
+SetPowerLimit(1,100)
+
+
+    /**
+
+*@brief  Configured force sensor
+
+*@param  [in] company  Manufacturer of force sensors, 17-KUNWEI，19-CAAA，20-ATI，21-HKM，22-GZCX，23-NBIT，24-XJC，26-NSR
+
+*@param  [in] device  Device number,  KUNWEI(0-KWR75B)，CAAA(0-MCS6A-200-4)，ATI(0-AXIA80-M8)，HKM(0-MST2010)，GZCX(0-WHC6L-YB-10A)，NBIT(0-XLH93003ACS)，XJC(0-XJC-6F-D82)，NSR(0-NSR-FTSensorA)
+
+*@param  [in] softvesion  Software version. The value is not used. The default value is 0
+
+*@param  [in] bus The device is attached to the terminal bus and is not in use. The default value is 0
+
+*@return  Error code
+
+     */
+
+    int FT_SetConfig(int company, int device, int softvesion, int bus);
+
+// Examples
+
+FT_SetConfig(0,1,0,0)
+
+
+    /**
+
+*@brief  Get the force sensor configuration
+
+*@param  [in] company  Force sensor manufacturer, to be determined
+
+*@param  [in] device  Device number, not used yet. The default value is 0
+
+*@param  [in] softvesion  Software version. The value is not used. The default value is 0
+
+*@param  [in] bus The device is attached to the terminal bus and is not in use. The default value is 0
+
+*@return  Error code
+
+     */
+
+    int FT_GetConfig(int *company, int *device, int *softvesion, int *bus);
+
+// Examples
+
+FT_GetConfig()
+
+
+    /**
+
+*@brief  Force sensor activation
+
+*@param  [in] act  0- reset, 1- activate
+
+*@return  Error code
+
+     */
+
+    int FT_Activate(uint8_t act);
+
+// Examples
+
+FT_Activate(1)
+
+
+    /**
+
+*@brief  Force sensor calibration
+
+*@param  [in] act  0- zero removal, 1- zero correction
+
+*@return  Error code
+
+     */
+
+    int  FT_SetZero(uint8_t act);
+
+// Examples
+
+FT_SetZero(1)
+
+
+    /**
+
+*@brief  Collision guard
+
+*@param  [in] flag 0- Disable collision guard. 1- Enable collision guard
+
+*@param  [in] sensor_id Force sensor number
+
+*@param  [in] select  Select the six degrees of freedom whether to detect collision, 0- no detection, 1- detection
+
+*@param  [in] ft  Impact force/torque，fx,fy,fz,tx,ty,tz
+
+*@param  [in] max_threshold Maximum threshold
+
+*@param  [in] min_threshold Minimum threshold
+
+*@note   Force/torque detection range：(ft-min_threshold, ft+max_threshold)
+
+*@return  Error code
+
+     */
+
+    int FT_Guard(uint8_t flag, int sensor_id, uint8_t select[6], ForceTorque *ft, float max_threshold[6], float min_threshold[6]);
+
+// Examples
+
+FT_Guard(1,1,0,0,1,0,0,0,0,0,100,0,0,0,0,0,200,0,0,0,0,0,50,0,0,0)
+
+
+
+    /**
+
+*@brief  Constant force control
+
+*@param  [in] flag 0- turn off constant force control, 1- turn on constant force control
+
+*@param  [in] sensor_id Force sensor number
+
+*@param  [in] select  Select the six degrees of freedom whether to detect collision, 0- no detection, 1- detection
+
+*@param  [in] ft  Impact force/torque，fx,fy,fz,tx,ty,tz
+
+*@param  [in] ft_pid Force pid parameter, torque pid parameter
+
+*@param  [in] adj_sign Adaptive start-stop control, 0- off, 1- on
+
+*@param  [in] ILC_sign ILC start stop control, 0- stop, 1- training, 2- operation
+
+*@param  [in] Maximum Adjustment distance, unit: mm
+
+*@param  [in] Maximum Adjustment Angle, unit: deg
+
+*@return  Error code
+
+     */
+
+    int FT_Control(uint8_t flag, int sensor_id, uint8_t select[6], ForceTorque *ft, float ft_pid[6], uint8_t adj_sign, uint8_t ILC_sign, float max_dis, float max_ang, int filter_Sign = 0, int posAdapt_sign = 0, int isNoBlock = 0);
+
+// Examples
+
+FT_Control(1,1,0,0,1,0,0,0,0,0,-10,0,0,0,0.0005,0,0,0,0,0,0,0,100,10,0,0,0)
+
+
+
+    /**
+
+*@brief  Compliant control on
+
+*@param  [in] p Coefficient of position adjustment or compliance
+
+*@param  [in] force Compliant opening force threshold, unit: N
+
+*@return  Error code
+
+     */
+
+    int FT_ComplianceStart(float p, float force);
+
+// Examples
+
+FT_ComplianceStart(0.005,20)
+
+
+    /**
+
+*@brief  Compliant control off
+
+*@return  Error code
+
+     */
+
+    int  FT_ComplianceStop();
+
+// Examples
+
+FT_ComplianceStop()
 
 
 
 /*
-函数功能描述:设置碰撞后策略
-int strategy - 0-报错停止,1-继续运行
+
+Function description:Set the positive limit, note that the set value must be within the hard limit range
+
+float limit1-limit6 - Six joint limit values
+
 */
-int SetCollisionStrategy(int strategy);
-例子：SetCollisionStrategy(1)
 
-
-
-/*
-函数功能描述:设置正限位,注意设置值必须在硬限位范围内
-float limit1-limit6 - 6个关节限位值
-*/
 int SetLimitPositive(float limit1, float limit2, float limit3, float limit4, float limit5, float limit6);
-例子：SetLimitPositve(100,90,90,90,90,90)
 
+// Examples
+
+SetLimitPositve(100,90,90,90,90,90)
 
 
 /*
-函数功能描述:设置负限位,注意设置值必须在硬限位范围内
-float limit1-limit6 - 6个关节限位值
+
+Function description:Set the negative limit, note that the set value must be within the hard limit range
+
+float limit1-limit6 - Six joint limit values
+
 */
+
 int SetLimitNegative(float limit1, float limit2, float limit3, float limit4, float limit5, float limit6);
-例子：SetLimitNegative(-100,-90,-90,-90,-90,-90)
 
+// Examples
+
+SetLimitNegative(-100,-90,-90,-90,-90,-90)
 
 
 /*
-函数功能描述:错误状态清除
+
+Function description:Error state removal
+
 */
+
 int ResetAllError();
 
 
-
 /*
-函数功能描述:关节摩擦力补偿开关
-uint8_t state - 0-关, 1-开
+
+Function description:Joint friction compensation switch
+
+uint8_t state - 0- off, 1- on
+
 */
+
 int FrictionCompensationOnOff(uint8_t state);
-例子：FrictionCompensationOnOff(1)
 
+// Examples
+
+FrictionCompensationOnOff(1)
 
 
 /*
-函数功能描述:设置关节摩擦力补偿系数-正装
-float coeff1-coeff6 - 6个关节补偿系数,范围是0-1
+
+Function description:Set the joint friction compensation coefficient -formal suit
+
+float coeff1-coeff6 - Six joint compensation coefficients, ranging from 0-1
+
 */
+
 int SetFrictionValue_level(float coeff1,float coeff1,float coeff3,float coeff4,float coeff5,float coeff6);
-例子：SetFrictionValue_level(1,1,1,1,1,1)
 
+// Examples
+
+SetFrictionValue_level(1,1,1,1,1,1)
 
 
 /*
-函数功能描述:设置关节摩擦力补偿系数-侧装
-float coeff1-coeff6 - 6个关节补偿系数,范围是0-1
+
+Function description:Set the joint friction compensation coefficient -side loading
+
+float coeff1-coeff6 - Six joint compensation coefficients, ranging from 0-1
+
 */
+
 int SetFrictionValue_wall(float coeff1,float coeff1,float coeff3,float coeff4,float coeff5,float coeff6);
-例子：SetFrictionValue_wall(0.5,0.5,0.5,0.5,0.5,0.5)
 
+// Examples
+
+SetFrictionValue_wall(0.5,0.5,0.5,0.5,0.5,0.5)
 
 
 /*
-函数功能描述:设置关节摩擦力补偿系数-倒装
-float coeff1-coeff6 - 6个关节补偿系数,范围是0-1
+
+Function description:Set the joint friction compensation coefficient -flip
+
+float coeff1-coeff6 - Six joint compensation coefficients, ranging from 0-1
+
 */
+
 int SetFrictionValue_ceiling(float coeff1,float coeff1,float coeff3,float coeff4,float coeff5,float coeff6);
-例子：SetFrictionValue_ceiling(0.5,0.5,0.5,0.5,0.5,0.5)
+
+// Examples
+
+SetFrictionValue_ceiling(0.5,0.5,0.5,0.5,0.5,0.5)
 
 
 
-//外设控制
+//Peripheral device control
+
 /*
-函数功能描述:激活夹爪
-int index - 夹爪编号
-uint8_t act - 0-复位, 1-激活
+
+Function description:Activated gripper
+
+int index - Clamp claw number
+
+uint8_t act - 0- Reset, 1- Activate
+
 */
+
 int ActGripper(int index,uint8_t act);
-例子：ActGripper(1,1)
 
+// Examples
+
+ActGripper(1,1)
 
 
 /*
-函数功能描述:控制夹爪
-int index - 夹爪编号
-int pos - 位置百分比,范围0-100
+
+Function description:Control gripper
+
+int index - Clamp claw number
+
+int pos - Percentage of position, range 0-100
+
 */
+
 int MoveGripper(int index,int pos);
-例子：MoveGripper(1,10)
+
+// Examples
+
+MoveGripper(1,10)
 
 
 
 //IO控制
+
 /*
-函数功能描述:设置控制箱数字量输出
-int id - io编号,范围0-15
-uint_t status - 0-关, 1-开
+
+Function description:Set the control box digital output
+
+int id - io number, range 0-15
+
+uint_t status - 0- off, 1- on
+
 */
+
 int SetDO(int id,uint8_t status);
-例子：SetDO(1,1)
 
+// Examples
+
+SetDO(1,1)
 
 
 /*
-函数功能描述:设置工具数字量输出
-int id - io编号,范围0-1
-uint_t status - 0-关, 1-开
+
+Function description:Set tool number output
+
+int id - io number, range 0-1
+
+uint_t status - 0- off, 1- on
+
 */
+
 int SetToolDO(int id,uint8_t status);
-例子：SetToolDO(0,1)
 
+// Examples
+
+SetToolDO(0,1)
 
 
 /*
-函数功能描述:设置控制箱模拟量输出
-int id - io编号,范围0-1
-float vlaue - 电流或者电压值百分比,范围0-100
+
+Function description:Set the control box analog output
+
+int id - io number, range 0-1
+
+float vlaue - Percentage of current or voltage value, range 0-100
+
 */
+
 int SetAO(int id,float value);
-例子：SetAO(1,100)
 
+// Examples
+
+SetAO(1,100)
 
 
 /*
-函数功能描述:设置工具模拟量输出
-int id - io编号,范围0
-float vlaue - 电流或者电压值百分比,范围0-100
+
+Function description:Set tool analog output
+
+int id - io number, range 0
+
+float vlaue - Percentage of current or voltage value, range 0-100
+
 */
+
 int SetToolAO(int id,float value);
-例子：SetToolAO(0,100)
+
+// Examples
+
+SetToolAO(0,100)
 
 
 
-//运动指令
+//Motor command
+
 /*
-函数功能描述:机器人点动
-uint8_t ref - 0-关节点动, 2-基坐标系下点动, 4-工具坐标系下点动, 8-工件坐标系下点动
-uint8_t nb - 1-关节1(或x轴),2-关节2(或y轴),3-关节3(或z轴),4-关节4(或绕x轴旋转),5-关节5(或绕y轴旋转),6-关节6(或绕z轴旋转)
-uint8_t dir - 0-负方向, 1-正方向
-float vel - 速度百分比, 范围为0-100
+
+Function description:Robot JOG Start
+
+uint8_t ref - 0-joint JOG, 2-JOG in base coordinate system, 4-JOG in tool coordinate system, 8-JOG in workpiece  coordinate system
+
+uint8_t nb - 1 - Joint 1 (or X-axis), 2 - Joint 2 (or Y-axis), 3 - Joint 3 (or Z-axis), 4 - Joint 4 (or Rotation around X-axis), 5 - Joint 5 (or Rotation around Y-axis), 6 - Joint 6 (or Rotation around Z-axis)
+
+uint8_t dir - 0- negative direction, 1- positive direction
+
+float vel - Percentage of speed, ranging from 0-100
+
 */
+
 int StartJOG(uint8_t ref, uin8_t nb, uint8_t dir, float vel);
-例子：StartJOG(1,1,1,10)
+
+// Examples
+
+StartJOG(1,1,1,10)
 
 
 /*
-函数功能描述:机器人点动停止
-uint8_t ref - 0-关节点动停止, 2-基坐标系下点动停止, 4-工具坐标系下点动停止, 8-工件坐标系下点动停止
+
+Function description:Robot JOG Stop
+
+uint8_t ref - 0 - Joint Jog Stop, 2 - Jog Stop in Base Coordinate System, 4 - Jog Stop in Tool Coordinate System, 8 - Jog Stop in Workpiece Coordinate System
+
 */
+
 int StopJOG(uint8_t ref);
-例子：StopJOG(1)
+
+// Examples
+
+StopJOG(1)
 
 
 /*
-函数功能描述:机器人点动立即停止
+
+Function description:Robot JOG Immediate Stop
+
 */
+
 int ImmStopJOG();
 
 
+/*
+
+Function description:Joint space motion
+
+string point_name - For example, JNT1 is the point with the sequence number 1 of the node information,CART1 is the point with the sequence number 1 of the Cartesian point information,MoveJ instruction supports the input of the node or Cartesian point. It should be noted that because the default parameters of the MoveJ instruction specify the tool coordinate system and the workpiece coordinate system, when the serial number of the two coordinate systems is inconsistent with the current load, the instruction will cause an error. It is necessary to modify the coordinate system parameters and LOAD parameters in the default parameters before running the movement instruction.
+
+float vel - Command speed percentage, range 0-100
+
+int tool - tool coordinate index
+
+int user - reference coordinate index
+
+*/
+
+int MoveJ(string point_name, float vel,int tool, int user);//point_name indicates the input prestored point information,
+
+// Examples
+
+MoveJ(JNT1,10,1,1)
+
 
 /*
-函数功能描述:关节空间运动
-string point_name - 预存点位名称,比如JNT1就是关节点位信息序号为1的点位,CART1就是笛卡尔点位信息序号为1的点位,MoveJ指令支持输入关节点位或者笛卡尔点位。需要注意的,MoveJ指令由于默认参数中有指定工具坐标系和工件坐标系,当这两个坐标系序号与当前加载的不一致时,该指令会导致报错,需要在默认参数中修改坐标系参数并load参数后再运行该运动指令。
-string point_name - 预存点位名称,比如JNT1就是关节点位信息序号为1的点位,CART1就是笛卡尔点位信息序号为1的点位,MoveJ指令支持输入关节点位或者笛卡尔点位。
-float vel - 指令速度百分比,范围0-100
-int tool_num - 工具坐标系号
-int user_num - 工件坐标系号
-*/
-int MoveJ(string point_name, float vel,int tool_num,int user_num);//point_name是输入预存点位信息,
-例子：MoveJ(JNT1,10,0,1)
 
-/*
-函数功能描述:笛卡尔空间直线运动
-string point_name - 预存点位名称,比如JNT1就是关节点位信息序号为1的点位,CART1就是笛卡尔点位信息序号为1的点位,MoveL指令支持输入关节点位或者笛卡尔点位。需要注意的,MoveL指令由于默认参数中有指定工具坐标系和工件坐标系,当这两个坐标系序号与当前加载的不一致时,该指令会导致报错,需要在默认参数中修改坐标系参数并load参数后再运行该运动指令。
-float vel - 指令速度百分比,范围0-100
+Function description:Rectilinear motion in Cartesian space
+
+string point_name - For example, JNT1 is the point whose sequence number is 1,CART1 is the point whose sequence number is 1, and the MoveL instruction supports the input of the point or Cartesian point. It should be noted that since the default parameters of the MoveL instruction specify the tool coordinate system and the workpiece coordinate system, when the serial number of the two coordinate systems is inconsistent with the current load, the instruction will cause an error. The coordinate system parameters and load parameters need to be modified in the default parameters before running the motion instruction.
+
+float vel - Command speed percentage, range 0-100
+
 */
+
 int MoveL(string point_name,float vel);
-例子：MoveL(CART1,10)
 
+// Examples
+
+MoveL(CART1,10)
 
 
 /*
-函数功能描述:笛卡尔空间圆弧运动
-string point1_name point2_name - 预存点位名称,比如JNT1就是关节点位信息序号为1的点位,CART1就是笛卡尔点位信息序号为1的点位,MoveC指令支持输入关节点位或者笛卡尔点位,但是两个点位必须同类型的,即不支持第一个点位输入关节空间点位,第二个点位输入笛卡尔点位。需要注意的,MoveC指令由于默认参数中有指定工具坐标系和工件坐标系,当这两个坐标系序号与当前加载的不一致时,该指令会导致报错,需要在默认参数中修改坐标系参数并load参数后再运行该运动指令。
-float vel - 指令速度百分比,范围0-100
+
+Function description:Circular motion in Cartesian space
+
+string point1_name point2_name - For example, JNT1 is the point whose sequence number is 1,CART1 is the point whose sequence number is 1. MoveC command supports the input of the point or Cartesian point, but the two points must be of the same type, that is, the first point does not support the input of the joint space point and the second point input of the Cartesian point. It should be noted that because the default parameters of the MoveC instruction specify the tool coordinate system and the workpiece coordinate system, when the serial number of the two coordinate systems is inconsistent with the current load, the instruction will cause an error. It is necessary to modify the coordinate system parameters and LOAD parameters in the default parameters before running the movement instruction.
+
+float vel - Command speed percentage, range 0-100
+
 */
+
 int MoveC(string point1_name,string point2_name, float vel);
-例子：MoveC(JNT1,JNT2,10)
 
+// Examples
+
+MoveC(JNT1,JNT2,10)
 
 
 /*
-函数功能描述:样条运动开始
+
+Function description:The spline movement begins
+
 */
+
 int SplineStart();
 
 
-
 /*
-函数功能描述:关节空间样条运动,该指令只支持输入JNT1这样的关节数据,输入笛卡尔点位会报错
-string point_name - 预存点位名称,比如JNT1就是关节点位信息序号为1的点位。
-float vel - 速度百分比,范围0-100
+
+Function description:Joint space spline movement, this command only supports the input of joint data such as JNT1, the input of Cartesian point will report an error
+
+string point_name - The prestored point name, such as JNT1, is the point whose sequence number is 1.
+
+float vel - Percentage of speed, range 0-100
+
 */
+
 int SplinePTP(string point_name, float vel);
-例子：SplinePTP(JNT2,10)
 
+// Examples
+
+SplinePTP(JNT2,10)
 
 
 /*
-函数功能描述:样条运动结束
+
+Function description:The spline movement is over
+
 */
+
 int SplineEnd();
 
 
-
 /*
-函数功能描述:笛卡尔空间样条运动开始
-uint8_t ctlpoint - 0-轨迹经过路径点, 1-轨迹不经过控制点,至少4个点
+
+Function description:The Cartesian space spline motion begins
+
+uint8_t ctlpoint - 0- trajectory passes through the path point, 1- trajectory does not pass through the control point, at least 4 points
+
 */
+
 int NewSplineStart(uint8_t ctlpoint);
-例子：NewSplineStrart(1)
 
+// Examples
+
+NewSplineStrart(1)
 
 
 /*
-函数功能描述:笛卡尔空间样条运动,只能输入CART1这样的笛卡尔空间点位,输入关节空间点位会报错
-string point_name - 预存点位名称,比如CART1就是笛卡尔空间点位信息序号为1的点位。
-float vel - 速度百分比,范围0-100
-int lastflag - 0-不是最后一个点, 1-是最后一个点
+
+Function description:For Cartesian space spline movement, only Cartesian space points such as CART1 can be entered, and an error will be reported when entering joint space points
+
+string point_name - Prestored point names, such as CART1, are points in Cartesian space with sequence number 1.
+
+float vel - Percentage of speed, range 0-100
+
+int lastflag - 0- not the last point, 1- the last point
+
 */
+
 int NewSplinePoint(string point_name, float vel, int lastflag);
-例子：NewSplinePoint(JNT2,20,0)
 
+// Examples
+
+NewSplinePoint(JNT2,20,0)
 
 
 /*
-函数功能描述:笛卡尔空间样条运动结束
+
+Function description:The Cartesian space spline motion ends
+
 */
+
 int NewSplineEnd();
 
 
-
 /*
-函数功能描述:停止运动
+
+Function description:Stop motion
+
 */
+
 int StopMotion();
 
 
-
 /*
-函数功能描述:点位整体偏移开始
-int flag - 0-基坐标系下/工件坐标系下偏移, 2-工具坐标系下偏移
-double x,y,z,rx,ry,rz - 偏移位姿量
+
+Function description:Global shift of point position begins
+
+int flag - 0- Offset in base coordinate/workpiece coordinate, 2- offset in tool coordinate
+
+double x,y,z,rx,ry,rz - Offset pose amount
+
 */
+
 int PointsOffsetEnable(int flag,double x,double y,double z,double rx,double ry,double rz);
-例子：PointsOffsetEnable(1,10,10,10,0,0,0)
 
+// Examples
+
+PointsOffsetEnable(1,10,10,10,0,0,0)
 
 
 /*
-函数功能描述:点位整体偏移结束
+
+Function description:The point offset is complete
+
 */
+
 int PointsOffsetDisable();

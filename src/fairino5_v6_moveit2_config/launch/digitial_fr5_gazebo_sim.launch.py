@@ -87,6 +87,7 @@ def generate_launch_description():
 
     controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
 
+    # FOUND 
     # controller_manager = Node(
     #         package='controller_manager',
     #         executable='ros2_control_node',
@@ -116,7 +117,6 @@ def generate_launch_description():
         gazebo,
         spawn_robot,
         rsp,
-        # controller_manager,
         joint_state_broadcaster,
         fairino5_controller
     ])
