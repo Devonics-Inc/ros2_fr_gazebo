@@ -2215,17 +2215,17 @@ std::string robot_command_thread::WeldingAbortWeldAfterBreakOff(std::string para
 robot_recv_thread::robot_recv_thread(const std::string node_name):rclcpp::Node(node_name){
     using namespace std::chrono_literals;
     _controller_ip = CONTROLLER_IP;//控制器默认ip地址
-    RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME),"开始创建状态反馈TCP socket");
+    RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME),"Start creating status feedback TCP socket");
 
     //只保留8081端口的连接，8083连接传输的数据已经不用
     // _socketfd1 = socket(AF_INET,SOCK_STREAM,0);//状态获取端口只有TCP
     _socketfd1 = socket(AF_INET,SOCK_STREAM,0);//状态获取端口只有TCP
 
     if(_socketfd1 == -1){
-        RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME),"错误: 创建socket失败!");
+        RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME),"Error: Failed to create socket");
         exit(0);//创建套字失败,丢出错误
     }else{
-        RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME),"创建状态反馈socket成功,开始连接控制器...");
+        RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME),"The status feedback socket was created successfully and the connection to the controller began....");
         struct sockaddr_in tcp_client1;
         tcp_client1.sin_family = AF_INET;
         tcp_client1.sin_port = htons(port1);//8081端口
