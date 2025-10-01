@@ -4,12 +4,24 @@ import rclpy
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 import time
-
+import re
 
 class SimTrajectoryPublisher(Node):
     def __init__(self):
         super().__init__('sim_trajectory_pub')
-        self.publisher = self.create_publisher(JointTrajectory, '/fairino30_controller/joint_trajectory', 10)
+        # Find correct fairino controller topic
+        joint_traj_topic = None
+        topic_list = self.get_topic_names_and_types()
+        # Loop over all topics and find active fairino controller
+        for info in topic_list:
+            # self.get_logger().info(info[0])
+            if re.search('fairino[0-50]_controller/joint_trajectory', info[0]) != None:
+                joint_traj_topic = info[0]
+                break
+        if(joint_traj_topic == None):
+            self.get_logger("Failed to find /fairino_controller")
+            return
+        self.publisher = self.create_publisher(JointTrajectory, joint_traj_topic, 10)
         timer_period = 2.0  # Delay to ensure controller is active
         self.timer = self.create_timer(timer_period, self.send_trajectory)
         self.sent = False
