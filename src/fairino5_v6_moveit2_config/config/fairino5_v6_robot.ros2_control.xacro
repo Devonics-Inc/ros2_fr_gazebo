@@ -6,7 +6,7 @@
         <!-- Xacro arg for control system (Defualted to Rviz/Moveit-->
         <xacro:arg name="control_system" default="moveit"/>
 
-        <xacro:if value="${'$(arg control_system)' == 'moveit'}">
+        <xacro:if value="${'$(arg control_system)' != 'gazebo'}">
 
             <ros2_control name="${name}" type="system">
                 <hardware>

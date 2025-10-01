@@ -116,7 +116,7 @@ def generate_launch_description():
         gazebo,
         spawn_robot,
         rsp,
-        controller_manager,
+        # controller_manager,
         joint_state_broadcaster,
         fairino30_controller
     ])

@@ -85,17 +85,17 @@ def generate_launch_description():
         output='screen'
     )
 
-    controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
+    # controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
 
-    controller_manager = Node(
-            package='controller_manager',
-            executable='ros2_control_node',
-            parameters=[
-                {'robot_description': robot_description_raw},
-                controllers_yaml
-            ],
-            output='screen'
-        )
+    # controller_manager = Node(
+    #         package='controller_manager',
+    #         executable='ros2_control_node',
+    #         parameters=[
+    #             {'robot_description': robot_description_raw},
+    #             controllers_yaml
+    #         ],
+    #         output='screen'
+    #     )
 
     # Spawn the fairino3_controller for the gazebo robot
     fairino3_controller = Node(
@@ -116,7 +116,7 @@ def generate_launch_description():
         gazebo,
         spawn_robot,
         rsp,
-        controller_manager,
+        # controller_manager,
         joint_state_broadcaster,
         fairino3_controller
     ])
