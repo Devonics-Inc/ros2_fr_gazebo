@@ -1,49 +1,48 @@
 /FR_ROS_API_node:
-  ros__parameters:
-    AO_block: 1 #模拟输出是否阻塞, 0-阻塞，1-非阻塞
-    DO_block: 1 #数字输出是否阻塞，0-阻塞，1-非阻塞
-    DO_smooth: 0 #数字输出平滑，0-不平滑，1-平滑
-    JOG_acc: 40 #JOG指令加速度百分比
-    JOG_maxdis: 5 #JOG指令单次点动最大角度或者距离，单位是度或者mm
-    MoveC_blendR: 500.0 #MOVEC指令的平滑半径  [-1.0]-运动到位(阻塞)，[0~1000.0]-平滑半径(非阻塞)，单位mm
-    MoveJLC_acc: 0.0 #MOVEJ MOVEL MOVEC指令 加速度百分比参数，暂不开放
-    MoveJLC_eaxis1: 0.0 #MOVEJ MOVEL MOVEC指令  扩展轴1位置参数
-    MoveJLC_eaxis2: 0.0 #MOVEJ MOVEL MOVEC指令 扩展轴2位置参数
-    MoveJLC_eaxis3: 0.0 #MOVEJ MOVEL MOVEC指令 扩展轴3位置参数
-    MoveJLC_eaxis4: 0.0 #MOVEJ MOVEL MOVEC指令 扩展轴4位置参数
-    MoveJLC_offset_flag: 0 # MOVEJ MOVEL MOVEC指令 轨迹偏移参数 0-不偏移，1-基坐标系/工件坐标系下偏移，2-工具坐标系下偏移
-    MoveJLC_offset_pos_rx: 0.0 #MOVEJ MOVEL MOVEC指令 轨迹偏移参数 rx角度偏移值
-    MoveJLC_offset_pos_ry: 0.0 #MOVEJ MOVEL MOVEC指令 轨迹偏移参数 ry角度偏移值
-    MoveJLC_offset_pos_rz: 0.0 #MOVEJ MOVEL MOVEC指令 轨迹偏移参数 rz角度偏移值
-    MoveJLC_offset_pos_x: 0.0 #MOVEJ MOVEL MOVEC指令 轨迹偏移参数 x偏移值
-    MoveJLC_offset_pos_y: 0.0 #MOVEJ MOVEL MOVEC指令 轨迹偏移参数 y偏移值
-    MoveJLC_offset_pos_z: 0.0 #MOVEJ MOVEL MOVEC指令 轨迹偏移参数 z偏移值
-    MoveJLC_ovl: 100.0 #MOVEJ MOVEL MOVEC指令 速度缩放因子参数 范围0-100
-    MoveJLC_tool: 0 #MOVEJ MOVEL MOVEC指令 工具坐标系标号
-    MoveJLC_user: 0 #MOVEJ MOVEL MOVEC指令 工件坐标系标号
-    MoveJ_blendT: 500.0 #MOVEJ指令 平滑时间参数  [-1.0]-运动到位(阻塞)，[0~500.0]-平滑时间(非阻塞)，单位ms
-    MoveL_blendR: 500.0 #MOVEL指令 平滑时间参数  [-1.0]-运动到位(阻塞)，[0~1000.0]-平滑半径(非阻塞)，单位mm
-    MoveL_search: 0.0 #MOVEL指令 焊丝寻位参数  0-不焊丝寻位，1-焊丝寻位
-    NewSpline_blendR: 10.0 #笛卡尔样条指令 平滑半径参数 单位mm
-    Spline_acc: 0.0 #关节空间样条指令 加速度百分比
-    Spline_ovl: 100.0 #关节空间样条指令 速度缩放因子 范围0-100
-    Spline_tool: 1 #关节空间样条指令 工具坐标标号
-    Spline_user: 0 #关节空间样条指令 工件坐标标号
-    collision_config: 1 #碰撞配置文件设置, 0-更新配置文件 1-不更新配置文件
-    collision_mode: 0 #碰撞等级模式,0-等级， 1-百分比 范围0-1
-    gripper_block: 1 #movegripper指令中阻塞配置参数 0-阻塞，1-非阻塞
-    gripper_force: 50 #movegripper指令中力矩百分比配置参数 范围0-100
-    gripper_vel: 50 #movegripper指令中速度百分比配置参数  范围0-100
-    gripper_maxtime: 30000 #movegripper指令中最大等待时间配置参数 范围0-30000 单位ms 
-    qos_overrides:
-      /parameter_events:
-        publisher:
-          depth: 1000
-          durability: volatile
-          history: keep_last
-          reliability: reliable
-    toolcoord_install: 0 #SetToolCoord SetToolList指令中 工具安装位置参数 0-机器人末端，1-机器人外部
-    toolcoord_type: 0 #SetToolCoord SetToolList指令中 坐标系类型参数 0-工具坐标系，1-传感器坐标系
-    ServoJT_timeinterval: 0.008 #ServoJT指令 指令周期参数 默认8ms
-    use_sim_time: false
-
+	ros__parameters:
+	AO_block: 1 # Whether analog output is blocked (0 - blocked, 1 - non-blocked)
+	DO_block: 1 # Whether digital output is blocked (0 - blocked, 1 - non-blocked)
+	DO_smooth: 0 # Digital output smoothing (0 - non-smooth, 1 - smooth)
+	JOG_acc: 40 # JOG command acceleration percentage
+	JOG_maxdis: 5 # Maximum angle or distance for a single JOG command, in degrees or mm
+	MoveC_blendR: 500.0 # Smoothing radius for MOVEC commands. [-1.0] - Move to position (blocked), [0-1000.0] - Smoothing radius (non-blocked), in mm
+	MoveJLC_acc: 0.0 # Acceleration percentage parameter for MOVEC commands (not available yet)
+	MoveJLC_eaxis1: 0.0 # MOVEC commands (not available yet) Extended axis 1 position parameters
+	MoveJLC_eaxis2: 0.0 #MOVEJ MOVEL MOVEC command Extended axis 2 position parameters
+	MoveJLC_eaxis3: 0.0 #MOVEJ MOVEL MOVEC command Extended axis 3 position parameters
+	MoveJLC_eaxis4: 0.0 #MOVEJ MOVEL MOVEC command Extended axis 4 position parameters
+	MoveJLC_offset_flag: 0 #MOVEJ MOVEL MOVEC command Path offset parameter. 0 - No offset, 1 - Offset in the base coordinate system/workpiece coordinate system, 2 - Offset in the tool coordinate system
+	MoveJLC_offset_pos_rx: 0.0 #MOVEJ MOVEL MOVEC command Path offset parameter - rx angle offset value
+	MoveJLC_offset_pos_ry: 0.0 #MOVEJ MOVEL MOVEC command Path offset parameter - ry angle offset value
+	MoveJLC_offset_pos_rz: 0.0 #MOVEJ MOVEL MOVEC command trajectory offset parameter: rz angle offset value
+	MoveJLC_offset_pos_x: 0.0 #MOVEJ MOVEL MOVEC command trajectory offset parameter: x offset value
+	MoveJLC_offset_pos_y: 0.0 #MOVEJ MOVEL MOVEC command trajectory offset parameter: y offset value
+	MoveJLC_offset_pos_z: 0.0 #MOVEJ MOVEL MOVEC command trajectory offset parameter: z offset value
+	MoveJLC_ovl: 100.0 #MOVEJ MOVEL MOVEC command velocity scaling factor parameter, range 0-100
+	MoveJLC_tool: 0 #MOVEJ MOVEL MOVEC command: tool coordinate system label
+	MoveJLC_user: 0 #MOVEJ MOVEL MOVEC command: workpiece coordinate system label
+	MoveJ_blendT: 500.0 #MOVEJ command: smoothing time parameter [-1.0] - Move to position (blocked), [0-500.0] - Smoothing time (non-blocked), unit: ms
+	MoveL_blendR: 500.0 #MOVEL command, smoothing time parameter [-1.0] - Move to position (blocked), [0-1000.0] - Smoothing radius (non-blocked), unit: mm
+	MoveL_search: 0.0 #MOVEL command, wire search parameter: 0 - no wire search, 1 - wire search
+	NewSpline_blendR: 10.0 #Cartesian spline command, smoothing radius parameter, unit: mm
+	Spline_acc: 0.0 #Joint space spline command, acceleration percentage
+	Spline_ovl: 100.0 #Joint space spline command, velocity scaling factor, range: 0-100
+	Spline_tool: 1 #Joint space spline command, tool coordinate number
+	Spline_user: 0 #Joint space spline command, workpiece coordinate number
+	collision_config: 1 #Collision profile settings, 0 - Update profile, 1 - Do not update profile
+	collision_mode: 0 #Collision level mode, 0 - level, 1 - percentage, range 0-1
+	gripper_block: 1 #Blocking configuration parameter in the movegripper command, 0 - blocking, 1 - non-blocking
+	gripper_force: 50 #Torque percentage configuration parameter in the movegripper command, range 0-100
+	gripper_vel: 50 #Velocity percentage configuration parameter in the movegripper command, range 0-100
+	gripper_maxtime: 30000 #Maximum wait time configuration parameter in the movegripper command, range 0-30000, unit ms
+	qos_overrides:
+		/parameter_events:
+			publisher:
+				depth: 1000
+				durability: volatile
+				history: keep_last
+				reliability: reliable
+	toolcoord_install: 0 #Tool installation location parameter in the SetToolCoord SetToolList command, 0 - end of robot, 1 - outside of robot
+	toolcoord_type: 0 #SetToolCoord SetToolList command coordinate system type parameter. 0 - tool coordinate system, 1 - sensor coordinate system.
+	ServoJT_timeinterval: 0.008 #ServoJT command cycle parameter. Default: 8ms.
+	use_sim_time: false
