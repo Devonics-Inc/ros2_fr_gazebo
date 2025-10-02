@@ -37,7 +37,16 @@ target_include_directories(fairino_hardware PUBLIC
 $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 $<INSTALL_INTERFACE:include/fairino_hardware>
 )
+
+# x86_64 architecture
 target_link_libraries(fairino_hardware ${CMAKE_CURRENT_SOURCE_DIR}/include/xmlrpc/libXmlRpc.a)
+
+# Arm64 architecture
+# find_library(XMLRPC_LIBRARY NAMES xmlrpc_client xmlrpc_server HINTS /usr/local/lib)
+# if(NOT XMLRPC_LIBRARY)
+#   message(FATAL_ERROR "LibXmlRpc not found; install using "sudo apt install libxmlrpc-c++8-dev")
+# endif()
+# target_link_libraries(fairino_hardware ${XMLRPC_LIBRARY})
 
 #add dependencies
 ament_target_dependencies(ros2_cmd_server rclcpp fairino_msgs)
