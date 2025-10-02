@@ -38,15 +38,25 @@ $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 $<INSTALL_INTERFACE:include/fairino_hardware>
 )
 
-# x86_64 architecture
-target_link_libraries(fairino_hardware ${CMAKE_CURRENT_SOURCE_DIR}/include/xmlrpc/libXmlRpc.a)
+# ARCHITECTURE CHECK
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+	### x86_64 architecture ###
+	target_link_libraries(fairino_hardware ${CMAKE_CURRENT_SOURCE_DIR}/include/xmlrpc/libXmlRpc.a)
+	message(STATUS "Detected x86_64 architecture.")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+	message(STATUS "Detected ARM64 architecture.")
+	### Arm64 architecture ###
+	find_library(XMLRPC_LIBRARY NAMES xmlrpc_client xmlrpc_server HINTS /usr/local/lib)
+	if(NOT XMLRPC_LIBRARY)
+		message(FATAL_ERROR "LibXmlRpc not found; install using sudo apt install libxmlrpc-c++8-dev")
+	endif()
+	target_link_libraries(fairino_hardware ${XMLRPC_LIBRARY})
+else()
+    message(STATUS "Detected unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+endif()
 
-# Arm64 architecture
-# find_library(XMLRPC_LIBRARY NAMES xmlrpc_client xmlrpc_server HINTS /usr/local/lib)
-# if(NOT XMLRPC_LIBRARY)
-#   message(FATAL_ERROR "LibXmlRpc not found; install using "sudo apt install libxmlrpc-c++8-dev")
-# endif()
-# target_link_libraries(fairino_hardware ${XMLRPC_LIBRARY})
+
+
 
 #add dependencies
 ament_target_dependencies(ros2_cmd_server rclcpp fairino_msgs)

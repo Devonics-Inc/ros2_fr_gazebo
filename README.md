@@ -2,7 +2,7 @@
 
 ## Environment
 <p> This repo is built using ROS2 Humble on Ubuntu 22.04 (Jammy Jellyfish) and Gazebo Fortress 6.17.0 (aka Gazebo Ignition) with the x86_64 architecture.</p>
-<p> If you are using the aarch64 architecture, follow the steps on this repo: https://github.com/Devonics-Inc/Fr-Ros2-NVIDIA-Orin-Setup/ </p> 
+<p> If you are using the aarch64 architecture, follow the steps in the Arm64_Setup.md </p> 
 
 ## Introduction
 <p>Hello devs and devinas, in this README I will cover the steps needed to configure your gazebo environment to mirror your Fairino or use the included MoveIt2 module to control your robot. This will also go over the contents of this repository and how they interact as well as how to manipulate them to your specific needs.</p>
