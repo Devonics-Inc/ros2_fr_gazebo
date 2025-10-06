@@ -87,15 +87,6 @@ def generate_launch_description():
 
     # controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
 
-    # controller_manager = Node(
-    #         package='controller_manager',
-    #         executable='ros2_control_node',
-    #         parameters=[
-    #             {'robot_description': robot_description_raw},
-    #             controllers_yaml
-    #         ],
-    #         output='screen'
-    #     )
 
     # Spawn the fairino10_controller for the gazebo robot
     fairino10_controller = Node(
@@ -107,12 +98,10 @@ def generate_launch_description():
 
 
 
-    
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
         world_arg,
         robot_model_arg,
-        # joint_state_pub,
         gazebo,
         spawn_robot,
         rsp,

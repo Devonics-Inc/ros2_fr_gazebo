@@ -11,6 +11,7 @@ from builtin_interfaces.msg import Duration # For ROS2
 import socket
 import struct
 
+### EDIT THIS TO ADD STATE_DATA PUBLISHING ###
 
 ROBOT_IP = "192.168.55.2" # Find another way to grab IP from fairino_hardware
 ROBOT_PORT = 8083	# DO NOT CHANGE!

@@ -69,14 +69,6 @@ def generate_launch_description():
         parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
     )
 
-    # RSP v1 (using moveit2 config)
-    # Spawn the robot state publisher
-    # rsp = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('fairino3_v6_moveit2_config'),
-    #                         'launch', 'rsp.launch.py')),
-    # )
-
 
     # RSP v2
     file_subpath = 'config/fairino3_v6_robot.urdf.xacro'

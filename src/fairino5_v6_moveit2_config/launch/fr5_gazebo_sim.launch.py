@@ -69,14 +69,6 @@ def generate_launch_description():
         executable="ros2_cmd_server",
     )
     
-    # Translate the /nonnrt_state_data for the /joint_states topic
-    """     USING /non_rt_state_data (DEPRECIATED)   """
-    # joint_state_pub = Node(
-    #     package="fairino_gazebo_config",
-    #     executable="SimJointPublisher.py",
-    #     parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
-    # )
-
     """     USING ROBOT_STATE_PKG SOCKET    """
     joint_state_pub = Node(
         package="fairino_gazebo_config",

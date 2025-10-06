@@ -1,17 +1,59 @@
 # Porting your Fairino Robot Into Gazebo
 
+
 ## Environment
-<p> This repo is built using ROS2 Humble on Ubuntu 22.04 (Jammy Jellyfish) and Gazebo Fortress 6.17.0 (aka Gazebo Ignition) with the x86_64 architecture.</p>
-<p> If you are using the aarch64 architecture, follow the steps in the Arm64_Setup.md </p> 
+This repo is built using ROS2 Humble on Ubuntu 22.04 (Jammy Jellyfish) and Gazebo Fortress 6.17.0 (aka Gazebo Ignition) with the x86_64 architecture.
+
+<u>NOTE:</u> If you are using the aarch64 architecture, you will need to use `sudo apt install libxmlrpc-c++8-dev` to install the appropriate XMLRPC library
 
 ## Introduction
-<p>Hello devs and devinas, in this README I will cover the steps needed to configure your gazebo environment to mirror your Fairino or use the included MoveIt2 module to control your robot. This will also go over the contents of this repository and how they interact as well as how to manipulate them to your specific needs.</p>
+In this README I will cover the steps needed to configure your ROS2 environment for your Fairino. This will include:
+
+- [Instalation of your ROS2 Environment](#step-0-building-and-installing-ros2)
+
+- [Instalation of Gazebo Ignition](#gazebo-install-heading)
+
+- [Configutation of your robot](#step-1-building-your-fairino-workspace)
+
+- [Porting your robot into Gazebo](#step-2-commands-to-run-your-gazebo-simulator)
+
+- [MoveIt2 configuration/Demo]
 
 ## Step 0) Building and installing ROS2
-- To install ROS2 Humble, you can follow the instructions on either the ROS2 Humble documentation page (https://docs.ros.org/en/humble/Installation.html) or the Fairino ROS2 manual (https://fairino-doc-en.readthedocs.io/latest/ROSGuide/ros2guide.html)
-    - If you choose the latter, then follow instructions until section 2.2 "Compile and build fairino_hardware" since we are going to be using a modified version.
-- Install Gazebo Fortress 6.17
-- Note that if you are looking to use the ROS2 API commands, you will need to set up a SimMachine to interporate the XML packets sent by the fairino ros2_cmd_server. For SimMachine installation isntructions, follow the guide here (https://fairino-doc-en.readthedocs.io/latest/VMMachine/controller_docker_machine.html)
+- To install ROS2 Humble, you can follow the instructions on either the [ROS2 Humble documentation page](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html) or the [Fairino ROS2 manual](https://fairino-doc-en.readthedocs.io/latest/ROSGuide/ros2guide.html)
+    - If you choose the latter, then follow instructions <i><u><b>until</b></u></i> section 2.2 "Compile and build fairino_hardware" since we are going to be using a modified version.
+- To install Gazebo 6.17, follow the link [here](https://gazebosim.org/docs/fortress/install_ubuntu/) or follow the steps below: 
+
+<a id="gazebo-install-heading"></a>
+
+- ### Installing ROS2 control libraries:
+    - Run the following commands to install the ROS2 humble control packges:
+    >
+        sudo apt udpate
+        sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers
+
+- ### Install Gazebo Ignition 6.17
+
+    - First install some necessary tools:
+
+            sudo apt-get update
+            sudo apt-get install lsb-release gnupg
+
+    - Then install Gazebo Fortress:
+
+        >
+            sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+
+            sudo apt-get update
+
+            sudo apt-get install ignition-fortress
+
+
+- Note that if you are looking to use the ROS2 API commands, you will need to set up a SimMachine to interporate the XML packets sent by the fairino ros2_cmd_server. For SimMachine installation isntructions, follow the guide in the Fairino Documentation page [here](https://fairino-doc-en.readthedocs.io/latest/VMMachine/controller_docker_machine.html)
+
+
 
 ## Step 1) Building your Fairino workspace
 <p>If you build your workspace as is, you will get the following environment:
@@ -33,11 +75,6 @@
     
     Find the line that sets the Controller/Robot IP and change it to match the robot IP you'd like to target.
 
-    ### Step 1b) Choose your control method
-    If you prefer to use the Fairino ROS2 API instead of the /joint_trajectories, you'll need to change the IP address in your workspace to match your SimMachine (defaulted to 192.168.58.2) and use <b> ros2 run fairino_hardware ros2_cmd_server</b> which runs
-    <b> `src/fairino_hardware/include/src/command_server_node.cpp` </b> 
-
-    An example program of this is in <b>~/ros2_fr_gz/src/fairino_hardware/examples/src/test_msg.py </b>
 
 
 Now, you can build your workspace by running <b>`colcon build --symlink-install`</b>
@@ -54,8 +91,8 @@ To run the Gazebo Sim with a simulated Fairino ONLY, use the following command (
 
 Note: that this can be done with any of the fairino models
 
-Now, when you open a terminal and use 'rqt_graph' your setup should look like this:
-    <img src="src/README_rqt_graph.png" width="1080">
+<!-- Now, when you open a terminal and use 'rqt_graph' your setup should look like this:
+    <img src="src/README_rqt_graph.png" width="1080"> -->
 
 
 Now, you can set up a script using the SDK or ROS2 controllers to control your robot and watch it move in Gazebo!
@@ -72,7 +109,7 @@ If your terminal says it cannot find the SimJointPublisher.py:
 navigate to `/src/fairino{model_number}_moveit2_config/launch` and add an empty folder called "\_\_pycache\_\_"
 Now rebuild your workspace.
 
-## Option 2: Steps to run MoveIt2
+## Step3) Run the MoveIt2 demo
 <h4>To run the MoveIt2 demo system, use:</h4>
 
  `$ ros2 launch fairino{model_number}_v6_moveit2_config demo.launch.py`
@@ -82,4 +119,10 @@ Now rebuild your workspace.
     `$ ros2 launch fairino3_v6_moveit2_config demo.launch.py`
 
 
-## 
+
+
+    <!-- ### Step 1b) Choose your control method
+    If you prefer to use the Fairino ROS2 API instead of the /joint_trajectories, you'll need to change the IP address in your workspace to match your SimMachine (defaulted to 192.168.58.2) and use <b> ros2 run fairino_hardware ros2_cmd_server</b> which runs
+    <b> `src/fairino_hardware/include/src/command_server_node.cpp` </b> 
+
+    An example program of this is in <b>~/ros2_fr_gz/src/fairino_hardware/examples/src/test_msg.py </b> -->
