@@ -1,7 +1,12 @@
 import os
 from ament_index_python.packages import get_package_share_directory, get_package_prefix
 from launch import LaunchDescription, LaunchContext
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, ExecuteProcess
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    SetEnvironmentVariable,
+    ExecuteProcess
+)
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -36,6 +41,15 @@ def generate_launch_description():
         default_value="empty.sdf",
         description="Name of world file to spawn robot into"
     )
+
+    # world_bridge = Node(
+    #     package='ros_gz_bridge',
+    #     executable='parameter_bridge',
+    #     arguments=[
+    #         '/world/default/state@ignition.msgs.WorldStatistics@ros_gz_interfaces/msg/WorldStatistics',
+    #     ],
+    #     output='screen'
+    # )
 
     # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
@@ -110,6 +124,30 @@ def generate_launch_description():
         output="screen"
     )
 
+
+    # world_pose_bridge = Node(
+    #     package='ros_gz_bridge',
+    #     executable='parameter_bridge',
+    #     arguments=[
+    #         '/world/shapes/model/*/pose@ignition.msgs.Pose@geometry_msgs/msg/Pose'
+    #     ],
+    #     output='screen'
+    # )
+
+     # -------------------- MOVEIT 2 CONTROLLER --------------------
+    # MoveIt parameters
+    move_group = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('fairino5_v6_moveit2_config'),
+                'launch',
+                'move_group.launch.py'   # the target launch file
+            ])
+        ])
+    )
+
+
+
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
@@ -122,5 +160,7 @@ def generate_launch_description():
         joint_state_broadcaster,
         fairino3_controller,
         gazebo,
-        spawn_robot
+        spawn_robot,
+        move_group
+        # world_pose_bridge
     ])

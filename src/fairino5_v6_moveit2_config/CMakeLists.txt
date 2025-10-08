@@ -12,7 +12,7 @@ install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}
   PATTERN "setup_assistant.launch" EXCLUDE)
   
   
-add_executable(moveit_traj_test launch/moveit_traj_test.cpp)
+add_executable(moveit_traj_test src/moveit_traj_test.cpp)
 ament_target_dependencies(moveit_traj_test
   rclcpp
   moveit_ros_planning_interface
@@ -20,6 +20,8 @@ ament_target_dependencies(moveit_traj_test
 )
 
 install(TARGETS moveit_traj_test DESTINATION lib/${PROJECT_NAME})
+
+
 
 install(DIRECTORY config DESTINATION share/${PROJECT_NAME})
 install(FILES .setup_assistant DESTINATION share/${PROJECT_NAME})
