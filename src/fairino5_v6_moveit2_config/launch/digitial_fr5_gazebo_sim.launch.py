@@ -106,6 +106,15 @@ def generate_launch_description():
         output='screen'
     )
 
+    move_group = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('fairino5_v6_moveit2_config'),
+                'launch',
+                'move_group.launch.py'   # the target launch file
+            ])
+        ])
+    )
 
 
     
@@ -118,5 +127,6 @@ def generate_launch_description():
         spawn_robot,
         rsp,
         joint_state_broadcaster,
-        fairino5_controller
+        fairino5_controller,
+        move_group
     ])
