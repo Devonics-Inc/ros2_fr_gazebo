@@ -124,16 +124,6 @@ def generate_launch_description():
         output="screen"
     )
 
-
-    # world_pose_bridge = Node(
-    #     package='ros_gz_bridge',
-    #     executable='parameter_bridge',
-    #     arguments=[
-    #         '/world/shapes/model/*/pose@ignition.msgs.Pose@geometry_msgs/msg/Pose'
-    #     ],
-    #     output='screen'
-    # )
-
      # -------------------- MOVEIT 2 CONTROLLER --------------------
     # MoveIt parameters
     move_group = IncludeLaunchDescription(
@@ -145,8 +135,14 @@ def generate_launch_description():
             ])
         ])
     )
+    print(f'\n\n\n\n\n {world} : {world.type}\n\n\n\n')
 
-
+    moveit_obs_gen = Node(
+        package="fairino_gazebo_config",
+        executable="gazebo_world_to_moveit",
+        arguments=['world:=', world]
+    )
+        
 
     
     return LaunchDescription([
@@ -161,6 +157,7 @@ def generate_launch_description():
         fairino3_controller,
         gazebo,
         spawn_robot,
-        move_group
+        move_group,
+        moveit_obs_gen
         # world_pose_bridge
     ])

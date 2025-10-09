@@ -106,6 +106,8 @@ def generate_launch_description():
         output='screen'
     )
 
+     # -------------------- MOVEIT 2 CONTROLLER --------------------
+    # MoveIt parameters
     move_group = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
@@ -115,6 +117,13 @@ def generate_launch_description():
             ])
         ])
     )
+
+    moveit_obs_gen = Node(
+        package="fairino_gazebo_config",
+        executable="gazebo_world_to_moveit.py",
+        arguments=[world]
+    )
+        
 
 
     
@@ -128,5 +137,6 @@ def generate_launch_description():
         rsp,
         joint_state_broadcaster,
         fairino5_controller,
-        move_group
+        move_group,
+        moveit_obs_gen
     ])
