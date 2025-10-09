@@ -9,6 +9,7 @@ from launch.substitutions import (
     PathJoinSubstitution,
     TextSubstitution
 )
+from launch.conditions import IfCondition
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
@@ -28,7 +29,10 @@ def generate_launch_description():
     else:
         gazebo_resource_path = pkg_share
 
-   
+    ####################
+    # launch arguments #
+    ####################
+
     # Declare world file (default to empty)
     world = LaunchConfiguration('world')
     world_arg = DeclareLaunchArgument(
@@ -37,13 +41,23 @@ def generate_launch_description():
         description="Name of world file to spawn robot into"
     )
 
-    # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
+    # Declare robot model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
         default_value="fairino5",
         description="Name of robot model to spawn (ie. Fairino3)")
 
-    
+    moveit = LaunchConfiguration('moveit')
+    moveit_arg = DeclareLaunchArgument(
+        'moveit',
+        default_value="false",
+        description="Set to true to use moveit controller and obscicle porting from gazebo"
+    )
+
+    ################
+    # Add programs #
+    ################
+
     # RSP v2
     file_subpath = 'config/fairino5_v6_robot.urdf.xacro'
     # Use xacro to process the file
@@ -115,20 +129,22 @@ def generate_launch_description():
                 'launch',
                 'move_group.launch.py'   # the target launch file
             ])
-        ])
+        ]),
+        condition=IfCondition(LaunchConfiguration('moveit'))
     )
 
     moveit_obs_gen = Node(
         package="fairino_gazebo_config",
         executable="gazebo_world_to_moveit.py",
-        arguments=[world]
+        arguments=[world],
+        condition=IfCondition(LaunchConfiguration('moveit'))
     )
         
-
 
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
+        moveit_arg,
         world_arg,
         robot_model_arg,
         # joint_state_pub,
