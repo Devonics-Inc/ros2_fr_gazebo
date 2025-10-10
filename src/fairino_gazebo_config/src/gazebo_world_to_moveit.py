@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 
 import rclpy
 from rclpy.node import Node
-from moveit_msgs.msg import CollisionObject, PlanningScene
+from moveit_msgs.msg import CollisionObject, PlanningScene, AllowedCollisionEntry
 from moveit_msgs.srv import ApplyPlanningScene
 from shape_msgs.msg import SolidPrimitive, Mesh, MeshTriangle
 from geometry_msgs.msg import Pose, Point
@@ -43,9 +43,23 @@ class WorldToMoveIt(Node):
             co = self.create_collision_object(model)
             if co:
                 ps.world.collision_objects.append(co)
+        # make joint 1 ignore the ground
+        # Create allowed collision entry
+        link_name = "base_link"
+        entry = AllowedCollisionEntry()
+        for co in ps.world.collision_objects:
+            if("ground" in co.id.lower()):
+                ps.allowed_collision_matrix.entry_names.append(co.id)
+                entry = AllowedCollisionEntry(enabled=[True])
+                ps.allowed_collision_matrix.entry_values.append(entry)
+                self.get_logger().info(f'{co.id} is ignoring base_link')
+        ps.allowed_collision_matrix.entry_names.append(link_name)
+
 
         # Apply Planning Scene
         req = ApplyPlanningScene.Request(scene=ps)
+
+
         future = self.cli.call_async(req)
         rclpy.spin_until_future_complete(self, future)
         if future.result() is not None:
@@ -89,7 +103,6 @@ class WorldToMoveIt(Node):
             elif geom.find('ellipsoid') is not None:
                 shape = 'box'
                 size = list(map(float, geom.findtext('ellipsoid/radii', '0.1 0.1 0.1').split()))
-                print(size)
                 for i in range(len(size)):
                     size[i] = size[i] * 2
                 data['size'] = size
@@ -116,6 +129,8 @@ class WorldToMoveIt(Node):
                 shape = 'heightmap'
                 data['size'] = [5.0, 5.0, 0.1]
 
+
+
             else:
                 self.get_logger().warn(f"Unsupported geometry type in model '{name}'")
                 continue
@@ -126,6 +141,7 @@ class WorldToMoveIt(Node):
                 'data': data,
                 'pose': (px, py, pz, rr, pp, yy)
             })
+            
         return models
 
     def resolve_uri(self, uri):
@@ -213,6 +229,7 @@ class WorldToMoveIt(Node):
                     mesh = mesh.convex_hull
                     self.get_logger().info(f"Used convex hull instead for '{model['name']}'")
 
+                # THIS SIMPLIFIES THE
                 moveit_mesh = self.trimesh_to_shape_msgs(mesh)
                 co.meshes.append(moveit_mesh)
                 co.mesh_poses.append(pose)
