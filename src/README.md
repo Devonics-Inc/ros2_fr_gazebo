@@ -97,3 +97,8 @@ Follow these steps to set up your ROS2 environment and integrate the Fairino ROS
      ```
 
    The robot's actual position should now be reflected in RViz, enabling control via MoveIt2 and RViz.
+
+
+## DEPENDENCIES LIST:
+- sudo apt install ros-humble-moveit
+- sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers
