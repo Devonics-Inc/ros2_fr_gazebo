@@ -115,6 +115,8 @@ class WorldToMoveIt(Node):
                 data['length'] += data['radius'] * 2
 
             elif geom.find('plane') is not None:
+                if("ground" in name):
+                    pz -= 0.1
                 shape = 'plane'
                 data['size'] = [10.0, 10.0, 0.01]
 
