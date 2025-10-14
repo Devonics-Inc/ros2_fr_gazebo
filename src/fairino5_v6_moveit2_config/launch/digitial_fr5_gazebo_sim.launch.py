@@ -435,18 +435,14 @@ def generate_launch_description():
         world_arg,
         robot_model_arg,
         gazebo,
-        
-        
         static_virtual_joint_tfs,
         rsp,
         move_group,
-        
         controller_manager,
         # spawn_controllers,
-        #joint_state_broadcaster,
-        
+        joint_state_broadcaster,
         fairino5_controller,
-        
-        # moveit_obs_gen,
-        spawn_robot,
+        spawn_robot,      
+        moveit_obs_gen,
+
     ])
