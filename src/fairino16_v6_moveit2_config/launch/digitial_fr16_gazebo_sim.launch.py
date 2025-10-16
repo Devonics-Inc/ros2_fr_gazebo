@@ -1,7 +1,7 @@
 import os
 from ament_index_python.packages import get_package_share_directory, get_package_prefix
 from launch import LaunchDescription, LaunchContext
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, ExecuteProcess, TimerAction
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -9,6 +9,7 @@ from launch.substitutions import (
     PathJoinSubstitution,
     TextSubstitution
 )
+from launch.conditions import IfCondition
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
@@ -22,13 +23,16 @@ USE THE /joint_trajectory TO SEND GOAL STATES (use fairino_gazebo_config/launch/
 """
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('fairino_description')
+    pkg_share = get_package_share_directory('fairino16_v6_moveit2_config')
     if('IGN_GAZEBO_RESOURCE_PATH' in os.environ):
         gazebo_resource_path = os.environ['IGN_GAZEBO_RESOURCE_PATH'] + ':' + pkg_share
     else:
         gazebo_resource_path = pkg_share
 
-   
+    ####################
+    # launch arguments #
+    ####################
+
     # Declare world file (default to empty)
     world = LaunchConfiguration('world')
     world_arg = DeclareLaunchArgument(
@@ -37,14 +41,23 @@ def generate_launch_description():
         description="Name of world file to spawn robot into"
     )
 
-    # Declare root model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
+    # Declare robot model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
         default_value="fairino16",
-        description="Name of robot model to spawn (ie. fairino16)")
+        description="Name of robot model to spawn (ie. fairino16)"
+    )
 
-    
-    # RSP v2
+    moveit = LaunchConfiguration('moveit')
+    moveit_arg = DeclareLaunchArgument(
+        'moveit',
+        default_value="false",
+        description="Set to true to use moveit controller and obscicle porting from gazebo"
+    )
+
+    #######################################
+    # Add Nodes and external launch files #
+    #######################################
     file_subpath = 'config/fairino16_v6_robot.urdf.xacro'
     # Use xacro to process the file
     xacro_file = os.path.join(get_package_share_directory('fairino16_v6_moveit2_config'),file_subpath)
@@ -59,7 +72,6 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ]),
-        #launch_arguments={'gz_args': [ ' -r']}.items()
         launch_arguments={'gz_args': [world, ' -r']}.items()
     )
     
@@ -70,53 +82,122 @@ def generate_launch_description():
         arguments=['-topic', 'robot_description'],
     )
 
+    # Robot state publisher
     rsp = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
+        respawn=True,
         output="screen",
-        parameters=[{"robot_description": robot_description_raw}],
+        parameters=[
+            {"robot_description": robot_description_raw},
+            {"use_sim_time": True},
+            {"publish_frequency": 15.0}
+        ],
     )
 
     # Spawn the joint_state_broadcaster for the gazebo robot
-    joint_state_broadcaster = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
-        output='screen'
+    joint_state_broadcaster = TimerAction(
+        period=3.0,
+        actions=[
+            Node(
+                package='controller_manager',
+                executable='spawner',
+                arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
+                output='screen'
+            )
+        ]
     )
 
-    # controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
+    controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
 
-    # controller_manager = Node(
-    #         package='controller_manager',
-    #         executable='ros2_control_node',
-    #         parameters=[
-    #             {'robot_description': robot_description_raw},
-    #             controllers_yaml
-    #         ],
-    #         output='screen'
-    #     )
+    # FOUND 
+    controller_manager = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[
+            {'robot_description': robot_description_raw},
+            controllers_yaml
+        ],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description"),
+        ],
+        output='screen'
+    )
 
     # Spawn the fairino16_controller for the gazebo robot
-    fairino16_controller = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['fairino16_controller', '--controller-manager', '/controller_manager'],
-        output='screen'
+    fairino16_controller = TimerAction(
+        period=5.0,
+        actions=[
+            Node(
+                package='controller_manager',
+                executable='spawner',
+                arguments=['fairino16_controller', '--controller-manager', '/controller_manager'],
+                output='screen'
+            )
+        ]
     )
 
 
+    # -------------------- MOVEIT 2 CONTROLLER --------------------
+    # Kinematics solver
+    kinematics_yaml = os.path.join(
+        get_package_share_directory('fairino16_v6_moveit2_config'),
+        'config',
+        'kinematics.yaml'
+    )
+
+    # Created /tf translation for robot joints
+    static_virtual_joint_tfs = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('fairino16_v6_moveit2_config'),
+                'launch',
+                'static_virtual_joint_tfs.launch.py'
+            ])
+        ]),
+        condition=IfCondition(LaunchConfiguration('moveit'))
+    )
+
+
+
+    # Move Group parameters for moveit control - NOW WITH KINEMATICS CONFIG
+    move_group = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('fairino16_v6_moveit2_config'),
+                'launch',
+                'move_group.launch.py'
+            ])
+        ]),
+        launch_arguments={
+            'use_sim_time': 'true'
+        }.items(),
+        condition=IfCondition(LaunchConfiguration('moveit'))
+    )
+
+
+    # World file -> MoveIt collision parser
+    moveit_obs_gen = Node(
+        package="fairino_gazebo_config",
+        executable="gazebo_world_to_moveit.py",
+        arguments=[world],
+        condition=IfCondition(LaunchConfiguration('moveit')),
+        parameters=[{"use_sim_time": True}]
+    )
 
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
+        moveit_arg,
         world_arg,
         robot_model_arg,
-        # joint_state_pub,
         gazebo,
-        spawn_robot,
+        static_virtual_joint_tfs,
         rsp,
-        # controller_manager,
+        move_group,
+        controller_manager,
         joint_state_broadcaster,
-        fairino16_controller
+        fairino16_controller,
+        spawn_robot,      
+        moveit_obs_gen,
     ])
