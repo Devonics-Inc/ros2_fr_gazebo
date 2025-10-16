@@ -45,7 +45,8 @@ def generate_launch_description():
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
         default_value="fairino5",
-        description="Name of robot model to spawn (ie. Fairino3)")
+        description="Name of robot model to spawn (ie. Fairino3)"
+    )
 
     moveit = LaunchConfiguration('moveit')
     moveit_arg = DeclareLaunchArgument(
@@ -54,11 +55,9 @@ def generate_launch_description():
         description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
 
-    ################
-    # Add programs #
-    ################
-
-    # RSP v2
+    #######################################
+    # Add Nodes and external launch files #
+    #######################################
     file_subpath = 'config/fairino5_v6_robot.urdf.xacro'
     # Use xacro to process the file
     xacro_file = os.path.join(get_package_share_directory('fairino5_v6_moveit2_config'),file_subpath)
@@ -73,7 +72,6 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ]),
-        #launch_arguments={'gz_args': [ ' -r']}.items()
         launch_arguments={'gz_args': [world, ' -r']}.items()
     )
     
@@ -84,6 +82,7 @@ def generate_launch_description():
         arguments=['-topic', 'robot_description'],
     )
 
+    # Robot state publisher
     rsp = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -113,17 +112,17 @@ def generate_launch_description():
 
     # FOUND 
     controller_manager = Node(
-            package='controller_manager',
-            executable='ros2_control_node',
-            parameters=[
-                {'robot_description': robot_description_raw},
-                controllers_yaml
-            ],
-            remappings=[
-                ("/controller_manager/robot_description", "/robot_description"),
-            ],
-            output='screen'
-        )
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[
+            {'robot_description': robot_description_raw},
+            controllers_yaml
+        ],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description"),
+        ],
+        output='screen'
+    )
 
     # Spawn the fairino5_controller for the gazebo robot
     fairino5_controller = TimerAction(
@@ -139,13 +138,15 @@ def generate_launch_description():
     )
 
 
-     # -------------------- MOVEIT 2 CONTROLLER --------------------
+    # -------------------- MOVEIT 2 CONTROLLER --------------------
+    # Kinematics solver
     kinematics_yaml = os.path.join(
         get_package_share_directory('fairino5_v6_moveit2_config'),
         'config',
         'kinematics.yaml'
     )
 
+    # Created /tf translation for robot joints
     static_virtual_joint_tfs = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
@@ -159,7 +160,7 @@ def generate_launch_description():
 
 
 
-    # MoveIt parameters - NOW WITH KINEMATICS CONFIG
+    # Move Group parameters for moveit control - NOW WITH KINEMATICS CONFIG
     move_group = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
@@ -175,7 +176,7 @@ def generate_launch_description():
     )
 
 
-
+    # World file -> MoveIt collision parser
     moveit_obs_gen = Node(
         package="fairino_gazebo_config",
         executable="gazebo_world_to_moveit.py",
@@ -199,5 +200,4 @@ def generate_launch_description():
         fairino5_controller,
         spawn_robot,      
         moveit_obs_gen,
-
     ])

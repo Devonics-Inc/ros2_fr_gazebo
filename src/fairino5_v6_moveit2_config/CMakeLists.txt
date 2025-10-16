@@ -21,7 +21,5 @@ ament_target_dependencies(moveit_traj_test
 
 install(TARGETS moveit_traj_test DESTINATION lib/${PROJECT_NAME})
 
-
-
 install(DIRECTORY config DESTINATION share/${PROJECT_NAME})
 install(FILES .setup_assistant DESTINATION share/${PROJECT_NAME})
