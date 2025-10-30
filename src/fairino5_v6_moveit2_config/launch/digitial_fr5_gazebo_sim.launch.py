@@ -1,7 +1,13 @@
 import os
 from ament_index_python.packages import get_package_share_directory, get_package_prefix
 from launch import LaunchDescription, LaunchContext
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, ExecuteProcess, TimerAction
+from launch.actions import(
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    SetEnvironmentVariable,
+    ExecuteProcess,
+    TimerAction
+)
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -23,7 +29,7 @@ USE THE /joint_trajectory TO SEND GOAL STATES (use fairino_gazebo_config/launch/
 """
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('fairino5_v6_moveit2_config')
+    pkg_share = get_package_share_directory('fairino_description')
     if('IGN_GAZEBO_RESOURCE_PATH' in os.environ):
         gazebo_resource_path = os.environ['IGN_GAZEBO_RESOURCE_PATH'] + ':' + pkg_share
     else:

@@ -13,8 +13,8 @@ import struct
 
 ### EDIT THIS TO ADD STATE_DATA PUBLISHING ###
 
-ROBOT_IP = "192.168.55.2" # Find another way to grab IP from fairino_hardware
-ROBOT_PORT = 8083	# DO NOT CHANGE!
+ROBOT_IP = "192.168.56.2" # Find another way to grab IP from fairino_hardware
+ROBOT_PORT = 20004	# (Either 8083 (3 bytes offset), 20002 (???)), 20004 (11 bytes offset); different byte offsets for each)
 
 class rt_state_data(Node):
 	def __init__(self):
@@ -53,12 +53,13 @@ class rt_state_data(Node):
 			joint_state.header.stamp = self.get_clock().now().to_msg()
 			joint_state.name = self.joint_names
 			joint_state.position = joint_positions
-			#self.get_logger().info(f"Joint positions (rad): {joint_state.position}")
+			self.get_logger().info(f"Joint positions (deg): {joint_positions}")
 
 			self.publisher_.publish(joint_state) # Publish
 
 			# Create and populate joint_trajectory message
 			joint_positions = [math.radians(j) for j in joint_positions] # Convert to rads for joint_traj 
+			self.get_logger().info(f"joint positions (rads) {joint_positions}")
 			joint_trajectory = JointTrajectory()
 			joint_trajectory.joint_names = self.joint_names
 			point =JointTrajectoryPoint()
@@ -113,7 +114,7 @@ class rt_state_data(Node):
 	def extract_joint_positions(self, data):
 	    """Extract 6 joint positions (degrees) from the payload."""
 	    # From Table 2-2, jt_cur_pos[0..5] are the 4th–9th entries (after program_state, error_code, robot_mode).
-	    offset = 3  # 3 bytes before joint data: program_state, error_code, robot_mode
+	    offset = 11  # 3 bytes before joint data: program_state, error_code, robot_mode (11 bytes if using 20004 port)
 	    pos_offset = offset
 	    joint_positions = []
 	    for i in range(6):
