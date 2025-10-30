@@ -119,7 +119,7 @@ def generate_launch_description():
     )
 
     # Spawn the fairino3_controller for the gazebo robot
-    fairino3_controller = ExecuteProcess(
+    fairino5_controller = ExecuteProcess(
         cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino5_controller'],
         output="screen"
     )
@@ -135,11 +135,10 @@ def generate_launch_description():
             ])
         ])
     )
-    print(f'\n\n\n\n\n {world} : {world.type}\n\n\n\n')
 
     moveit_obs_gen = Node(
         package="fairino_gazebo_config",
-        executable="gazebo_world_to_moveit",
+        executable="gazebo_world_to_moveit.py",
         arguments=['world:=', world]
     )
         
@@ -154,10 +153,10 @@ def generate_launch_description():
         joint_state_pub,
         rsp,
         joint_state_broadcaster,
-        fairino3_controller,
+        fairino5_controller,
         gazebo,
         spawn_robot,
-        move_group,
-        moveit_obs_gen
+        # move_group,
+        # moveit_obs_gen
         # world_pose_bridge
     ])
