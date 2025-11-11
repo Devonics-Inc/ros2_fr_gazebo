@@ -11,6 +11,7 @@ from builtin_interfaces.msg import Duration # For ROS2
 import socket
 import struct
 import threading
+import json
 
 
 class rt_state_data(Node):
@@ -25,7 +26,7 @@ class rt_state_data(Node):
         self.robot_model = self.get_parameter('robot_model').value
         self.robot_ip = self.get_parameter('robot_ip').value
         self.robot_port = self.get_parameter('robot_port').value
-
+        
         # --- Publishers ---
         self.joint_state_pub = self.create_publisher(JointState, 'joint_states', 10)
         self.traj_pub = self.create_publisher(

@@ -16,7 +16,9 @@ from launch.substitutions import (
 )
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals
 from launch_ros.substitutions import FindPackageShare
+from launch.substitutions import LaunchConfiguration
 import xacro
 
 """
@@ -57,6 +59,13 @@ def generate_launch_description():
         default_value="fairino5",
         description="Name of robot model to spawn (ie. Fairino3)")
 
+    control_method = LaunchConfiguration('sdk')
+    control_method_arg = DeclareLaunchArgument(
+        'sdk',
+        default_value="False",
+        description="True if using the SDK for robot control, false if using ROS"
+    )
+
     # -------------IGNORE THE FOLLOWING (in development) ----------
     # gripper_arg = DeclareLaunchArgument(
     #     'gripper',
@@ -76,7 +85,15 @@ def generate_launch_description():
     joint_state_pub = Node(
         package="fairino_gazebo_config",
         executable="rt_state_data.py",
-        parameters=[{'robot_model': LaunchConfiguration("robot_model")}]
+        parameters=[{'robot_model': LaunchConfiguration("robot_model")}],
+        condition=LaunchConfigurationEquals("sdk","False")
+    )
+
+    joint_state_pub_sdk = Node(
+        package="fairino_gazebo_config",
+        executable="rt_state_data_SDK.py",
+        parameters=[{'robot_model': LaunchConfiguration("robot_model")}],
+        condition=LaunchConfigurationEquals("sdk","True")
     )
 
     # RSP v2
@@ -142,15 +159,16 @@ def generate_launch_description():
         arguments=['world:=', world]
     )
         
-
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
         world_arg,
+        control_method_arg,
         # mount_arg,
         # gripper_arg,
         robot_model_arg,
         joint_state_pub,
+        joint_state_pub_sdk,
         rsp,
         joint_state_broadcaster,
         fairino5_controller,

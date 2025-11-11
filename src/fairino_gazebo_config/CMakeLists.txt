@@ -20,6 +20,7 @@ install(PROGRAMS
   launch/DigitalTwin_rsp.py
   launch/sim_trajectory_pub.py
   launch/rt_state_data.py
+  launch/rt_state_data_SDK.py
   src/gazebo_world_to_moveit.py
   DESTINATION lib/${PROJECT_NAME}
 )
