@@ -1,11 +1,12 @@
 import os
 from ament_index_python.packages import get_package_share_directory, get_package_prefix
 from launch import LaunchDescription, LaunchContext
-from launch.actions import (
+from launch.actions import(
     DeclareLaunchArgument,
     IncludeLaunchDescription,
     SetEnvironmentVariable,
-    ExecuteProcess
+    ExecuteProcess,
+    TimerAction
 )
 from launch.substitutions import (
     Command,
@@ -15,17 +16,16 @@ from launch.substitutions import (
     TextSubstitution,
     PythonExpression
 )
+from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals, IfCondition
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals, IfCondition
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import PathJoinSubstitution, TextSubstitution, LaunchConfiguration
 import xacro
 
 """
-THIS CREATES A DIGITAL FAIRINO, THAT MIRRORS THE ROBOT AT THE IP ADDRESS SET IN /rt_state_data
+THIS CREATES A DIGITAL FAIRINO, DETACHED FROM ANY HARDWARE
 
-USE NORMAL CONTROL FOR YOUR ROBOT AND THE GAZEBO BOT WILL FOLLOW
+USE THE /joint_trajectory TO SEND GOAL STATES (use fairino_gazebo_config/launch/sim_trajectory_pub.py for an example) 
 
 """
 
@@ -39,7 +39,7 @@ def generate_launch_description():
     ####################
     # launch arguments #
     ####################
-    
+
     # Declare root model
     robot_model = LaunchConfiguration('robot_model')
     robot_model_arg = DeclareLaunchArgument(
@@ -70,39 +70,9 @@ def generate_launch_description():
         default_value="false",
         description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
-
-
-    # -------------IGNORE THE FOLLOWING (in development) ----------
-    # gripper_arg = DeclareLaunchArgument(
-    #     'gripper',
-    #     default_value='None',
-    #     description='Type of gripper to attach to wrist3_link'
-    # )
-
-    # mount_arg = DeclareLaunchArgument(
-    #     'mount',
-    #     default_value='None',
-    #     description='Type of mount object to attach under base_link'
-    # )
-    # ------------------------------------------------------------
-    
-
-    # Translate the /nonnrt_state_data for the /joint_states topic
-    """     USING ROBOT_STATE_PKG SOCKET    """
-    joint_state_pub = Node(
-        package="fairino_gazebo_config",
-        executable="rt_state_data.py",
-        parameters=[{'robot_model': robot_model}],
-        condition=LaunchConfigurationEquals("sdk","False")
-    )
-    """     USING ROBOT_STATE_PKG SOCKET FORWARDING    """
-    joint_state_pub_sdk = Node(
-        package="fairino_gazebo_config",
-        executable="rt_state_data_SDK.py",
-        parameters=[{'robot_model': robot_model}],
-        condition=LaunchConfigurationEquals("sdk","True")
-    )
-
+    #######################################
+    # Add Nodes and external launch files #
+    #######################################
     robot_description = Command([
         FindExecutable(name='xacro'),
         ' ',
@@ -124,35 +94,55 @@ def generate_launch_description():
         output="screen",
         parameters=[{"robot_description": robot_description}],
     )
-
-    ##########################################################
-
     # ------------------------
     # Gazebo
     # ------------------------
+
     # Create an instance of Gazebo
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ]),
-        #launch_arguments={'gz_args': [ ' -r']}.items()
-        launch_arguments={
-            'gz_args': [world, ' -r']
-
-        }.items()
+        launch_arguments={'gz_args': [world, ' -r']}.items()
     )
     
     # Spawn the robot into gazebo
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
-        arguments=['-topic', 'robot_description'],
+        arguments=[
+            '-topic', 'robot_description'
+        ],
     )
 
+    # Robot state publisher
     # Spawn the joint_state_broadcaster for the gazebo robot
-    joint_state_broadcaster = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
-        output="screen"
+    joint_state_broadcaster = TimerAction(
+        period=3.0,
+        actions=[
+            Node(
+                package='controller_manager',
+                executable='spawner',
+                arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
+                output='screen'
+            )
+        ]
+    )
+
+    controllers_yaml = os.path.join(pkg_share, 'config', 'ros2_controllers.yaml')
+
+    # FOUND 
+    controller_manager = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[
+            {'robot_description': robot_description},
+            controllers_yaml
+        ],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description"),
+        ],
+        output='screen'
     )
 
     # Spawn the fairino_controller for the gazebo robot
@@ -189,20 +179,48 @@ def generate_launch_description():
         )
     ]
 
-     # -------------------- MOVEIT 2 CONTROLLER --------------------
+
+    # -------------------- MOVEIT 2 CONTROLLER --------------------
+    # Kinematics solver
+    kinematics_yaml = PathJoinSubstitution([
+        FindPackageShare(PythonExpression([
+                "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
+            ])),
+            'config',
+            'kinematics.yaml'
+        ])
+        
+
+    # Created /tf translation for robot joints
+    static_virtual_joint_tfs = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare(PythonExpression([
+                    "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
+                ])),
+                'launch',
+                'static_virtual_joint_tfs.launch.py'
+            ])
+        ]),
+        condition=IfCondition(LaunchConfiguration('moveit'))
+    )
+
+
     # Move Group parameters for moveit control - NOW WITH KINEMATICS CONFIG
     move_group = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
                 FindPackageShare(PythonExpression([
-                    LaunchConfiguration("robot_model"), "_v6_moveit2_config"
+                    "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
                 ])),
                 'launch',
                 'move_group.launch.py'
             ])
         ]),
-        launch_arguments={'use_sim_time': 'true'}.items(),
-        condition=IfCondition(moveit)
+        launch_arguments={
+            'use_sim_time': 'true'
+        }.items(),
+        condition=IfCondition(LaunchConfiguration('moveit'))
     )
 
 
@@ -211,27 +229,23 @@ def generate_launch_description():
         package="fairino_gazebo_config",
         executable="gazebo_world_to_moveit.py",
         arguments=[world],
-        condition=IfCondition(moveit),
+        condition=IfCondition(LaunchConfiguration('moveit')),
         parameters=[{"use_sim_time": True}]
     )
-        
+
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
-        robot_model_arg,
-        world_arg,
-        control_method_arg,
         moveit_arg,
-        # mount_arg,
-        # gripper_arg,
+        world_arg,
         robot_model_arg,
-        joint_state_pub,
-        joint_state_pub_sdk,
+        gazebo,
+        static_virtual_joint_tfs,
         rsp,
+        move_group,
+        controller_manager,
         joint_state_broadcaster,
         *controllers,
-        gazebo,
-        spawn_robot,
-        move_group,
-        moveit_obs_gen
+        spawn_robot,      
+        moveit_obs_gen,
     ])
