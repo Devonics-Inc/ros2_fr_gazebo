@@ -44,7 +44,7 @@ class rt_state_data(Node):
             point = JointTrajectoryPoint()
             joint_positions_rad = [math.radians(j) for j in msg["joints"]]
             point.positions = joint_positions_rad
-            point.time_from_start = Duration(sec=1)
+            point.time_from_start = Duration(sec=0, nanosec=12000000)
             traj_msg.points.append(point)
             self.traj_pub.publish(traj_msg)
         except BlockingIOError:

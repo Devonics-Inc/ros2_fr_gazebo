@@ -12,7 +12,8 @@ from launch.substitutions import (
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
-    TextSubstitution
+    TextSubstitution,
+    PythonExpression
 )
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -100,11 +101,19 @@ def generate_launch_description():
     file_subpath = 'config/fairino5_v6_robot.urdf.xacro'
     # Use xacro to process the file
     xacro_file = os.path.join(get_package_share_directory('fairino5_v6_moveit2_config'),file_subpath)
+
+    use_sdk = os.getenv("SDK", "True").lower() in ["true", "1", "yes"]
+
+
+    control_system_value = "gazebo" if use_sdk else "gazebo"
+
     robot_description_raw = xacro.process_file(
         xacro_file,
         mappings={
-            'control_system': 'gazebo'
-    }).toxml()
+            'control_system': control_system_value
+        }
+    ).toxml()
+
 
     rsp = Node(
         package="robot_state_publisher",
@@ -119,7 +128,10 @@ def generate_launch_description():
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ]),
         #launch_arguments={'gz_args': [ ' -r']}.items()
-        launch_arguments={'gz_args': [world, ' -r']}.items()
+        launch_arguments={
+            'gz_args': [world, ' -r']
+
+        }.items()
     )
     
     # Spawn the robot into gazebo
