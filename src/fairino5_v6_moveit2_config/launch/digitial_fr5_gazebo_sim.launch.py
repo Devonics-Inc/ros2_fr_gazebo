@@ -47,7 +47,7 @@ def generate_launch_description():
         description="Name of world file to spawn robot into"
     )
 
-    # Declare robot model; Currently does nothing, can be used in the future for allowing multi-robot model functionality
+    # Declare robot model
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
         default_value="fairino5",
