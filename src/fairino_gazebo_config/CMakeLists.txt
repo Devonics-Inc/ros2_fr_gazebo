@@ -14,6 +14,8 @@ find_package(ament_cmake REQUIRED)
 #install(TARGETS gazebo_world_to_moveit
 #	DESTINATION lib/${PROJECT_NAME})
 
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}
+  PATTERN "setup_assistant.launch" EXCLUDE)
 
 install(PROGRAMS
   launch/SimJointPublisher.py
@@ -24,4 +26,5 @@ install(PROGRAMS
   src/gazebo_world_to_moveit.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
 ament_package()
