@@ -202,7 +202,7 @@ class WorldToMoveIt(Node):
                 co.primitives.append(prim)
                 co.primitive_poses.append(pose)
 
-            elif shape == 'mesh':
+                        elif shape == 'mesh':
                 mesh_path = data['uri']
                 scale = data.get('scale', [1.0, 1.0, 1.0])
 
@@ -210,29 +210,25 @@ class WorldToMoveIt(Node):
                     self.get_logger().warn(f"Mesh file not found: {mesh_path}")
                     return None
 
-                mesh = trimesh.load(mesh_path, force='mesh')
-                mesh.apply_scale(scale)
-
-                # --- Simplify Mesh ---
-                original_faces = len(mesh.faces)
-                target_faces = max(500, int(original_faces * 0.2))  # keep 20% or at least 500 faces
-
+                # --- Load FULL mesh (no simplification) ---
                 try:
-                    simplified = mesh.simplify_quadratic_decimation(target_faces)
-                    if simplified and len(simplified.faces) < original_faces:
-                        self.get_logger().info(
-                            f"Mesh '{model['name']}' simplified {original_faces} → {len(simplified.faces)} faces"
-                        )
-                        mesh = simplified
-                    else:
-                        self.get_logger().info(f"Mesh '{model['name']}' simplification skipped (already small)")
-                except Exception as e:
-                    self.get_logger().warn(f"Simplification failed for '{model['name']}': {e}")
-                    mesh = mesh.convex_hull
-                    self.get_logger().info(f"Used convex hull instead for '{model['name']}'")
+                    mesh = trimesh.load(mesh_path, force='mesh')
 
-                # THIS SIMPLIFIES THE
+                    # Apply scaling exactly as in the SDF
+                    mesh.apply_scale(scale)
+
+                    self.get_logger().info(
+                        f"Loaded mesh '{model['name']}' fully: "
+                        f"{len(mesh.vertices)} vertices, {len(mesh.faces)} triangles"
+                    )
+
+                except Exception as e:
+                    self.get_logger().error(f"Failed to load mesh '{model['name']}': {e}")
+                    return None
+
+                # Convert full mesh to shape_msgs/Mesh
                 moveit_mesh = self.trimesh_to_shape_msgs(mesh)
+
                 co.meshes.append(moveit_mesh)
                 co.mesh_poses.append(pose)
 
