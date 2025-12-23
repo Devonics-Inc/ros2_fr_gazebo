@@ -195,16 +195,15 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
                 FindPackageShare(PythonExpression([
-                    LaunchConfiguration("robot_model"), "_v6_moveit2_config"
+                    "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
                 ])),
                 'launch',
                 'move_group.launch.py'
             ])
         ]),
         launch_arguments={'use_sim_time': 'true'}.items(),
-        condition=IfCondition(moveit)
+        condition=IfCondition(LaunchConfiguration('moveit'))
     )
-
 
     # World file -> MoveIt collision parser
     moveit_obs_gen = Node(
