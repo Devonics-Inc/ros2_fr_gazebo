@@ -30,7 +30,7 @@ In this README I will cover the steps needed to configure your ROS2 environment 
     - Run the following commands to install the ROS2 humble control packges:
     >
         sudo apt udpate
-        sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers
+        sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-moveit-configs-utils ros-humble-moveit ros-humble-ros2-control ros-humble-ros2-controllers
 
 - ### Install Gazebo Ignition 6.17
 
@@ -38,7 +38,7 @@ In this README I will cover the steps needed to configure your ROS2 environment 
 
             sudo apt-get update
             sudo apt-get install lsb-release gnupg
-            sudo apt install ros-humble-moveit-configs-utils ros-humble-moveit ros-humble-ros2-control ros-humble-ros2-controllers
+            sudo apt install ros-humble-gz-ros2-control
 
 
 
