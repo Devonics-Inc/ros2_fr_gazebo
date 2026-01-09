@@ -1,4 +1,4 @@
-# Fairino ROS2 Driver (Version 3.7.8)
+# Fairino ROS2 Driver (Version 3.9.0)
 
 This document provides a quick tutorial for using MoveIt2 with Fairino Robots, compatible with web version 3.7.8. For a detailed guide, refer to the official documentation: [Fairino ROS2 Guide](https://fairino-doc-en.readthedocs.io/3.7.8/ROSGuide/index.html#frcobot-ros2).
 
@@ -7,13 +7,13 @@ This document provides a quick tutorial for using MoveIt2 with Fairino Robots, c
 To verify the web version on your robot:
 1. Open the Fairino Web App.
 2. Navigate to **System > About**.
-3. Confirm that the web version is **3.7.8**. If it differs, follow the steps below to update.
+3. Confirm that the web version is **3.9.0**. If it differs, follow the steps below to update.
 
 ## Updating the Web Version
 
-To change the web version to 3.7.8:
+To change the web version to 3.9.0:
 1. Download the software package from [Fairino Robot Software](https://fairino-doc-en.readthedocs.io/3.7.8/download.html#robot-software):
-   - Select **FAIRINO-CobotSoftware-QX-V3.7.8-Release-250120**.
+   - Select **FAIRINO-CobotSoftware-QX-V3.9.0-Release-250120**.
    - Unzip the folder to your file system.
 2. In the Web App, go to **Application > Tool App > System Upgrade**.
 3. In the **Software Upgrade** section, click **Choose File** and select `software.tar.gz` from the unzipped folder.
