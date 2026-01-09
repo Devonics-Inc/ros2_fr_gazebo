@@ -19,7 +19,6 @@ install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}
 
 install(PROGRAMS
   launch/SimJointPublisher.py
-  launch/DigitalTwin_rsp.py
   launch/sim_trajectory_pub.py
   launch/rt_state_data.py
   launch/rt_state_data_SDK.py

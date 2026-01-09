@@ -13,7 +13,8 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
     TextSubstitution,
-    PythonExpression
+    PythonExpression,
+    ConcatSubstitution,
 )
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -30,17 +31,16 @@ USE NORMAL CONTROL FOR YOUR ROBOT AND THE GAZEBO BOT WILL FOLLOW
 """
 
 def generate_launch_description():
+    # Adds fairino_description to IGN_GAZEBO_RESOURCE_PATH so gazebo can find the models
     pkg_share = get_package_share_directory('fairino_description')
     if('IGN_GAZEBO_RESOURCE_PATH' in os.environ):
         gazebo_resource_path = os.environ['IGN_GAZEBO_RESOURCE_PATH'] + ':' + pkg_share
     else:
         gazebo_resource_path = pkg_share
 
-    ####################
-    # launch arguments #
-    ####################
-    
-    # Declare root model
+    # -------------------- Launch Arguments --------------------
+
+    # Declare default robot model and allow argument for changing it
     robot_model = LaunchConfiguration('robot_model')
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
@@ -64,45 +64,28 @@ def generate_launch_description():
         description="True if using the SDK for robot control, false if using ROS"
     )
 
+    # Allow user to enable moveit controller and obstacle porting from gazebo
     moveit = LaunchConfiguration('moveit')
     moveit_arg = DeclareLaunchArgument(
         'moveit',
         default_value="false",
         description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
-
-
-    # -------------IGNORE THE FOLLOWING (in development) ----------
-    # gripper_arg = DeclareLaunchArgument(
-    #     'gripper',
-    #     default_value='None',
-    #     description='Type of gripper to attach to wrist3_link'
-    # )
-
-    # mount_arg = DeclareLaunchArgument(
-    #     'mount',
-    #     default_value='None',
-    #     description='Type of mount object to attach under base_link'
-    # )
-    # ------------------------------------------------------------
     
-
-    # Translate the /nonnrt_state_data for the /joint_states topic
-    """     USING ROBOT_STATE_PKG SOCKET    """
-    joint_state_pub = Node(
-        package="fairino_gazebo_config",
-        executable="rt_state_data.py",
-        parameters=[{'robot_model': robot_model}],
-        condition=LaunchConfigurationEquals("sdk","False")
-    )
-    """     USING ROBOT_STATE_PKG SOCKET FORWARDING    """
-    joint_state_pub_sdk = Node(
-        package="fairino_gazebo_config",
-        executable="rt_state_data_SDK.py",
-        parameters=[{'robot_model': robot_model}],
-        condition=LaunchConfigurationEquals("sdk","True")
+    # Argument to enable Gazebo integration
+    useSim = LaunchConfiguration('use_sim')
+    useSim_arg = DeclareLaunchArgument(
+        'use_sim',
+        default_value="false",
+        description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
 
+
+    # -------------------- ROBOT DESCRIPTION --------------------
+    # PASS PROPER CONTROL ARGUMENT TO XACRO BASED ON ARGS
+    control_system_arg = PythonExpression([
+        "'control_system:=gazebo' if '", LaunchConfiguration('use_sim'), "' == 'true' else 'control_system:=moveit'"
+    ])
     robot_description = Command([
         FindExecutable(name='xacro'),
         ' ',
@@ -115,9 +98,23 @@ def generate_launch_description():
                 "'", LaunchConfiguration('robot_model'), "_v6_robot.urdf.xacro'"
             ])
         ]),
-        ' control_system:=gazebo'
+        ' ',
+        control_system_arg
     ])
 
+    # Spawn static virtual joint tf
+    static_virtual_joint_tfs = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare(PythonExpression([
+                    "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
+                ])),
+                'launch',
+                'static_virtual_joint_tfs.launch.py'
+            ])
+        ])
+    )
+    # Spawn robot_state_publisher
     rsp = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -125,71 +122,66 @@ def generate_launch_description():
         parameters=[{"robot_description": robot_description}],
     )
 
-    ##########################################################
 
-    # ------------------------
-    # Gazebo
-    # ------------------------
-    # Create an instance of Gazebo
+    # -------------------- Gazebo --------------------
+    # Create an instance of Gazebo with the specified world
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ]),
-        #launch_arguments={'gz_args': [ ' -r']}.items()
         launch_arguments={
-            'gz_args': [world, ' -r']
+            'gz_args': ['src/fairino_gazebo_config/worlds/low_temp.sdf', ' -r']
 
-        }.items()
+        }.items(),
+        condition=IfCondition(LaunchConfiguration('use_sim'))
     )
     
     # Spawn the robot into gazebo
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
-        arguments=['-topic', 'robot_description'],
+        arguments=['-topic', 'robot_description', '-x', '0.0', '-y','0.0',  '-z','0.04',  '-R','0.0',  '-P', '0.0', '-Y','0.0'],
+        condition=IfCondition(LaunchConfiguration('use_sim')),
     )
 
-    # Spawn the joint_state_broadcaster for the gazebo robot
+    # -------------------- CONTROLLERS --------------------
+    # Grab appropriate control yaml 
+    controllers_yaml = PathJoinSubstitution([
+        FindPackageShare(PythonExpression([
+            "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
+        ])),
+        'config',
+        'ros2_controllers.yaml'
+    ])
+    # Create controller manager
+    controller_manager = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[
+            {'robot_description': robot_description},   # add this
+            controllers_yaml
+        ],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description"),
+        ],
+        output='screen'
+    )
+
+    # Spawn the joint_state_broadcaster
     joint_state_broadcaster = ExecuteProcess(
         cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
         output="screen"
     )
 
     # Spawn the fairino_controller for the gazebo robot
-    controllers = [
-        ExecuteProcess(
-            cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino3_controller'],
-            output="screen",
-            condition=LaunchConfigurationEquals("robot_model", "fairino3")
-        ),
-        ExecuteProcess(
-            cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino5_controller'],
-            output="screen",
-            condition=LaunchConfigurationEquals("robot_model", "fairino5")
-        ),
-        ExecuteProcess(
-            cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino10_controller'],
-            output="screen",
-            condition=LaunchConfigurationEquals("robot_model", "fairino10")
-        ),
-        ExecuteProcess(
-            cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino16_controller'],
-            output="screen",
-            condition=LaunchConfigurationEquals("robot_model", "fairino16")
-        ),
-        ExecuteProcess(
-            cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino20_controller'],
-            output="screen",
-            condition=LaunchConfigurationEquals("robot_model", "fairino20")
-        ),
-        ExecuteProcess(
-            cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'fairino30_controller'],
-            output="screen",
-            condition=LaunchConfigurationEquals("robot_model", "fairino30")
-        )
-    ]
+    controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[ConcatSubstitution([LaunchConfiguration('robot_model'), TextSubstitution(text='_controller')])],
+        output="screen",
+    )
 
-     # -------------------- MOVEIT 2 CONTROLLER --------------------
+    # -------------------- MOVEIT 2 CONTROLLER --------------------
     # Move Group parameters for moveit control - NOW WITH KINEMATICS CONFIG
     move_group = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -213,7 +205,7 @@ def generate_launch_description():
         condition=IfCondition(moveit),
         parameters=[{"use_sim_time": True}]
     )
-        
+
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
@@ -221,14 +213,11 @@ def generate_launch_description():
         world_arg,
         control_method_arg,
         moveit_arg,
-        # mount_arg,
-        # gripper_arg,
-        robot_model_arg,
-        joint_state_pub,
-        joint_state_pub_sdk,
+        useSim_arg,
+        static_virtual_joint_tfs,
         rsp,
         joint_state_broadcaster,
-        *controllers,
+        controller,
         gazebo,
         spawn_robot,
         move_group,
