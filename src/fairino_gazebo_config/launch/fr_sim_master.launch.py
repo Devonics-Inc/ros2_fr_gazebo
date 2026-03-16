@@ -13,8 +13,7 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
     TextSubstitution,
-    PythonExpression,
-    ConcatSubstitution,
+    PythonExpression
 )
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -158,7 +157,7 @@ def generate_launch_description():
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[
-            {'robot_description': robot_description},   # add this
+            {'robot_description': robot_description},
             controllers_yaml
         ],
         remappings=[
@@ -168,16 +167,18 @@ def generate_launch_description():
     )
 
     # Spawn the joint_state_broadcaster
-    joint_state_broadcaster = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", 'active', 'joint_state_broadcaster'],
-        output="screen"
+    joint_state_broadcaster = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster"],
+        output="screen",
     )
 
     # Spawn the fairino_controller for the gazebo robot
     controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[ConcatSubstitution([LaunchConfiguration('robot_model'), TextSubstitution(text='_controller')])],
+        arguments=[PythonExpression(["'", LaunchConfiguration('robot_model'), "_controller'"])],
         output="screen",
     )
 
@@ -193,7 +194,7 @@ def generate_launch_description():
                 'move_group.launch.py'
             ])
         ]),
-        launch_arguments={'use_sim_time': 'true'}.items(),
+        launch_arguments={'use_sim_time': 'True'}.items(),
         condition=IfCondition(LaunchConfiguration('moveit'))
     )
 
@@ -202,7 +203,7 @@ def generate_launch_description():
         package="fairino_gazebo_config",
         executable="gazebo_world_to_moveit.py",
         arguments=[world],
-        condition=IfCondition(moveit),
+        condition=IfCondition(LaunchConfiguration('moveit')),
         parameters=[{"use_sim_time": True}]
     )
 
@@ -216,10 +217,11 @@ def generate_launch_description():
         useSim_arg,
         static_virtual_joint_tfs,
         rsp,
+        controller_manager,
         joint_state_broadcaster,
         controller,
-        gazebo,
         spawn_robot,
+        gazebo,
         move_group,
         moveit_obs_gen
     ])
