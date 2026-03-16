@@ -440,6 +440,19 @@ def generate_launch_description():
             ])
         ])
     )
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
+        arguments=['-d', PathJoinSubstitution([
+            FindPackageShare(PythonExpression([
+                "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
+            ])),
+            'config',
+            'moveit.rviz'
+        ])],
+        condition=IfCondition(LaunchConfiguration('moveit')),
+        parameters=[{"use_sim_time": True}]
+    )
         
     
     return LaunchDescription([
@@ -455,6 +468,7 @@ def generate_launch_description():
         joint_state_broadcaster,
         controller,
         gazebo,
+        rviz,
         move_group,
         moveit_obs_gen,
     ])
