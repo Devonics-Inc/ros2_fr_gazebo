@@ -54,7 +54,7 @@
         </xacro:if>
 
         <!-- Gazebo Control system-->
-        <xacro:if value="${'$(arg control_system)' == 'gazebo' or '$(arg control_system)' != 'moveit'}">
+        <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
 
             <ros2_control name="GazeboSimSystem" type="system">
                 <hardware>
