@@ -4,9 +4,11 @@ import math
 import sys
 import xml.etree.ElementTree as ET
 
+from ollama import ps
+
 import rclpy
 from rclpy.node import Node
-from moveit_msgs.msg import CollisionObject, PlanningScene, AllowedCollisionEntry
+from moveit_msgs.msg import CollisionObject, PlanningScene, AllowedCollisionEntry, AllowedCollisionMatrix
 from moveit_msgs.srv import ApplyPlanningScene
 from shape_msgs.msg import SolidPrimitive, Mesh, MeshTriangle
 from geometry_msgs.msg import Pose, Point
@@ -46,15 +48,15 @@ class WorldToMoveIt(Node):
         # make joint 1 ignore the ground
         # Create allowed collision entry
         link_name = "base_link"
-        entry = AllowedCollisionEntry()
+        entry = AllowedCollisionMatrix()
+        
         for co in ps.world.collision_objects:
             if("ground" in co.id.lower()):
-                ps.allowed_collision_matrix.entry_names.append(co.id)
-                entry = AllowedCollisionEntry(enabled=[True])
-                ps.allowed_collision_matrix.entry_values.append(entry)
+                entry.entry_names.append(co.id)
+                entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
                 self.get_logger().info(f'{co.id} is ignoring base_link')
-        ps.allowed_collision_matrix.entry_names.append(link_name)
-
+        entry.entry_names.append(link_name)
+        entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
 
         # Apply Planning Scene
         req = ApplyPlanningScene.Request(scene=ps)
@@ -202,7 +204,7 @@ class WorldToMoveIt(Node):
                 co.primitives.append(prim)
                 co.primitive_poses.append(pose)
 
-                        elif shape == 'mesh':
+            elif shape == 'mesh':
                 mesh_path = data['uri']
                 scale = data.get('scale', [1.0, 1.0, 1.0])
 
