@@ -49,7 +49,6 @@ class WorldToMoveIt(Node):
         # Create allowed collision entry
         link_name = "base_link"
         entry = AllowedCollisionMatrix()
-        
         for co in ps.world.collision_objects:
             if("ground" in co.id.lower()):
                 entry.entry_names.append(co.id)
@@ -117,8 +116,6 @@ class WorldToMoveIt(Node):
                 data['length'] += data['radius'] * 2
 
             elif geom.find('plane') is not None:
-                if("ground" in name):
-                    pz -= 0.1
                 shape = 'plane'
                 data['size'] = [10.0, 10.0, 0.01]
 
