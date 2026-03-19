@@ -37,9 +37,8 @@
         <joint name="j6" value="0"/>
     </group_state>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
-    <disable_collisions link1="base_link" link2="linear_rail_link" reason="Adjacent"/>
-    <disable_collisions link1="rail_carriage" link2="linear_rail_link" reason="Adjacent"/>
     <disable_collisions link1="base_link" link2="rail_carriage" reason="Adjacent"/>
+    <disable_collisions link1="rail_carriage" link2="shoulder_link" reason="Never"/>
     <disable_collisions link1="base_link" link2="shoulder_link" reason="Adjacent"/>
     <disable_collisions link1="base_link" link2="upperarm_link" reason="Never"/>
     <disable_collisions link1="forearm_link" link2="shoulder_link" reason="Never"/>
