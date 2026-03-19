@@ -14,6 +14,13 @@
                     <plugin>fairino_hardware/FairinoHardwareInterface</plugin>
                     <!-- <plugin>mock_components/GenericSystem</plugin> -->
                 </hardware>
+
+                <joint name="linear_rail_joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position">
+                      <param name="initial_value">0.0</param>
+                    </state_interface>
+                </joint>
                 <joint name="j1">
                     <command_interface name="position"/>
                     <state_interface name="position">
@@ -62,6 +69,12 @@
                     <plugin>gz_ros2_control/GazeboSimSystem</plugin>
 
                 </hardware>
+                <joint name="linear_rail_joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position">
+                      <param name="initial_value">0.0</param>
+                    </state_interface>
+                </joint>
                 <joint name="j1">
                     <command_interface name="position"/>
                     <state_interface name="position">

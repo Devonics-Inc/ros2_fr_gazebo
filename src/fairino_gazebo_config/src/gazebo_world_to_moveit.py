@@ -47,15 +47,22 @@ class WorldToMoveIt(Node):
                 ps.world.collision_objects.append(co)
         # make joint 1 ignore the ground
         # Create allowed collision entry
-        link_name = "base_link"
+        link_names = ["base_link", "rail_carriage"] # Add links in your URDF that should ignore collisions with the ground
         entry = AllowedCollisionMatrix()
+        objects_to_ignore = ["ground", "floor", "plane", "rail"]
         for co in ps.world.collision_objects:
-            if("ground" in co.id.lower()):
-                entry.entry_names.append(co.id)
-                entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
-                self.get_logger().info(f'{co.id} is ignoring base_link')
-        entry.entry_names.append(link_name)
-        entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
+            for i in objects_to_ignore:
+                if(i.lower() in co.id.lower()):
+                    entry.entry_names.append(co.id)
+                    entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
+                    self.get_logger().info(f'{co.id} is ignoring base_link')
+                    break
+        for link in link_names:
+            self.get_logger().info(f'{link} is ignoring base_link')
+            entry.entry_names.append(link)
+            entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
+        # entry.entry_names.append("base_link")
+        # entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
 
         # Apply Planning Scene
         req = ApplyPlanningScene.Request(scene=ps)
