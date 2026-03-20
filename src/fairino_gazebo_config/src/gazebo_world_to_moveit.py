@@ -4,12 +4,10 @@ import math
 import sys
 import xml.etree.ElementTree as ET
 
-from ollama import ps
-
 import rclpy
 from rclpy.node import Node
 from moveit_msgs.msg import CollisionObject, PlanningScene, AllowedCollisionEntry, AllowedCollisionMatrix
-from moveit_msgs.srv import ApplyPlanningScene
+from moveit_msgs.srv import ApplyPlanningScene, GetPlanningScene
 from shape_msgs.msg import SolidPrimitive, Mesh, MeshTriangle
 from geometry_msgs.msg import Pose, Point
 
@@ -30,44 +28,96 @@ class WorldToMoveIt(Node):
         self.get_logger().info(f'Parsing world file: {world_file}')
         self.models_path = os.getenv("GAZEBO_MODEL_PATH", "/usr/share/gazebo/models")
 
+        # 1. Parse models from SDF
         models = self.parse_world(world_file)
-        self.get_logger().info(f'Found {len(models)} models.')
 
-        # Connect to MoveIt
+        # 2. Setup Clients
         self.cli = self.create_client(ApplyPlanningScene, '/apply_planning_scene')
+        self.get_scene_cli = self.create_client(GetPlanningScene, '/get_planning_scene')
+        
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Waiting for /apply_planning_scene service...')
+            self.get_logger().info('Waiting for services...')
 
-        # Build PlanningScene diff
+        # 3. FETCH current scene to get the existing Allowed Collision Matrix (ACM)
+        scene_req = GetPlanningScene.Request()
+        scene_req.components.components = 0
+        
+        future_scene = self.get_scene_cli.call_async(scene_req)
+        rclpy.spin_until_future_complete(self, future_scene)
+        
+        # This is the "Master" ACM that MoveIt currently knows about
+        acm = future_scene.result().scene.allowed_collision_matrix
+
+        # Get planning scene
         ps = PlanningScene()
         ps.is_diff = True
+
+
+        # ADD ROBOT LINKS TO BE IGNORED HERE
+        link_names = ["base_link"]
+        
+        # Loop through models in world and add to planning scene
         for model in models:
             co = self.create_collision_object(model)
             if co:
                 ps.world.collision_objects.append(co)
-        # make joint 1 ignore the ground
-        # Create allowed collision entry
-        link_name = "base_link"
-        entry = AllowedCollisionMatrix()
-        for co in ps.world.collision_objects:
-            if("ground" in co.id.lower()):
-                entry.entry_names.append(co.id)
-                entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
-                self.get_logger().info(f'{co.id} is ignoring base_link')
-        entry.entry_names.append(link_name)
-        entry.entry_values.append(AllowedCollisionEntry(enabled=[True]))
+                
+                if "ground" in model['name'].lower():
+                    for link in link_names:
+                        self.update_acm(acm, model['name'], link, True)
 
-        # Apply Planning Scene
+        # Apply allowed collision matrix
+        ps.allowed_collision_matrix = acm
+
+        # Uppdate planning scene
         req = ApplyPlanningScene.Request(scene=ps)
+        future_apply = self.cli.call_async(req)
+        rclpy.spin_until_future_complete(self, future_apply)
+        
+        self.get_logger().info('✅ Scene and ACM updated.')
 
+    def update_acm(self, acm, name1, name2, enabled):
+        """Ensures both names exist in ACM and sets their collision status."""
+        for name in [name1, name2]:
+            if name not in acm.entry_names:
+                acm.entry_names.append(name)
+                # Add a new column to all existing rows
+                for entry in acm.entry_values:
+                    entry.enabled.append(False)
+                # Add the new row itself
+                new_row = AllowedCollisionEntry(enabled=[False] * len(acm.entry_names))
+                acm.entry_values.append(new_row)
 
-        future = self.cli.call_async(req)
-        rclpy.spin_until_future_complete(self, future)
-        if future.result() is not None:
-            self.get_logger().info('✅ All collision objects added to MoveIt!')
+        idx1 = acm.entry_names.index(name1)
+        idx2 = acm.entry_names.index(name2)
+        acm.entry_values[idx1].enabled[idx2] = enabled
+        acm.entry_values[idx2].enabled[idx1] = enabled
+
+    def set_acm_for_object(self, acm, obj, other=None, enabled=False):
+        """Updates the MoveIt PlanningScene using the AllowedCollisionMatrix to ignore collisions for an object"""
+        if other is None:
+            self.set_acm_default_for_object(acm, obj, enabled)
+            return
+
+        other_idx = acm.entry_names.index(other)
+        if obj not in acm.entry_names:
+            acm.entry_names.append(obj)
+            for entry in acm.entry_values:
+                entry.enabled.append(enabled)
+            acm.entry_values.append(AllowedCollisionEntry(enabled=[enabled for i in range(len(acm.entry_names))]))
+            acm.entry_values[-1].enabled[other_idx] = enabled
         else:
-            self.get_logger().error('❌ Failed to apply planning scene.')
+            obj_idx = acm.entry_names.index(obj)
+            acm.entry_values[obj_idx].enabled[other_idx] = enabled
+            acm.entry_values[other_idx].enabled[obj_idx] = enabled
 
+    def set_acm_default_for_object(self,acm, obj, enabled=False):
+        if obj not in acm.default_entry_names:
+            acm.default_entry_names.append(obj)
+            acm.default_entry_values.append(enabled)
+        else:
+            idx = acm.default_entry_names.index(obj)
+            acm.default_entry_values[idx] = enabled
     # ------------------- PARSE WORLD -------------------
 
     def parse_world(self, world_file):
