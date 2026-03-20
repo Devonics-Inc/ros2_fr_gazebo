@@ -9,13 +9,13 @@
               <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
                   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
               </xacro:if>
-          </hardware>
-          <joint name="rail_joint">
-              <command_interface name="position"/>
-              <state_interface name="position">
-                <param name="initial_value">0.0</param>
-              </state_interface>
-          </joint>
+            </hardware>
+            <joint name="rail_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
         </ros2_control>
         <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
             <gazebo>
