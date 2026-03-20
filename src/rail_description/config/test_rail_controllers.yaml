@@ -3,7 +3,6 @@ controller_manager:
     # Do NOT define update_rate here (let the main arm file handle it)
     test_rail_controller:
       type: joint_trajectory_controller/JointTrajectoryController
-      
 
 test_rail_controller:
   ros__parameters:
