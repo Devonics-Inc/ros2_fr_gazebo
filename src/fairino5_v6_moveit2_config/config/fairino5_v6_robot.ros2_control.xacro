@@ -7,6 +7,7 @@
         <xacro:arg name="control_system" default="moveit"/>
         <xacro:arg name="robot_mount" default="world"/>
 
+        
         <ros2_control name="${name}" type="system">
             <hardware>
               <xacro:if value="${'$(arg control_system)' == 'moveit'}">
@@ -16,6 +17,10 @@
                   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
               </xacro:if>
           </hardware>
+          <xacro:if value="${'$(arg robot_mount)' != 'world'}">
+            <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf" />
+            <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro" />
+          </xacro:if>
           <joint name="j1">
               <command_interface name="position"/>
               <state_interface name="position">
