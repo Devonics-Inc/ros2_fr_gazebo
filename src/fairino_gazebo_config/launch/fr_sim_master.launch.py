@@ -139,13 +139,13 @@ def generate_launch_description():
     )
 
     # Spawn the fairino_controller for the gazebo robot
-    controller_arg = PythonExpression([
+    rail_controller_arg = PythonExpression([
         "'", LaunchConfiguration('robot_model'), "_controller'"
     ])
-    controller = Node(
+    rail_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[controller_arg],
+        arguments=[rail_controller_arg],
         output="screen",
     )
     # Rail controller
@@ -182,8 +182,7 @@ def generate_launch_description():
         parameters=[
             {'robot_description': robot_description},
             {'use_sim_time': True},
-            arm_controllers,
-            rail_controllers # It will look for this file if mount != world
+            controllers_to_load # It will look for this file if mount != world
         ],
         remappings=[("/controller_manager/robot_description", "/robot_description")],
         output='screen'
@@ -285,7 +284,7 @@ def generate_launch_description():
         spawn_robot,
         controller_manager,
         joint_state_broadcaster,
-        controller,
+        rail_controller,
         spawn_rail_controller,
         gazebo,
         rviz,
