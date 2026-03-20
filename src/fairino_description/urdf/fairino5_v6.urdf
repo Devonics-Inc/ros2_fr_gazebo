@@ -9,6 +9,7 @@
     <parent link="world"/>
     <child link="base_link"/>
   </joint>
+
   <link
     name="base_link">
     <inertial>
