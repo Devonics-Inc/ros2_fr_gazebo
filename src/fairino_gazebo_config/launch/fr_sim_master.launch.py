@@ -52,7 +52,15 @@ def generate_launch_description():
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
         default_value="fairino5",
-        description="Name of robot model to spawn (ie. Fairino3)"
+        description="Name of robot model to spawn (ie. Fairino3)",
+        choices=[
+            'fairino3',
+            'fairino5',
+            'fairino10',
+            'fairino16',
+            'fairino20',
+            'fairino30',
+        ]
     )
     # Declare robot mount
     mount = LaunchConfiguration('mount')

@@ -5,107 +5,66 @@
 
                 <!-- Xacro arg for control system (Defualted to Rviz/Moveit-->
         <xacro:arg name="control_system" default="moveit"/>
+        <xacro:arg name="robot_mount" default="world"/>
 
-        <xacro:if value="${'$(arg control_system)' == 'moveit'}">
-
-            <ros2_control name="${name}" type="system">
-                <hardware>
-                    <!-- By default, set up controllers for simulation. This won't work on real hardware -->
-                    <plugin>fairino_hardware/FairinoHardwareInterface</plugin>
-                </hardware>
-                <joint name="j1">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j1']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j2">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j2']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j3">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j3']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j4">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j4']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j5">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j5']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j6">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j6']}</param>
-                    </state_interface>
-                </joint>
-            </ros2_control>
-        </xacro:if>
-
-        <!-- Gazebo Control system-->
-        <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
-
-            <ros2_control name="GazeboSimSystem" type="system">
-                <hardware>
-                    <!-- Gazebo Simulation control -->
-                    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-
-                </hardware>
-                <joint name="j1">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j1']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j2">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j2']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j3">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j3']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j4">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j4']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j5">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j5']}</param>
-                    </state_interface>
-                </joint>
-                <joint name="j6">
-                    <command_interface name="position"/>
-                    <state_interface name="position">
-                      <param name="initial_value">${initial_positions['j6']}</param>
-                    </state_interface>
-                </joint>
-            </ros2_control>
-
-            <gazebo>
-                <plugin filename="libign_ros2_control-system.so"
-                name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                    <parameters>$(find fairino10_v6_moveit2_config)/config/ros2_controllers.yaml</parameters>
-                </plugin>
-            </gazebo>
         
+        <ros2_control name="${name}" type="system">
+            <hardware>
+              <xacro:if value="${'$(arg control_system)' == 'moveit'}">
+                  <plugin>fairino_hardware/FairinoHardwareInterface</plugin>
+              </xacro:if>
+              <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
+                  <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+              </xacro:if>
+          </hardware>
+          <xacro:if value="${'$(arg robot_mount)' != 'world'}">
+            <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf" />
+            <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro" />
+          </xacro:if>
+          <joint name="j1">
+              <command_interface name="position"/>
+              <state_interface name="position">
+                <param name="initial_value">${initial_positions['j1']}</param>
+              </state_interface>
+          </joint>
+          <joint name="j2">
+              <command_interface name="position"/>
+              <state_interface name="position">
+                <param name="initial_value">${initial_positions['j2']}</param>
+              </state_interface>
+          </joint>
+          <joint name="j3">
+              <command_interface name="position"/>
+              <state_interface name="position">
+                <param name="initial_value">${initial_positions['j3']}</param>
+              </state_interface>
+          </joint>
+          <joint name="j4">
+              <command_interface name="position"/>
+              <state_interface name="position">
+                <param name="initial_value">${initial_positions['j4']}</param>
+              </state_interface>
+          </joint>
+          <joint name="j5">
+              <command_interface name="position"/>
+              <state_interface name="position">
+                <param name="initial_value">${initial_positions['j5']}</param>
+              </state_interface>
+          </joint>
+          <joint name="j6">
+              <command_interface name="position"/>
+              <state_interface name="position">
+                <param name="initial_value">${initial_positions['j6']}</param>
+              </state_interface>
+          </joint>
+        </ros2_control>
+        <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
+            <gazebo>
+              <plugin filename="libign_ros2_control-system.so"
+              name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                  <parameters>$(find fairino10_v6_moveit2_config)/config/ros2_controllers.yaml</parameters>
+              </plugin>
+          </gazebo>
         </xacro:if>
     </xacro:macro>
 </robot>
