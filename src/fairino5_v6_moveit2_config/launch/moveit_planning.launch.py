@@ -16,7 +16,7 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_raw}
     robot_description_semantic = {
         "robot_description_semantic": PathJoinSubstitution(
-            [pkg_share, "config", "fairino5_v6.srdf"]
+            [pkg_share, "config", "fairino5_v6.srdf.xacro"]
         )
     }
     kinematics_yaml = os.path.join(pkg_share, "config", "kinematics.yaml")

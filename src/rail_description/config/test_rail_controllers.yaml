@@ -4,10 +4,13 @@ controller_manager:
     test_rail_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
 test_rail_controller:
   ros__parameters:
     joints:
-      - rail_joint
+      - test_rail_joint
     command_interfaces:
       - position
     state_interfaces:

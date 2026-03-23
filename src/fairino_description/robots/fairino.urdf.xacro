@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="$(arg name)">
+    <!-- robot name parameter -->
+    <xacro:arg name="name" default="fairino_arm" />
+
+    <!-- Arguments -->
+    <xacro:arg name="robot_mount" default="world" />
+    <xacro:arg name="robot_model" default="fairino5" />
+    <xacro:arg name="control_system" default="moveit" />
+
+
+    <!-- import main macro -->
+    <xacro:include filename="$(find fairino_description)/robots/load_robot.xacro" />
+
+    <!-- initial position for simulations (Mock Hardware, Gazebo) -->
+    <xacro:arg name="initial_positions_file" default="$(find ${robot_model}_v6_moveit2_config))/config/initial_positions.yaml"/>
+
+    <!-- convert to property to use substitution in function -->
+    <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
+
+    <!-- create link fixed to the "world" -->
+    <link name="world" />
+
+    <xacro:load_robot
+        robot_model="$(arg robot_model)"
+        robot_mount="$(arg robot_mount)"
+        control_system="$(arg control_system)">
+    </xacro:load_robot>
+
+    <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
+        <gazebo>
+            <plugin filename="libign_ros2_control-system.so"
+            name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                <parameters>$(find ${robot_model}_v6_moveit2_config)/config/ros2_controllers.yaml</parameters>
+            </plugin>
+        </gazebo>
+    </xacro:if>
+
+</robot>

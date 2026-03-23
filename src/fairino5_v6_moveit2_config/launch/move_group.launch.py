@@ -34,7 +34,7 @@ def generate_launch_description():
     moveit_config = (
         MoveItConfigsBuilder("fairino5_v6_robot", package_name="fairino5_v6_moveit2_config")
         .robot_description(file_path="config/fairino5_v6_robot.urdf.xacro")
-        .robot_description_semantic(file_path="config/fairino5_v6_robot.srdf")
+        .robot_description_semantic(file_path="config/fairino5_v6_robot.srdf.xacro")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .planning_pipelines(pipelines=["ompl"])
         .to_moveit_configs()
