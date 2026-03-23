@@ -3,7 +3,7 @@ moveit_setup_assistant_config:
     package: fairino_description
     relative_path: urdf/fairino5_v6.urdf
   srdf:
-    relative_path: config/fairino5_v6_robot.srdf
+    relative_path: config/fairino5_v6_robot.srdf.xacro
   package_settings:
     author_name: litao
     author_email: litao@frtech.fr

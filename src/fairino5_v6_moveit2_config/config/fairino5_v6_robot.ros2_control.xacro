@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="fairino5_v6_robot_ros2_control" params="name initial_positions_file">
+    <xacro:macro name="fairino5_v6_robot_ros2_control" params="name initial_positions_file mount">
         <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
-
+        
         <!-- Xacro arg for control system (Defualted to Rviz/Moveit-->
         <xacro:arg name="control_system" default="moveit"/>
         <xacro:arg name="robot_mount" default="world"/>
@@ -17,9 +17,15 @@
                   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
               </xacro:if>
           </hardware>
-          <xacro:if value="${'$(arg robot_mount)' != 'world'}">
+          <xacro:if value="${mount != 'world'}">
             <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf" />
-            <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro" />
+            <!-- <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro" /> -->
+            <joint name="$(arg robot_mount)_joint">
+              <command_interface name="position"/>
+              <state_interface name="position">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+            </joint>
           </xacro:if>
           <joint name="j1">
               <command_interface name="position"/>

@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <robot name="test_rail">
-  <link name="world"/>
-  <joint name="rail_joint" type="prismatic">
-    <parent link="world"/>
+  <link name="test_rail_base"/>
+  <joint name="test_rail_joint" type="prismatic">
+    <parent link="test_rail_base"/>
     <child link="test_rail"/>
     <axis xyz="1 0 0"/>
     <limit lower="0.0" upper="1.5" effort="100.0" velocity="0.5"/>
@@ -12,9 +12,6 @@
     <visual>
       <geometry><box size="0.2 0.2 0.05"/></geometry>
     </visual>
-    <!-- <collision>
-      <geometry><box size="0.2 0.2 0.05"/></geometry>
-    </collision> -->
     <origin xyz="0 0 0.025" rpy="0 0 0"/>
   </link>
 </robot>

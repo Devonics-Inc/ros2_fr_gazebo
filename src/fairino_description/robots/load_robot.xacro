@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="load_robot" params="
+    robot_model
+    robot_mount
+    control_system">
+
+    <xacro:include filename="$(find ${robot_model}_v6_moveit2_config)/config/${robot_model}_v6_robot.ros2_control.xacro" />
+    <xacro:include filename="$(find ${robot_model}_v6_moveit2_config)/config/${robot_model}_v6_robot.urdf.xacro" />
+
+    <xacro:load_robot
+        initial_positions_file="${initial_positions_file}"
+        mount="${robot_mount}"
+        control_system="${control_system}">
+    </xacro:load_robot>
+
+    <link name="world"/>
+    <xacro:if value="${robot_mount == 'world'}">
+        <link name="${robot_model}_base"/>
+        <joint name="mount_to_world" type="fixed">
+            <parent link="world"/>
+            <child link="base_link"/>
+        </joint>
+    </xacro:if>
+
+    
+    <!-- <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro" /> -->
+
+    </xacro:macro>
