@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="fairino5_v6_robot_ros2_control" params="name initial_positions_file mount">
+    <xacro:macro name="fairino5_v6_robot_ros2_control" params="name initial_positions_file ros2_control_header">
         <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
-        
+      
         <!-- Xacro arg for control system (Defualted to Rviz/Moveit-->
         <xacro:arg name="control_system" default="moveit"/>
-        <xacro:arg name="robot_mount" default="world"/>
-
-        
+        <xacro:property name="controllers_yaml_name" value="${'ros2_controllers.yaml' if ros2_control_header == 'world' else 'fairino5_' + ros2_control_header + '_ros2_controllers.yaml'}"/>     
         <ros2_control name="${name}" type="system">
             <hardware>
               <xacro:if value="${'$(arg control_system)' == 'moveit'}">
-                  <plugin>fairino_hardware/FairinoHardwareInterface</plugin>
+                  <!-- <plugin>fairino_hardware/FairinoHardwareInterface</plugin> -->
+                  <plugin>mock_components/GenericSystem</plugin>
               </xacro:if>
               <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
                   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+                  <!-- <plugin>mock_components/GenericSystem</plugin> -->
+
               </xacro:if>
           </hardware>
-          <xacro:if value="${mount != 'world'}">
-            <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf" />
-            <!-- <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro" /> -->
-            <joint name="$(arg robot_mount)_joint">
-              <command_interface name="position"/>
-              <state_interface name="position">
-                <param name="initial_value">0.0</param>
-              </state_interface>
-            </joint>
+          <xacro:if value="${ros2_control_header != 'world'}">
+              <!-- <xacro:include filename="$(find rail_description)/config/test_rail_controller.ros2_control.xacro"/> -->
+              <joint name="${ros2_control_header}_joint">
+                  <command_interface name="position"/>
+                  <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                  </state_interface>
+              </joint>
           </xacro:if>
           <joint name="j1">
               <command_interface name="position"/>
@@ -68,7 +68,7 @@
             <gazebo>
               <plugin filename="libign_ros2_control-system.so"
               name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                  <parameters>$(find fairino5_v6_moveit2_config)/config/ros2_controllers.yaml</parameters>
+                  <parameters>$(find fairino5_v6_moveit2_config)/config/${controllers_yaml_name}</parameters>
               </plugin>
           </gazebo>
         </xacro:if>

@@ -1,29 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="test_rail_ros2_control" params="name">
-
-        <!-- Xacro arg for control system (Defualted to Rviz/Moveit-->
-
-        <ros2_control name="${name}" type="system">
-            <hardware>
-              <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
-                  <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-              </xacro:if>
-            </hardware>
-            <joint name="rail_joint">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                    <param name="initial_value">0.0</param>
-                </state_interface>
-            </joint>
-        </ros2_control>
-        <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
-            <gazebo>
-              <plugin filename="libign_ros2_control-system.so"
-              name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                  <parameters>$(find rail_description)/config/test_rail_controllers.yaml</parameters>
-              </plugin>
-          </gazebo>
-        </xacro:if>
-    </xacro:macro>
+  <ros2_control name="RailControl" type="system">
+    <!-- <hardware> -->
+      <!-- <plugin>gz_ros2_control/GazeboSimSystem</plugin> -->
+      <!-- <plugin>mock_components/GenericSystem</plugin> -->
+    <!-- </hardware> -->
+    <joint name="test_rail_joint">
+      <command_interface name="position">
+        <param name="min">-0.9</param>
+        <param name="max">0.9</param>
+      </command_interface>
+      <state_interface name="position"/>
+    </joint>
+  </ros2_control>
+  
 </robot>

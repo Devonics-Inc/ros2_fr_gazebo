@@ -1,38 +1,78 @@
 <?xml version="1.0"?>
 
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="$(arg name)">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="fairino_arm">
     <!-- robot name parameter -->
-    <xacro:arg name="name" default="fairino_arm" />
+    <!-- <xacro:arg name="name" default="fairino_arm" /> -->
 
     <!-- Arguments -->
-    <xacro:arg name="robot_mount" default="world" />
     <xacro:arg name="robot_model" default="fairino5" />
-    <xacro:arg name="control_system" default="moveit" />
+    <xacro:arg name="robot_mount" default="world" />
+    <xacro:arg name="control_system" default="gazebo" />
 
+    <xacro:property name="robot_model" value="$(arg robot_model)" />
+    <xacro:property name="initial_positions_file" value="$(find ${robot_config_package})/config/initial_positions.yaml"/>
 
-    <!-- import main macro -->
-    <xacro:include filename="$(find fairino_description)/robots/load_robot.xacro" />
+    <!-- Create package variable -->
+    <xacro:property name="robot_config_package" value="$(arg robot_model)_v6_moveit2_config" />
 
-    <!-- initial position for simulations (Mock Hardware, Gazebo) -->
-    <xacro:arg name="initial_positions_file" default="$(find ${robot_model}_v6_moveit2_config))/config/initial_positions.yaml"/>
+    <!-- Initial positions file -->
+    <xacro:property name="initial_positions_file" value="$(find ${robot_config_package})/config/initial_positions.yaml"/>
 
-    <!-- convert to property to use substitution in function -->
-    <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
+    <xacro:include filename="$(find ${robot_config_package})/config/$(arg robot_model)_robot.xacro"/>
+    <!-- import robot description -->
+    <link name="world"/>
+    <xacro:if value="${ robot_model == 'fairino3'}">
+        <xacro:fairino3/>  
+    </xacro:if>
+    <xacro:if value="${ robot_model == 'fairino5'}">
+        <xacro:fairino5/>
+    </xacro:if>
+    <xacro:if value="${ robot_model == 'fairino10'}">
+        <xacro:fairino10 />
+    </xacro:if>
+    <xacro:if value="${ robot_model == 'fairino16'}">
+        <xacro:fairino16 />
+    </xacro:if>
+    <xacro:if value="${ robot_model == 'fairino20'}">
+        <xacro:fairino20 />
+    </xacro:if>
+    <xacro:if value="${ robot_model == 'fairino30'}">
+        <xacro:fairino30 />
+    </xacro:if>
+    <xacro:if value="${'$(arg robot_mount)' != 'world'}">
+        <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf.xacro"/>
+        <joint name="world_to_rail" type="fixed">
+            <parent link="world"/>
+            <child link="$(arg robot_mount)_base"/>
+        </joint>
+        <joint name="robot_to_rail" type="fixed">
+            <parent link="$(arg robot_mount)_carriage"/>
+            <child link="base_link"/>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        </joint>
+    </xacro:if>
+    <xacro:if value="${'$(arg robot_mount)' == 'world'}">
+        <joint name="mount_to_world" type="fixed">
+            <parent link="world"/>
+            <child link="base_link"/>
+        </joint>
+    </xacro:if>
 
+    <xacro:if value="${'$(arg robot_mount)' != 'world'}">
+        <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro"/>
+        <xacro:test_rail_ros2_control name="RailHardwareInterface" />
+    </xacro:if>
+        
+    
     <!-- create link fixed to the "world" -->
-    <link name="world" />
-
-    <xacro:load_robot
-        robot_model="$(arg robot_model)"
-        robot_mount="$(arg robot_mount)"
-        control_system="$(arg control_system)">
-    </xacro:load_robot>
+    <xacro:include filename="$(find ${robot_config_package}_v6_moveit2_config)/config/${robot_model}_v6_robot.ros2_control.xacro" />
+    <xacro:fairino5_v6_robot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
 
     <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
         <gazebo>
             <plugin filename="libign_ros2_control-system.so"
             name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                <parameters>$(find ${robot_model}_v6_moveit2_config)/config/ros2_controllers.yaml</parameters>
+                <parameters>$(find ${robot_config_package})/config/ros2_controllers.yaml</parameters>
             </plugin>
         </gazebo>
     </xacro:if>
