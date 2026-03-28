@@ -34,7 +34,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_model",
-            default_value="world",
+            default_value="fairino5",
             description="Robot's model",
         )
     )
@@ -62,16 +62,13 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("kortex_description"), "robots", "kinova.urdf.xacro"]
+                [FindPackageShare("fairino_description"), "robots", "fairino.urdf.xacro"]
             ),
             " ",
             "name:=test_robot",
             " ",
             "robot_mount:=",
             robot_mount,
-            " ",
-            "robot_model:=",
-            robot_model,
             " ",
             "control_system:=",
             control_system,
@@ -104,7 +101,6 @@ def generate_launch_description():
             'config',
             'moveit.rviz'
         ])],
-        condition=IfCondition(LaunchConfiguration('moveit')),
         parameters=[{"use_sim_time": True}]
     )
 
