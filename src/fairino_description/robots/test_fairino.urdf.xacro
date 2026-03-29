@@ -15,7 +15,6 @@
 
     <xacro:if value="${'$(arg robot_mount)' != 'world'}">
         <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf.xacro"/>
-        <!-- <xacro:fairino5/> -->
         
         <xacro:test_rail parent="world"/>
 

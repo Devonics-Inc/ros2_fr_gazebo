@@ -5,16 +5,23 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 moveit_simple_controller_manager:
   controller_names:
     - fairino5_controller
+    - test_rail_controller
 
   fairino5_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
     joints:
-      - test_rail_joint
       - j1
       - j2
       - j3
       - j4
       - j5
       - j6
+  
+  test_rail_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - test_rail_joint
