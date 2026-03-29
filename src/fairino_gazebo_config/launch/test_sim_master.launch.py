@@ -133,10 +133,6 @@ def generate_launch_description():
     # ------------------------
     # Create an instance of Gazebo
     
-    # Spawn the fairino_controller for the gazebo robot
-    rail_controller_arg = PythonExpression([
-        "'", LaunchConfiguration('robot_model'), "_controller'"
-    ])
     
     # Get moveit config share package for passed robot:
     if(LaunchConfigurationEquals('robot_model', "fairino3")):
@@ -153,17 +149,10 @@ def generate_launch_description():
         moveit_pkg = "fairino30_v6_moveit2_config"
     else:
         moveit_pkg = "fairino5_v6_moveit2_config" # If bad value is passed, give FR5 as default
-    # moveit_config_share = os.path.join(get_package_share_directory(moveit_pkg), 'config')
 
 
-    # Get controller name for robot + rail or just robot
-    if(LaunchConfigurationEquals('mount', 'world')):
-        mount_control_name = ""
-    else:
-        mount_control_name = robot_model + "_" + mount_control_name + "_"
-    
     # Load controllers into controller manager
-    controllers_yaml = load_yaml(moveit_pkg, "config/" + mount_control_name + 'ros2_controllers.yaml')
+    controllers_yaml = load_yaml(moveit_pkg, "config/ros2_controllers.yaml")
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
@@ -237,9 +226,6 @@ def generate_launch_description():
     ])]
 
         
-    
-
-    # print(f'Controllers to be loaded: {controllers_to_load}')
     # Pass controllers into controller spawner
     fairino_controller = TimerAction(
         period=2.0,
@@ -318,11 +304,3 @@ def generate_launch_description():
         move_group,
         moveit_obs_gen,
     ])
-    
-#    
-#    Includes
-#     * robot_state_publisher
-#     * move_group
-#     * moveit_rviz
-#     * ros2_control_node + controller spawners
-
