@@ -20,8 +20,6 @@ def load_yaml(package_name, file_path):
 
 def generate_launch_description():
     # Declare arguments
-    
-
     use_sim_time = LaunchConfiguration('use_sim_time')
     robot_model = LaunchConfiguration('robot_model')
     robot_mount = LaunchConfiguration('robot_mount')
@@ -98,11 +96,16 @@ def generate_launch_description():
             file_path=os.path.join(description_pkg_share, 'robots', 'test_fairino.urdf.xacro'),
             mappings={
                 "robot_model": robot_model,
-                "robot_mount": "test_rail",
-                "control_system": "moveit",
+                "robot_mount": robot_mount,
+                "control_system": "gazebo",
             }
         )
-        .robot_description_semantic(file_path="config/fairino5_v6_robot.srdf.xacro")
+        .robot_description_semantic(
+            file_path="config/fairino5_v6_robot.srdf.xacro",
+            mappings={
+                "mount": robot_mount
+            }
+        )
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .planning_pipelines(pipelines=["ompl"])
         .to_moveit_configs()

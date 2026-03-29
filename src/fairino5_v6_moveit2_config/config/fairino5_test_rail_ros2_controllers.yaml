@@ -3,12 +3,11 @@ controller_manager:
   ros__parameters:
     update_rate: 1000
     
-    # List BOTH controllers here
     fairino5_controller:
       type: joint_trajectory_controller/JointTrajectoryController
     
-    # test_rail_controller:
-    #   type: joint_trajectory_controller/JointTrajectoryController
+    test_rail_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -16,7 +15,7 @@ controller_manager:
 fairino5_controller:
   ros__parameters:
     joints:
-      - test_rail_joint
+      # - test_rail_joint
       - j1
       - j2
       - j3
@@ -28,12 +27,12 @@ fairino5_controller:
     state_interfaces:
       - position
 
-# test_rail_controller:
-#   ros__parameters:
-#     joints:
-#       - test_rail_joint
-#     command_interfaces:
-#       - position
+test_rail_controller:
+  ros__parameters:
+    joints:
+      - test_rail_joint
+    command_interfaces:
+      - position
 
-#     state_interfaces:
-#       - position
+    state_interfaces:
+      - position

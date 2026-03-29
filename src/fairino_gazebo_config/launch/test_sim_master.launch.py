@@ -6,7 +6,8 @@ from launch.actions import (
     IncludeLaunchDescription,
     SetEnvironmentVariable,
     ExecuteProcess,
-    TimerAction
+    TimerAction,
+    LogInfo
 )
 from launch.substitutions import (
     Command,
@@ -22,13 +23,24 @@ from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotE
 from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import PathJoinSubstitution, TextSubstitution, LaunchConfiguration
 import xacro
-
+import yaml
 """
 THIS CREATES A DIGITAL FAIRINO, THAT MIRRORS THE ROBOT AT THE IP ADDRESS SET IN /rt_state_data
 
 USE NORMAL CONTROL FOR YOUR ROBOT AND THE GAZEBO BOT WILL FOLLOW
 
 """
+
+def load_yaml(package_name, file_path):
+    package_path = get_package_share_directory(package_name)
+    absolute_file_path = os.path.join(package_path, file_path)
+
+    try:
+        with open(absolute_file_path) as file:
+            return yaml.safe_load(file)
+    except OSError:  # parent of IOError, OSError *and* WindowsError where available
+        return None
+
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('fairino_description')
@@ -116,31 +128,42 @@ def generate_launch_description():
     )
 
     ##########################################################
-
     # ------------------------
     # Gazebo
     # ------------------------
     # Create an instance of Gazebo
-    world_string = PythonExpression([
-        "'src/fairino_gazebo_config/worlds/", LaunchConfiguration('world'), "'"
-    ])
+    
     # Spawn the fairino_controller for the gazebo robot
     rail_controller_arg = PythonExpression([
         "'", LaunchConfiguration('robot_model'), "_controller'"
     ])
+    
+    # Get moveit config share package for passed robot:
+    if(LaunchConfigurationEquals('robot_model', "fairino3")):
+        moveit_pkg = "fairino3_v6_moveit2_config"
+    elif(LaunchConfigurationEquals('robot_model', "fairino5")):
+        moveit_pkg = "fairino5_v6_moveit2_config"
+    elif(LaunchConfigurationEquals('robot_model', "fairino10")):
+        moveit_pkg = "fairino10_v6_moveit2_config"
+    elif(LaunchConfigurationEquals('robot_model', "fairino16")):
+        moveit_pkg = "fairino16_v6_moveit2_config"
+    elif(LaunchConfigurationEquals('robot_model', "fairino20")):
+        moveit_pkg = "fairino20_v6_moveit2_config"
+    elif(LaunchConfigurationEquals('robot_model', "fairino30")):
+        moveit_pkg = "fairino30_v6_moveit2_config"
+    else:
+        moveit_pkg = "fairino5_v6_moveit2_config" # If bad value is passed, give FR5 as default
+    # moveit_config_share = os.path.join(get_package_share_directory(moveit_pkg), 'config')
 
-    rail_controller = TimerAction(
-        period=3.0,
-        actions=[Node(
-            package="controller_manager",
-            executable="spawner",
-            arguments=[rail_controller_arg],
-            output="screen",
-            condition=LaunchConfigurationNotEquals('mount', 'world')
-        )]
-    )
 
-    controllers_yaml = os.path.join(get_package_share_directory('fairino5_v6_moveit2_config'), 'config', 'fairino5_test_rail_ros2_controllers.yaml')
+    # Get controller name for robot + rail or just robot
+    if(LaunchConfigurationEquals('mount', 'world')):
+        mount_control_name = ""
+    else:
+        mount_control_name = robot_model + "_" + mount_control_name + "_"
+    
+    # Load controllers into controller manager
+    controllers_yaml = load_yaml(moveit_pkg, "config/" + mount_control_name + 'ros2_controllers.yaml')
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
@@ -150,15 +173,13 @@ def generate_launch_description():
             controllers_yaml # It will look for this file if mount != world
         ],
         remappings=[("/controller_manager/robot_description", "/robot_description")],
-        output='screen'
+        output='screen',
     )
-
-
 
 
     # Spawn the joint_state_broadcaster for the gazebo robot
     joint_state_broadcaster = TimerAction(
-        period=3.0,
+        period=1.0,
         actions=[
             Node(
             package="controller_manager",
@@ -182,7 +203,12 @@ def generate_launch_description():
                 'move_group.launch.py'
             ])
         ]),
-        launch_arguments={'use_sim_time': 'True',}.items(),
+        launch_arguments={
+            'use_sim_time': 'True',
+            'robot_model': robot_model,
+            'robot_mount': LaunchConfiguration('mount'),
+        
+        }.items(),
         condition=IfCondition(LaunchConfiguration('moveit'))
     )
 
@@ -199,25 +225,48 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('moveit')),
         parameters=[{"use_sim_time": True}]
     )
-    
-    arm_controller_arg = PythonExpression([
+
+
+    # Grab controllers to load
+    fairino_controller_name = [PythonExpression([
         "'", LaunchConfiguration('robot_model'), "_controller'"
-    ])
-    controller = TimerAction(
-        period=3.0,
+    ])]
+    
+    mount_controller = [PythonExpression([
+        "'", LaunchConfiguration('mount'), "_controller'"
+    ])]
+
+        
+    
+
+    # print(f'Controllers to be loaded: {controllers_to_load}')
+    # Pass controllers into controller spawner
+    fairino_controller = TimerAction(
+        period=2.0,
         actions=[
             Node(
                 package="controller_manager",
                 executable="spawner",
-                # arguments=[arm_controller_arg, "test_rail_controller"],
-                arguments=['fairino5_controller'],
+                arguments=[fairino_controller_name],
                 output="screen",
-            )
-        ]
+            ),
+        ],
     )
 
+    rail_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[mount_controller],
+        condition=LaunchConfigurationNotEquals('mount', 'world'),
+        output="screen",
+    )
+
+    # Spawn gazebo
+    world_string = PythonExpression([
+        "'src/fairino_gazebo_config/worlds/", LaunchConfiguration('world'), "'"
+    ])
     gazebo = TimerAction(
-        period=4.0,
+        period=2.0,
         actions=[
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([
@@ -233,6 +282,7 @@ def generate_launch_description():
         
     )
 
+    # Create robot in robot from robot_description
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
@@ -240,7 +290,7 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_sim')),
     )
 
-     # World file -> MoveIt collision parser
+    # World file -> MoveIt collision parser
     moveit_obs_gen = Node(
         package="fairino_gazebo_config",
         executable="gazebo_world_to_moveit.py",
@@ -248,7 +298,7 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('moveit')),
         parameters=[{"use_sim_time": False}]
     )
-            
+
     
     return LaunchDescription([
         SetEnvironmentVariable(name='IGN_GAZEBO_RESOURCE_PATH', value=gazebo_resource_path),
@@ -257,28 +307,22 @@ def generate_launch_description():
         robot_model_arg,
         useSim_arg,
         moveit_arg,
-        # static_virtual_joint_tfs,
         rsp,
         spawn_robot,
         controller_manager,
         joint_state_broadcaster,
-        # rail_controller,
-        # arm_controller,
-        # spawn_rail_controller,
-        controller,
+        fairino_controller,
+        rail_controller,
         gazebo,
         rviz,
-        # joint_state_publisher_gui,
         move_group,
         moveit_obs_gen,
     ])
     
 #    
 #    Includes
-#     * static_virtual_joint_tfs
 #     * robot_state_publisher
 #     * move_group
 #     * moveit_rviz
-#     * warehouse_db (optional)
 #     * ros2_control_node + controller spawners
 
