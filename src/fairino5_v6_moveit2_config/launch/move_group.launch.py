@@ -1,7 +1,14 @@
 from moveit_configs_utils import MoveItConfigsBuilder
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution, LaunchConfiguration
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    TextSubstitution,
+    PythonExpression
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 import os
@@ -45,7 +52,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'robot_model',
-            default_value="test_fairino",
+            default_value="fairino5",
             description="Robot model to use"
         )
     )
@@ -61,6 +68,13 @@ def generate_launch_description():
             'moveit',
             default_value='true',
             description='Whether to launch MoveIt'
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'gazebo',
+            default_value='False',
+            description='Whether to launch Gazebo'
         )
     )
 
@@ -87,7 +101,9 @@ def generate_launch_description():
     # )
     # Find the path to the description package
     description_pkg_share = get_package_share_directory('fairino_description')
-    
+    control_system_arg = PythonExpression([
+        "'gazebo' if '", LaunchConfiguration('gazebo'), "' == 'True' else 'moveit'"
+    ])
     # Build MoveIt configuration
     moveit_config = (
         MoveItConfigsBuilder("fairino5_v6_robot", package_name="fairino5_v6_moveit2_config")
@@ -97,7 +113,7 @@ def generate_launch_description():
             mappings={
                 "robot_model": robot_model,
                 "robot_mount": robot_mount,
-                "control_system": "gazebo",
+                "control_system": control_system_arg,
             }
         )
         .robot_description_semantic(
@@ -130,7 +146,7 @@ def generate_launch_description():
     # Build the complete parameters list
     move_group_parameters = [
         moveit_config.to_dict(),
-        {"use_sim_time": use_sim_time},
+        {"use_sim_time": LaunchConfiguration('gazebo')},
         planning_scene_monitor_parameters,
     ]
     
