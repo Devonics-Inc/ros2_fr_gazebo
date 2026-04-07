@@ -90,16 +90,16 @@ def generate_launch_description():
         description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
     
-    useSim = LaunchConfiguration('use_sim')
+    useSim = LaunchConfiguration('gazebo')
     useSim_arg = DeclareLaunchArgument(
-        'use_sim',
+        'gazebo',
         default_value="false",
         description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
 
     # PASS PROPER CONTROL ARGUMENT BASED ON CLI ARGS
     control_system_arg = PythonExpression([
-        "'control_system:=gazebo' if '", LaunchConfiguration('use_sim'), "' == 'true' else 'control_system:=moveit'"
+        "'control_system:=gazebo' if '", LaunchConfiguration('gazebo'), "' == 'True' else 'control_system:=moveit'"
     ])
 
     robot_description = Command([
@@ -115,7 +115,7 @@ def generate_launch_description():
         ' ',
         "robot_mount:=", LaunchConfiguration('mount'),
         ' ',
-        "control_system:=gazebo",
+        control_system_arg,
         ' ',
     ])
 
@@ -173,7 +173,11 @@ def generate_launch_description():
             Node(
             package="controller_manager",
             executable="spawner",
-            arguments=["joint_state_broadcaster"],
+            arguments=["joint_state_broadcaster",
+                    "-c", "/controller_manager",
+                   "-t", "joint_state_broadcaster/JointStateBroadcaster"
+            ],
+            respawn=True,
             output="screen",
         )]
     )
@@ -193,12 +197,26 @@ def generate_launch_description():
             ])
         ]),
         launch_arguments={
-            'use_sim_time': 'True',
+            'use_sim_time': LaunchConfiguration('gazebo'),
             'robot_model': robot_model,
             'robot_mount': LaunchConfiguration('mount'),
+            'gazebo': LaunchConfiguration('gazebo'),
         
         }.items(),
         condition=IfCondition(LaunchConfiguration('moveit'))
+    )
+
+    static_tfs = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare(PythonExpression([
+                    "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
+                ])),
+                'launch',
+                'static_virtual_joint_tfs.launch.py'
+            ])
+        ]),
+        condition=LaunchConfigurationNotEquals('gazebo', 'true')
     )
 
     rviz = Node(
@@ -212,7 +230,7 @@ def generate_launch_description():
             'moveit.rviz'
         ])],
         condition=IfCondition(LaunchConfiguration('moveit')),
-        parameters=[{"use_sim_time": True}]
+        parameters=[{"use_sim_time": False}]
     )
 
 
@@ -228,12 +246,18 @@ def generate_launch_description():
         
     # Pass controllers into controller spawner
     fairino_controller = TimerAction(
-        period=2.0,
+        period=1.0,
         actions=[
             Node(
                 package="controller_manager",
                 executable="spawner",
-                arguments=[fairino_controller_name],
+                arguments=[fairino_controller_name,
+                        "-c", "/controller_manager",
+                        "-t", "joint_trajectory_controller/JointTrajectoryController"
+                        
+
+                ],
+                respawn=True,
                 output="screen",
             ),
         ],
@@ -242,8 +266,12 @@ def generate_launch_description():
     rail_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[mount_controller],
+        arguments=[mount_controller,
+                   "-c", "/controller_manager",
+                   "-t", "joint_trajectory_controller/JointTrajectoryController"
+        ],
         condition=LaunchConfigurationNotEquals('mount', 'world'),
+        respawn=True,
         output="screen",
     )
 
@@ -262,7 +290,7 @@ def generate_launch_description():
                     'gz_args': [world_string, ' -r']
 
                 }.items(),
-                condition=IfCondition(LaunchConfiguration('use_sim'))
+                condition=IfCondition(LaunchConfiguration('gazebo'))
             )
         ]
         
@@ -273,7 +301,7 @@ def generate_launch_description():
         package="ros_gz_sim",
         executable="create",
         arguments=['-topic', 'robot_description', '-x', '0.0', '-y','0.0',  '-z','0.0',  '-R','0.0',  '-P', '0.0', '-Y','0.0'],
-        condition=IfCondition(LaunchConfiguration('use_sim')),
+        condition=IfCondition(LaunchConfiguration('gazebo')),
     )
 
     # World file -> MoveIt collision parser
@@ -295,6 +323,7 @@ def generate_launch_description():
         moveit_arg,
         rsp,
         spawn_robot,
+        static_tfs,
         controller_manager,
         joint_state_broadcaster,
         fairino_controller,

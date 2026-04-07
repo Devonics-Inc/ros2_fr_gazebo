@@ -200,7 +200,10 @@ def generate_launch_description():
     spawn_rail_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[PythonExpression(["'", mount, "_controller'"])],
+        arguments=[PythonExpression(["'", mount, "_controller'"]),
+                   "-c", "/controller_manager",
+                   "-t", "joint_trajectory_controller/JointTrajectoryController"
+        ],
         output="screen",
         condition=LaunchConfigurationNotEquals('mount', 'world')
     )
@@ -211,7 +214,10 @@ def generate_launch_description():
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster"],
+        arguments=["joint_state_broadcaster",
+                   "-c", "/controller_manager",
+                   "-t", "joint_state_broadcaster/JointStateBroadcaster"
+        ],
         output="screen",
     )
 
