@@ -24,6 +24,7 @@ from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import PathJoinSubstitution, TextSubstitution, LaunchConfiguration
 import xacro
 import yaml
+import sys
 """
 THIS CREATES A DIGITAL FAIRINO, THAT MIRRORS THE ROBOT AT THE IP ADDRESS SET IN /rt_state_data
 
@@ -99,8 +100,25 @@ def generate_launch_description():
 
     # PASS PROPER CONTROL ARGUMENT BASED ON CLI ARGS
     control_system_arg = PythonExpression([
-        "'control_system:=gazebo' if '", LaunchConfiguration('gazebo'), "' == 'True' else 'control_system:=moveit'"
+        "'control_system:=gazebo' if '", LaunchConfiguration('gazebo'), "' == 'true' else 'control_system:=moveit'"
     ])
+
+
+    robot_model_str = "fairino5"  # default
+    for arg in sys.argv:
+        if arg.startswith("robot_model:="):
+            print("\n\n\n\n" , arg, "\n\n\n")
+            robot_model_str = arg.split(":=")[1]
+            print("\n\n\n\n" , robot_model_str, "\n\n\n")
+
+    moveit_pkg_map = {
+        "fairino3":  "fairino3_v6_moveit2_config",
+        "fairino5":  "fairino5_v6_moveit2_config",
+        "fairino10": "fairino10_v6_moveit2_config",
+        "fairino16": "fairino16_v6_moveit2_config",
+        "fairino20": "fairino20_v6_moveit2_config",
+        "fairino30": "fairino30_v6_moveit2_config",
+    }
 
     robot_description = Command([
         FindExecutable(name='xacro'),
@@ -111,7 +129,7 @@ def generate_launch_description():
             "test_fairino.urdf.xacro"
         ]),
         ' ',
-        "robot_model:=", LaunchConfiguration('robot_model'),
+        "robot_model:=", robot_model_str,
         ' ',
         "robot_mount:=", LaunchConfiguration('mount'),
         ' ',
@@ -134,34 +152,45 @@ def generate_launch_description():
     # Create an instance of Gazebo
     
     
-    # Get moveit config share package for passed robot:
-    if(LaunchConfigurationEquals('robot_model', "fairino3")):
-        moveit_pkg = "fairino3_v6_moveit2_config"
-    elif(LaunchConfigurationEquals('robot_model', "fairino5")):
-        moveit_pkg = "fairino5_v6_moveit2_config"
-    elif(LaunchConfigurationEquals('robot_model', "fairino10")):
-        moveit_pkg = "fairino10_v6_moveit2_config"
-    elif(LaunchConfigurationEquals('robot_model', "fairino16")):
-        moveit_pkg = "fairino16_v6_moveit2_config"
-    elif(LaunchConfigurationEquals('robot_model', "fairino20")):
-        moveit_pkg = "fairino20_v6_moveit2_config"
-    elif(LaunchConfigurationEquals('robot_model', "fairino30")):
-        moveit_pkg = "fairino30_v6_moveit2_config"
-    else:
-        moveit_pkg = "fairino5_v6_moveit2_config" # If bad value is passed, give FR5 as default
+    moveit_pkg = moveit_pkg_map.get(robot_model_str, "fairino5_v6_moveit2_config")
+
+    controllers_yaml_path = os.path.join(
+        get_package_share_directory(moveit_pkg),
+        "config",
+        "ros2_controllers.yaml"
+    )
 
 
     # Load controllers into controller manager
     controllers_yaml = load_yaml(moveit_pkg, "config/ros2_controllers.yaml")
+    controllers_yaml_path = os.path.join(
+        get_package_share_directory(moveit_pkg),
+        "config",
+        "ros2_controllers.yaml"
+    )
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[
-            {'robot_description': robot_description},
-            {'use_sim_time': False},
-            controllers_yaml # It will look for this file if mount != world
+            # {'use_sim_time': False},
+            controllers_yaml_path
         ],
-        remappings=[("/controller_manager/robot_description", "/robot_description")],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description")
+        ],
+        output='screen',
+    )
+
+    controller_manager = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[
+            {'use_sim_time': False},
+            controllers_yaml_path,   # ← file path string, not parsed dict
+        ],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description")
+        ],
         output='screen',
     )
 
@@ -171,15 +200,16 @@ def generate_launch_description():
         period=1.0,
         actions=[
             Node(
-            package="controller_manager",
-            executable="spawner",
-            arguments=["joint_state_broadcaster",
+                package="controller_manager",
+                executable="spawner",
+                arguments=[
+                    "joint_state_broadcaster",
                     "-c", "/controller_manager",
-                   "-t", "joint_state_broadcaster/JointStateBroadcaster"
-            ],
-            respawn=True,
-            output="screen",
-        )]
+                    "--param-file", controllers_yaml_path,  # ← add this
+                ],
+                output="screen",
+            )
+        ]
     )
 
 
@@ -251,13 +281,12 @@ def generate_launch_description():
             Node(
                 package="controller_manager",
                 executable="spawner",
-                arguments=[fairino_controller_name,
-                        "-c", "/controller_manager",
-                        "-t", "joint_trajectory_controller/JointTrajectoryController"
-                        
-
+                arguments=[
+                    fairino_controller_name,
+                    "-c", "/controller_manager",
+                    "--controller-manager-timeout", "10",
+                    "--param-file", controllers_yaml_path,  # ← add this
                 ],
-                respawn=True,
                 output="screen",
             ),
         ],
@@ -290,10 +319,9 @@ def generate_launch_description():
                     'gz_args': [world_string, ' -r']
 
                 }.items(),
-                condition=IfCondition(LaunchConfiguration('gazebo'))
+                condition=LaunchConfigurationEquals('gazebo', 'true')
             )
         ]
-        
     )
 
     # Create robot in robot from robot_description
@@ -301,7 +329,7 @@ def generate_launch_description():
         package="ros_gz_sim",
         executable="create",
         arguments=['-topic', 'robot_description', '-x', '0.0', '-y','0.0',  '-z','0.0',  '-R','0.0',  '-P', '0.0', '-Y','0.0'],
-        condition=IfCondition(LaunchConfiguration('gazebo')),
+        condition=LaunchConfigurationEquals('gazebo', 'true'),
     )
 
     # World file -> MoveIt collision parser
@@ -323,7 +351,7 @@ def generate_launch_description():
         moveit_arg,
         rsp,
         spawn_robot,
-        static_tfs,
+        # static_tfs,
         controller_manager,
         joint_state_broadcaster,
         fairino_controller,
