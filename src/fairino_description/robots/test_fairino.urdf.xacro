@@ -3,7 +3,7 @@
 
     <xacro:arg name="robot_model" default="fairino5" />
     <xacro:arg name="robot_mount" default="world" />
-    <xacro:arg name="control_system" default="gazebo" />
+    <xacro:arg name="control_system" default="moveit" />
 
     <xacro:property name="robot_model" value="$(arg robot_model)" />
     <xacro:property name="robot_mount_name" value="$(arg robot_mount)" />
@@ -42,7 +42,12 @@
     <xacro:include filename="$(find ${robot_config_package})/config/${robot_model}_v6_robot.ros2_control.xacro" />
     
     
-    <xacro:fairino5_v6_robot_ros2_control name="FakeSystem" initial_positions_file="${initial_positions_file}" ros2_control_header="$(arg robot_mount)" />
+    <xacro:fairino5_v6_robot_ros2_control
+        name="FakeSystem"
+        initial_positions_file="${initial_positions_file}"
+        ros2_control_header="$(arg robot_mount)" 
+        control_system="$(arg control_system)"
+    />
     
 
 </robot>
