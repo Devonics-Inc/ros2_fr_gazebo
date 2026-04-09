@@ -73,7 +73,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'gazebo',
-            default_value='False',
+            default_value='false',
             description='Whether to launch Gazebo'
         )
     )
@@ -102,7 +102,7 @@ def generate_launch_description():
     # Find the path to the description package
     description_pkg_share = get_package_share_directory('fairino_description')
     control_system_arg = PythonExpression([
-        "'gazebo' if '", LaunchConfiguration('gazebo'), "' == 'True' else 'moveit'"
+        "'gazebo' if '", LaunchConfiguration('gazebo'), "' == 'true' else 'moveit'"
     ])
     # Build MoveIt configuration
     moveit_config = (
