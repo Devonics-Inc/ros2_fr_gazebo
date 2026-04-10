@@ -18,7 +18,6 @@
               </xacro:if>
           </hardware>
           <xacro:if value="${ros2_control_header != 'world'}">
-              <!-- <xacro:include filename="$(find rail_description)/config/test_rail_controller.ros2_control.xacro"/> -->
               <joint name="${ros2_control_header}_joint">
                   <command_interface name="position"/>
                   <state_interface name="position">
@@ -67,7 +66,7 @@
             <gazebo>
               <plugin filename="libign_ros2_control-system.so"
               name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                  <parameters>$(find fairino5_v6_moveit2_config)/config/${controllers_yaml_name}</parameters>
+                  <parameters>$(find fairino5_v6_moveit2_config)/config/ros2_controllers.yaml</parameters>
               </plugin>
           </gazebo>
         </xacro:if>
