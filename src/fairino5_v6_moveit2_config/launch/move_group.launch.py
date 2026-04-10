@@ -79,31 +79,11 @@ def generate_launch_description():
     )
 
     
-    # # Build MoveIt configuration
-    # moveit_config = (
-    #     MoveItConfigsBuilder("fairino5_v6_robot", package_name="fairino5_v6_moveit2_config")
-    #     .robot_description(file_path=
-    #         PathJoinSubstitution([
-    #             FindPackageShare('fairino_description'),
-    #             'robots',
-    #             "test_fairino.urdf.xacro"
-    #         ]),
-    #         mappings={
-    #             "robot_model": robot_model,
-    #             "robot_mount": robot_mount,
-    #             "control_system": control_system,
-    #         }
-    #     )
-    #     .robot_description_semantic(file_path="config/fairino5_v6_robot.srdf.xacro")
-    #     .trajectory_execution(file_path="config/moveit_controllers.yaml")
-    #     .planning_pipelines(pipelines=["ompl"])
-    #     .to_moveit_configs()
-    # )
     # Find the path to the description package
     description_pkg_share = get_package_share_directory('fairino_description')
-    control_system_arg = PythonExpression([
-        "'gazebo' if '", LaunchConfiguration('gazebo'), "' == 'true' else 'moveit'"
-    ])
+    # control_system_arg = PythonExpression([
+    #     "'gazebo' if '", LaunchConfiguration('gazebo'), "' == 'true' else 'moveit'"
+    # ])
     # Build MoveIt configuration
     moveit_config = (
         MoveItConfigsBuilder("fairino5_v6_robot", package_name="fairino5_v6_moveit2_config")
@@ -113,7 +93,7 @@ def generate_launch_description():
             mappings={
                 "robot_model": robot_model,
                 "robot_mount": robot_mount,
-                "control_system": control_system_arg,
+                "control_system": control_system,
             }
         )
         .robot_description_semantic(
@@ -143,10 +123,11 @@ def generate_launch_description():
         "publish_robot_description_semantic": True,
     }
     
+    
     # Build the complete parameters list
     move_group_parameters = [
         moveit_config.to_dict(),
-        {"use_sim_time": LaunchConfiguration('gazebo')},
+        {"use_sim_time": use_sim_time},
         planning_scene_monitor_parameters,
     ]
     

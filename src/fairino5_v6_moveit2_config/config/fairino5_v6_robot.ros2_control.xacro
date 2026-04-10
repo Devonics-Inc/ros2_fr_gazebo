@@ -7,7 +7,10 @@
         <xacro:property name="controllers_yaml_name" value="${'ros2_controllers.yaml' if ros2_control_header == 'world' else 'fairino5_' + ros2_control_header + '_ros2_controllers.yaml'}"/>     
         <ros2_control name="${name}" type="system">
             <hardware>
-              <xacro:if value="${control_system != 'gazebo'}">
+              <xacro:if value="${control_system == 'moveit'}">
+                  <plugin>mock_components/GenericSystem</plugin>
+              </xacro:if>
+              <xacro:if value="${control_system == 'hardware'}">
                   <plugin>fairino_hardware/FairinoHardwareInterface</plugin>
               </xacro:if>
               <xacro:if value="${control_system == 'gazebo'}">
