@@ -109,18 +109,18 @@ def generate_launch_description():
     # ])
     # Build MoveIt configuration
     moveit_config = (
-        MoveItConfigsBuilder(f"{robot_model}_v6_robot", package_name=moveit_pkg)
+        MoveItConfigsBuilder(f"{robot_model_str}_v6_robot", package_name=moveit_pkg)
         .robot_description(
             # Use a standard string path instead of a Substitution
             file_path=os.path.join(description_pkg_share, 'robots', 'test_fairino.urdf.xacro'),
             mappings={
-                "robot_model": robot_model,
+                "robot_model": robot_model_str,
                 "robot_mount": robot_mount,
                 "control_system": control_system,
             }
         )
         .robot_description_semantic(
-            file_path=f"config/{robot_model}_v6_robot.srdf.xacro",
+            file_path=f"config/{robot_model_str}_v6_robot.srdf.xacro",
             mappings={
                 "mount": robot_mount
             }

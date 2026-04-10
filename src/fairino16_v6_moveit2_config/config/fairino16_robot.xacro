@@ -1,22 +1,24 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:macro name="fairino5">
+    <xacro:macro name="fairino16">
         <link
             name="base_link">
             <inertial>
-                <origin
-                    xyz="-0.00031896 -0.00029673 0.042463"
-                    rpy="0 0 0" />
-                <mass
-                    value="1.6185" />
-                <inertia
-                    ixx="0.0030836"
-                    ixy="1.5354E-05"
-                    ixz="-1.9315E-05"
-                    iyy="0.0030825"
-                    iyz="-1.7918E-05"
-                    izz="0.0045209" />
+            <origin
+                xyz="-0.00017171 -0.00016075 0.041272"
+                rpy="0 0 0" />
+            <mass
+                value="1.6231" />
+            <inertia
+                ixx="0.0039513"
+                ixy="1.1032E-05"
+                ixz="-1.0078E-05"
+                iyy="0.0039509"
+                iyz="-9.408E-06"
+                izz="0.0063729" />
             </inertial>
             <visual>
             <origin
@@ -24,7 +26,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/base_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/base_link.STL" />
             </geometry>
             <material
                 name="">
@@ -38,7 +40,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/base_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/base_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -46,17 +48,17 @@
             name="shoulder_link">
             <inertial>
             <origin
-                xyz="5.0029E-07 -0.0040922 0.14629"
+                xyz="2.6949E-07 -0.0077161 0.17504"
                 rpy="0 0 0" />
             <mass
-                value="8" />
+                value="3.7152" />
             <inertia
-                ixx="0.010731"
-                ixy="-8.0587E-09"
-                ixz="-3.6773E-08"
-                iyy="0.010408"
-                iyz="0.00012853"
-                izz="0.0081793" />
+                ixx="0.015538"
+                ixy="-6.8007E-08"
+                ixz="-8.8038E-08"
+                iyy="0.014566"
+                iyz="0.00023847"
+                izz="0.012006" />
             </inertial>
             <visual>
             <origin
@@ -64,7 +66,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/shoulder_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/shoulder_link.STL" />
             </geometry>
             <material
                 name="">
@@ -78,7 +80,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/shoulder_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/shoulder_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -97,7 +99,7 @@
             <limit
             lower="-3.0543"
             upper="3.0543"
-            effort="150"
+            effort="330"
             velocity="3.15" />
             <calibration
             rising="0"
@@ -106,26 +108,26 @@
             damping="0"
             friction="0" />
             <safety_controller
-            soft_lower_limit="-3.0543"
-            soft_upper_limit="3.0543"
-            k_position="15"
-            k_velocity="10" />
+            soft_upper_limit="3.0543261"
+            soft_lower_limit="-3.0543261"
+            k_position="100.0"
+            k_velocity="40.0" />
         </joint>
         <link
             name="upperarm_link">
             <inertial>
             <origin
-                xyz="-0.2125 -5.7643E-09 0.1346"
+                xyz="-0.20845 -1.0388E-06 0.18245"
                 rpy="0 0 0" />
             <mass
-                value="5" />
+                value="9.4622" />
             <inertia
-                ixx="0.028392"
-                ixy="-1.337E-07"
-                ixz="-3.9895E-09"
-                iyy="0.4559"
-                iyz="4.214E-08"
-                izz="0.44974" />
+                ixx="0.025921"
+                ixy="2.097E-07"
+                ixz="0.0025747"
+                iyy="0.37903"
+                iyz="1.3969E-07"
+                izz="0.37439" />
             </inertial>
             <visual>
             <origin
@@ -133,7 +135,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/upperarm_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/upperarm_link.STL" />
             </geometry>
             <material
                 name="">
@@ -147,7 +149,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/upperarm_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/upperarm_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -155,7 +157,7 @@
             name="j2"
             type="revolute">
             <origin
-            xyz="0 0 0.152"
+            xyz="0 0 0.18"
             rpy="1.5708 0 0" />
             <parent
             link="shoulder_link" />
@@ -166,7 +168,7 @@
             <limit
             lower="-4.6251"
             upper="1.4835"
-            effort="150"
+            effort="330"
             velocity="3.15" />
             <calibration
             rising="0"
@@ -175,26 +177,26 @@
             damping="0"
             friction="0" />
             <safety_controller
-            soft_lower_limit="-4.6251"
-            soft_upper_limit="1.4835"
-            k_position="15"
-            k_velocity="10" />
+            soft_upper_limit="3.0543261"
+            soft_lower_limit="-3.0543261"
+            k_position="100.0"
+            k_velocity="40.0" />
         </joint>
         <link
             name="forearm_link">
             <inertial>
             <origin
-                xyz="-0.18793 -8.4503E-07 0.0066357"
+                xyz="-0.23441 5.6569E-07 0.048131"
                 rpy="0 0 0" />
             <mass
-                value="5" />
+                value="2.9964" />
             <inertia
-                ixx="0.0085096"
-                ixy="2.1613E-06"
-                ixz="-0.0068678"
-                iyy="0.16971"
-                iyz="3.7086E-08"
-                izz="0.16854" />
+                ixx="0.003827"
+                ixy="-1.6004E-07"
+                ixz="-0.0011373"
+                iyy="0.054019"
+                iyz="-5.5129E-08"
+                izz="0.053512" />
             </inertial>
             <visual>
             <origin
@@ -202,7 +204,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/forearm_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/forearm_link.STL" />
             </geometry>
             <material
                 name="">
@@ -216,7 +218,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/forearm_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/forearm_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -224,7 +226,7 @@
             name="j3"
             type="revolute">
             <origin
-            xyz="-0.425 0 0"
+            xyz="-0.52 0 0"
             rpy="0 0 0" />
             <parent
             link="upperarm_link" />
@@ -244,26 +246,26 @@
             damping="0"
             friction="0" />
             <safety_controller
-            soft_lower_limit="-2.8274"
-            soft_upper_limit="2.8274"
-            k_position="15"
-            k_velocity="10" />
+            soft_upper_limit="3.0543261"
+            soft_lower_limit="-3.0543261"
+            k_position="100.0"
+            k_velocity="40.0" />
         </joint>
         <link
             name="wrist1_link">
             <inertial>
             <origin
-                xyz="4.98E-07 -0.003754 0.097155"
+                xyz="2.4949E-07 -0.002597 0.1549"
                 rpy="0 0 0" />
             <mass
-                value="1.5" />
+                value="2.1573" />
             <inertia
-                ixx="0.00216"
-                ixy="4.888E-09"
-                ixz="3.1528E-08"
-                iyy="0.0015455"
-                iyz="3.7678E-05"
-                izz="0.0019902" />
+                ixx="0.0033086"
+                ixy="1.2835E-08"
+                ixz="6.0662E-08"
+                iyy="0.0024933"
+                iyz="3.9256E-05"
+                izz="0.003143" />
             </inertial>
             <visual>
             <origin
@@ -271,7 +273,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/wrist1_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/wrist1_link.STL" />
             </geometry>
             <material
                 name="">
@@ -285,7 +287,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/wrist1_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/wrist1_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -293,7 +295,7 @@
             name="j4"
             type="revolute">
             <origin
-            xyz="-0.39501 0 0"
+            xyz="-0.4 0 0"
             rpy="0 0 0" />
             <parent
             link="forearm_link" />
@@ -304,7 +306,7 @@
             <limit
             lower="-4.6251"
             upper="1.4835"
-            effort="28"
+            effort="54"
             velocity="3.2" />
             <calibration
             rising="0"
@@ -313,26 +315,26 @@
             damping="0"
             friction="0" />
             <safety_controller
-            soft_lower_limit="-4.6251"
-            soft_upper_limit="1.4835"
-            k_position="15"
-            k_velocity="10" />
+            soft_upper_limit="3.0543261"
+            soft_lower_limit="-3.0543261"
+            k_position="100.0"
+            k_velocity="40.0" />
         </joint>
         <link
             name="wrist2_link">
             <inertial>
             <origin
-                xyz="-4.5588E-07 0.0038617 0.098257"
+                xyz="-2.4949E-07 0.002597 0.1099"
                 rpy="0 0 0" />
             <mass
-                value="1.5" />
+                value="2.1573" />
             <inertia
-                ixx="0.0020612"
-                ixy="8.7064E-09"
-                ixz="-3.4742E-08"
-                iyy="0.0014477"
-                iyz="-2.8534E-05"
-                izz="0.0019573" />
+                ixx="0.0033086"
+                ixy="1.2835E-08"
+                ixz="-6.0662E-08"
+                iyy="0.0024933"
+                iyz="-3.9256E-05"
+                izz="0.003143" />
             </inertial>
             <visual>
             <origin
@@ -340,7 +342,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/wrist2_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/wrist2_link.STL" />
             </geometry>
             <material
                 name="">
@@ -349,12 +351,12 @@
             </material>
             </visual>
             <collision>
-            <origins
+            <origin
                 xyz="0 0 0"
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/wrist2_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/wrist2_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -362,7 +364,7 @@
             name="j5"
             type="revolute">
             <origin
-            xyz="0 0 0.1021"
+            xyz="0 0 0.159"
             rpy="1.5708 0 0" />
             <parent
             link="wrist1_link" />
@@ -373,7 +375,7 @@
             <limit
             lower="-3.0543"
             upper="3.0543"
-            effort="28"
+            effort="54"
             velocity="3.2" />
             <calibration
             rising="0"
@@ -382,26 +384,26 @@
             damping="0"
             friction="0" />
             <safety_controller
-            soft_lower_limit="-3.0543"
-            soft_upper_limit="3.0543"
-            k_position="15"
-            k_velocity="10" />
+            soft_upper_limit="3.0543261"
+            soft_lower_limit="-3.0543261"
+            k_position="100.0"
+            k_velocity="40.0" />
         </joint>
         <link
             name="wrist3_link">
             <inertial>
             <origin
-                xyz="7.7496E-05 1.7751E-05 0.076122"
+                xyz="-8.7063E-06 -3.2122E-05 0.082426"
                 rpy="0 0 0" />
             <mass
-                value="0.52542" />
+                value="0.20145" />
             <inertia
-                ixx="0.00027721"
-                ixy="-1.8677E-09"
-                ixz="-1.188E-07"
-                iyy="0.00027839"
-                iyz="2.2607E-07"
-                izz="0.00041605" />
+                ixx="0.0001117"
+                ixy="9.1303E-11"
+                ixz="6.3367E-09"
+                iyy="0.00011182"
+                iyz="9.9213E-08"
+                izz="0.00016776" />
             </inertial>
             <visual>
             <origin
@@ -409,7 +411,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/wrist3_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/wrist3_link.STL" />
             </geometry>
             <material
                 name="">
@@ -423,7 +425,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="package://fairino_description/meshes/fairino5_v6/wrist3_link.STL" />
+                filename="package://fairino_description/meshes/fairino16_v6/wrist3_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -431,7 +433,7 @@
             name="j6"
             type="revolute">
             <origin
-            xyz="0 0 0.102"
+            xyz="0 0 0.114"
             rpy="-1.5708 0 0" />
             <parent
             link="wrist2_link" />
@@ -442,7 +444,7 @@
             <limit
             lower="-3.0543"
             upper="3.0543"
-            effort="28"
+            effort="54"
             velocity="3.2" />
             <calibration
             rising="0"
@@ -451,10 +453,10 @@
             damping="0"
             friction="0" />
             <safety_controller
-            soft_lower_limit="-3.0543"
-            soft_upper_limit="3.0543"
-            k_position="15"
-            k_velocity="10" />
+            soft_upper_limit="3.0543261"
+            soft_lower_limit="-3.0543261"
+            k_position="100.0"
+            k_velocity="40.0" />
         </joint>
     </xacro:macro>
 </robot>

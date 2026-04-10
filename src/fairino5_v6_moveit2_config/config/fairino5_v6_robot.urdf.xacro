@@ -38,7 +38,7 @@
     </xacro:if>
 
     
-
+    
     <xacro:fairino5_v6_robot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
     
 </robot>

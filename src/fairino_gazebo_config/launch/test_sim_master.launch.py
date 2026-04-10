@@ -170,15 +170,6 @@ def generate_launch_description():
     # ------------------------
     # Create an instance of Gazebo
     
-    
-    moveit_pkg = moveit_pkg_map.get(robot_model_str, "fairino5_v6_moveit2_config")
-
-    controllers_yaml_path = os.path.join(
-        get_package_share_directory(moveit_pkg),
-        "config",
-        "ros2_controllers.yaml"
-    )
-
 
     # Load controllers into controller manager
     controllers_yaml = load_yaml(moveit_pkg, "config/ros2_controllers.yaml")
@@ -238,18 +229,17 @@ def generate_launch_description():
     move_group = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
-                FindPackageShare(PythonExpression([
-                    "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
-                ])),
+                FindPackageShare("fairino_gazebo_config"),
                 'launch',
                 'move_group.launch.py'
             ])
         ]),
         launch_arguments={
             'use_sim_time': str(control_system_str == "gazebo"),
-            'robot_model': robot_model,
+            'robot_model': robot_model_str,
             'robot_mount': LaunchConfiguration('mount'),
             'control_system': control_system_str,
+            'moveit_pkg': moveit_pkg,
         
         }.items(),
         condition=IfCondition(LaunchConfiguration('moveit'))
