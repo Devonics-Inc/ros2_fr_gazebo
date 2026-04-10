@@ -319,7 +319,6 @@ def generate_launch_description():
                    "-t", "joint_trajectory_controller/JointTrajectoryController"
         ],
         condition=LaunchConfigurationNotEquals('mount', 'world'),
-        respawn=True,
         output="screen",
     )
 
