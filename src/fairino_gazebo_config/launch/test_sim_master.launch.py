@@ -91,25 +91,20 @@ def generate_launch_description():
         description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
     
-    useSim = LaunchConfiguration('gazebo')
-    useSim_arg = DeclareLaunchArgument(
+    useGazebo = LaunchConfiguration('gazebo')
+    gazebo_arg = DeclareLaunchArgument(
         'gazebo',
         default_value="false",
-        description="Set to true to use moveit controller and obscicle porting from gazebo"
-    )
+        description="Set to true to use gazebo controller and spawn the passed world"
+    )    
 
-    # PASS PROPER CONTROL ARGUMENT BASED ON CLI ARGS
-    control_system_arg = PythonExpression([
-        "'control_system:=gazebo' if '", LaunchConfiguration('gazebo'), "' == 'true' else 'control_system:=moveit'"
-    ])
+    useHardware = LaunchConfiguration('hardware')
+    hardware_arg = DeclareLaunchArgument(
+        'hardware',
+        default_value="false",
+        description="Set to true to use load hardware controller"
+    )    
 
-
-    robot_model_str = "fairino5"  # default
-    for arg in sys.argv:
-        if arg.startswith("robot_model:="):
-            print("\n\n\n\n" , arg, "\n\n\n")
-            robot_model_str = arg.split(":=")[1]
-            print("\n\n\n\n" , robot_model_str, "\n\n\n")
 
     moveit_pkg_map = {
         "fairino3":  "fairino3_v6_moveit2_config",
@@ -119,6 +114,30 @@ def generate_launch_description():
         "fairino20": "fairino20_v6_moveit2_config",
         "fairino30": "fairino30_v6_moveit2_config",
     }
+
+    control_system_str = "moveit"  # default
+    robot_model_str = "fairino5"  # default
+    moveit_pkg = "fairino5_v6_moveit2_config"
+    for arg in sys.argv:
+        if arg.startswith("robot_model:="):
+            robot_model_str = arg.split(":=")[1]
+            moveit_pkg = moveit_pkg_map.get(robot_model_str, "fairino5_v6_moveit2_config")
+            print("\n\n\n\nUSING " , robot_model_str, "\n\n\n")
+        elif arg.startswith("hardware:="):
+            control_system_str = arg.split(":=")[1]
+            if("TRUE" in control_system_str.upper()):
+                control_system_str = "hardware"
+               
+        elif arg.startswith("gazebo:="):
+            if(control_system_str != "hardware"):
+                control_system_str = arg.split(":=")[1]
+                if("TRUE" in control_system_str.upper()):
+                    control_system_str = "gazebo"
+            else:
+                print("\n\n[INFO] Both 'gazebo' and 'hardware' passed into launch file; using hardware")
+    print("\n\n\n\nUSING CONTROL SYSTEM: ", control_system_str, "\n\n\n")
+
+
 
     robot_description = Command([
         FindExecutable(name='xacro'),
@@ -133,7 +152,7 @@ def generate_launch_description():
         ' ',
         "robot_mount:=", LaunchConfiguration('mount'),
         ' ',
-        control_system_arg,
+        "control_system:=", control_system_str,
         ' ',
     ])
 
@@ -227,10 +246,10 @@ def generate_launch_description():
             ])
         ]),
         launch_arguments={
-            'use_sim_time': LaunchConfiguration('gazebo'),
+            'use_sim_time': str(control_system_str == "gazebo"),
             'robot_model': robot_model,
             'robot_mount': LaunchConfiguration('mount'),
-            'gazebo': LaunchConfiguration('gazebo'),
+            'control_system': control_system_str,
         
         }.items(),
         condition=IfCondition(LaunchConfiguration('moveit'))
@@ -347,8 +366,9 @@ def generate_launch_description():
         world_arg,
         mount_arg,
         robot_model_arg,
-        useSim_arg,
+        gazebo_arg,
         moveit_arg,
+        hardware_arg,
         rsp,
         spawn_robot,
         # static_tfs,
