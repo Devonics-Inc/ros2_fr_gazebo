@@ -11,7 +11,6 @@ moveit_simple_controller_manager:
     action_ns: follow_joint_trajectory
     default: true
     joints:
-      - linear_rail_joint
       - j1
       - j2
       - j3

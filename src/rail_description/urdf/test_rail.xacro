@@ -1,0 +1,42 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="test_rail" params="prefix parent">
+    
+    <joint name="${prefix}base_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}"/>
+      <child link="${prefix}test_rail_base"/>
+    </joint>
+
+    <link name="${prefix}test_rail_base"/>
+
+    <joint name="${prefix}joint" type="prismatic">
+      <parent link="${prefix}test_rail_base"/>
+      <child link="${prefix}link"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="0.0" upper="1.5" effort="100.0" velocity="0.5"/>
+    </joint>
+
+    <link name="${prefix}link">
+      <visual>
+        <geometry><box size="0.2 0.2 0.05"/></geometry>
+      </visual>
+    </link>
+
+    <ros2_control name="${prefix}control" type="system">
+      <hardware>
+        <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${'$(arg control_system)' == 'gazebo'}">
+          <plugin>mock_components/GenericSystem</plugin>
+        </xacro:if>
+      </hardware>
+      <joint name="${prefix}joint">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+</robot>

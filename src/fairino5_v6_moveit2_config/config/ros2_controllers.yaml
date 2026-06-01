@@ -13,7 +13,6 @@ controller_manager:
 fairino5_controller:
   ros__parameters:
     joints:
-      - linear_rail_joint
       - j1
       - j2
       - j3

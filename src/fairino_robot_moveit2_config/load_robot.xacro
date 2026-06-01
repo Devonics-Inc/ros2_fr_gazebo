@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="load_robot">
+
+        <xacro:arg name="robot_model" default="fairino5_v6"/>
+        <xacro:arg name="mount" default="world"/>
+
+        <xacro:include filename="$(find fairino_description)/urdf/$(arg robot_model)_v6.urdf.xacro"/>
+        
+
+        <xacro:if value="${'$(arg mount)' == 'world'}">
+            <link name = "world"/>
+            <joint name="fixed" type="fixed">
+                <parent link="world"/>
+                <child link="base_link"/>
+            </joint>
+        </xacro:if>
+        
+        <xacro:if value="${'$(arg mount)' == 'rail'}">
+            <link name="rail_carriage">
+                <visual>
+                    <geometry>
+                    <box size="0.2 0.2 0.05"/>
+                    </geometry>
+                </visual>
+            </link>
+        </xacro:if>
+    </xacro:macro>
+</robot>
+                <!-- START OF CHANGES-->

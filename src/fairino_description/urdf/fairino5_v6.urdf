@@ -4,13 +4,14 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="fairino5_v6_robot">
-  <link name="world"/>
 <!--   
   <joint name="fixed" type="fixed">
     <parent link="world"/>
     <child link="base_link"/>
   </joint> -->
     <!-- BEGINNING OF RAIL CHANGES-->
+
+  <!--
   <joint name="linear_rail_joint" type="prismatic">
     <parent link="world"/>
     <child link="rail_carriage"/>
@@ -26,11 +27,13 @@
       </geometry>
     </visual>
   </link>
-  <!-- Re-parent your robot base to the carriage -->
+  
   <joint name="base_to_carriage" type="fixed">
     <parent link="rail_carriage"/>
     <child link="base_link"/>
+
   </joint>
+  -->
   <!-- END OF RAIL CHANGES-->
   <link
     name="base_link">

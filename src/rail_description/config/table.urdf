@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="table">
+  <link name="table_base"/>
+  <joint name="table_joint" type="fixed">
+    <origin xyz="0 0 0.025" rpy="0 0 0"/>
+    <parent link="table_base"/>
+    <child link="table_body"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0.0" upper="1.5" effort="100.0" velocity="0.5"/>
+  </joint>
+
+  <link name="table_body">
+    <visual>
+      <geometry><box size="0.2 0.2 0.05"/></geometry>
+    </visual>
+  </link>
+  <joint name="table_body_joint" type="fixed">
+    <origin xyz="0 0 0.025" rpy="0 0 0"/>
+    <parent link="table_body"/>
+    <child link="table"/>
+  </joint>
+
+  <link name="table"/>
+</robot>

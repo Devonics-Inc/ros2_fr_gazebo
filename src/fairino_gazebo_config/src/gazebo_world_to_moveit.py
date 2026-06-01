@@ -4,8 +4,6 @@ import math
 import sys
 import xml.etree.ElementTree as ET
 
-from ollama import ps
-
 import rclpy
 from rclpy.node import Node
 from moveit_msgs.msg import CollisionObject, PlanningScene, AllowedCollisionEntry, AllowedCollisionMatrix
@@ -56,7 +54,7 @@ class WorldToMoveIt(Node):
 
 
         # ADD ROBOT LINKS TO BE IGNORED HERE
-        link_names = ["base_link", "rail_carriage"]
+        link_names = ["base_link"]
         
         # Loop through models in world and add to planning scene
         for model in models:

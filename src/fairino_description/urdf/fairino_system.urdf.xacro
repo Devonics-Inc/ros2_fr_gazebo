@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="fairino_system">
+    <xacro:arg name="robot_model" default="fairino5" />
+    <xacro:arg name="robot_mount" default="world" />
+    <xacro:arg name="control_system" default="moveit" />
+
+    <link name="world"/>
+
+    <xacro:include filename="$(find rail_description)/urdf/$(arg robot_mount).xacro" />
+
+    <xacro:if value="${'$(arg robot_mount)' == 'test_rail'}">
+        <xacro:test_rail prefix="test_rail_" parent="world">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:test_rail>
+        <xacro:property name="parent_link" value="test_rail_link" />
+    </xacro:if>
+
+    <xacro:if value="${'$(arg robot_mount)' == 'world'}">
+        <xacro:property name="parent_link" value="world" />
+    </xacro:if>
+
+    <xacro:include filename="$(find fairino_description)/urdf/$(arg robot_model)_v6.urdf" />
+    <xacro:include filename="$(find fairino5_v6_moveit2_config)/config/fairino5_v6_robot.ros2_control.xacro" />
+
+    <joint name="mount_to_robot_base" type="fixed">
+        <parent link="${parent_link}"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:fairino5_v6_robot_ros2_control 
+        name="FairinoArm" 
+        initial_positions_file="$(find fairino5_v6_moveit2_config)/config/initial_positions.yaml"
+        control_system="$(arg control_system)"
+        robot_mount="$(arg robot_mount)"
+    />
+
+</robot>
