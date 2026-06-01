@@ -1,0 +1,17 @@
+controller_manager:
+  ros__parameters:
+    # Do NOT define update_rate here (let the main arm file handle it)
+    test_rail_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+test_rail_controller:
+  ros__parameters:
+    joints:
+      - test_rail_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

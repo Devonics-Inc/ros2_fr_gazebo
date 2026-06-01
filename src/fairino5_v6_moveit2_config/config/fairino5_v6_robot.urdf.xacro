@@ -8,7 +8,37 @@
     <!-- Import control_xacro -->
     <xacro:include filename="fairino5_v6_robot.ros2_control.xacro" />
 
+    <xacro:arg name="robot_mount" default="world" />
+    <link name="world"/>
 
+    <xacro:if value="${'$(arg robot_mount)' != 'world'}">
+        <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf.xacro"/>
+        <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro"/>
+
+        <xacro:test_rail parent="world" />
+
+        <joint name="world_to_rail" type="fixed">
+            <parent link="world"/>
+            <child link="$(arg robot_mount)_base"/>
+        </joint>
+
+        <joint name="robot_to_rail" type="fixed">
+            <parent link="$(arg robot_mount)_carriage"/>
+            <child link="base_link"/>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        </joint>
+    </xacro:if>
+
+    <xacro:if value="${'$(arg robot_mount)' == 'world'}">
+        <joint name="robot_to_world_joint" type="fixed">
+            <parent link="world"/>
+            <child link="base_link"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </joint>
+    </xacro:if>
+
+    
+    
     <xacro:fairino5_v6_robot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
-
+    
 </robot>
