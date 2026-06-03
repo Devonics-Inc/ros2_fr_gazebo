@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="test_rail" params="parent">
+  <xacro:macro name="modular_table" params="parent">
     
-    <joint name="${parent}_to_test_rail" type="fixed">
+    <joint name="${parent}_to_table" type="fixed">
       <parent link="${parent}"/>
-      <child link="test_rail_base"/>
+      <child link="modular_table_base"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <link name="test_rail_base">
+    <link name="modular_table_base">
       <visual>
         <geometry>
-          <box size="2.0 0.2 0.1"/>
+          <mesh filename="package://rail_description/config/modular_table/MTDv2.STL" />
         </geometry>
         <material name="grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
       </visual>
-      <!-- <collision>
+<!--       <collision>
         <geometry>
-          <box size="2.0 0.2 0.1"/>
+          <mesh filename="package://rail_description/config/modular_table/MTDv2.STL" />
         </geometry>
       </collision> -->
       <inertial>
@@ -27,29 +27,21 @@
                               iyy="0.0001" iyz="0"
                                             izz="0.0001"/>
       </inertial>
-      
     </link>
 
-    <link name="test_rail_carriage">
+    <link name="modular_table_carriage">
       <visual>
         <geometry>
           <box size="0.3 0.3 0.05"/>
         </geometry>
         <material name="blue"><color rgba="0.0 0.0 0.8 1.0"/></material>
       </visual>
-      <!-- <collision>
-        <geometry>
-          <box size="0.3 0.3 0.05"/>
-        </geometry>
-      </collision> -->
     </link>
 
-    <joint name="test_rail_joint" type="prismatic">
-      <parent link="test_rail_base"/>
-      <child link="test_rail_carriage"/>
-      <axis xyz="1 0 0"/>
-      <limit lower="-0.9" upper="0.9" effort="1000.0" velocity="0.5"/>
-      <dynamics damping="10.0" friction="1.0"/>
+    <joint name="modular_table_joint" type="fixed">
+      <parent link="modular_table_base"/>
+      <child link="modular_table_carriage"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
   </xacro:macro>

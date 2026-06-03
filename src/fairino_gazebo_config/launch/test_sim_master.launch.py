@@ -308,7 +308,12 @@ def generate_launch_description():
                    "-c", "/controller_manager",
                    "-t", "joint_trajectory_controller/JointTrajectoryController"
         ],
-        condition=LaunchConfigurationNotEquals('mount', 'world'),
+        condition=IfCondition(PythonExpression([
+            "'rail' ",
+            "in '",
+            LaunchConfiguration('mount'),
+            "'"
+        ])),
         output="screen",
     )
 
