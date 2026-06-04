@@ -30,7 +30,8 @@ In this README I will cover the steps needed to configure your ROS2 environment 
     - Run the following commands to install the ROS2 humble control packges:
     >
         sudo apt update
-        sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers
+        sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers sudo apt install ros-humble>-ros-gz
+
 
 - ### Install Gazebo Ignition 6.17
 
