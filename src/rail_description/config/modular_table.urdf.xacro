@@ -5,7 +5,7 @@
     <joint name="${parent}_to_table" type="fixed">
       <parent link="${parent}"/>
       <child link="modular_table_base"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0  0 0"/>
     </joint>
 
     <link name="modular_table_base">
@@ -15,7 +15,7 @@
         </geometry>
         <material name="grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
       </visual>
-<!--       <collision>
+      <!-- <collision>
         <geometry>
           <mesh filename="package://rail_description/config/modular_table/MTDv2.STL" />
         </geometry>
@@ -30,18 +30,21 @@
     </link>
 
     <link name="modular_table_carriage">
-      <visual>
+      <!-- <visual>
         <geometry>
           <box size="0.3 0.3 0.05"/>
         </geometry>
-        <material name="blue"><color rgba="0.0 0.0 0.8 1.0"/></material>
-      </visual>
+      </visual> -->
+      <!-- <collision>
+        <geometry>
+          <box size="0.3 0.3 0.05"/>
+        </geometry>
+      </collision> -->
     </link>
 
     <joint name="modular_table_joint" type="fixed">
       <parent link="modular_table_base"/>
       <child link="modular_table_carriage"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
   </xacro:macro>

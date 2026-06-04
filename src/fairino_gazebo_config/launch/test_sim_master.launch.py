@@ -178,18 +178,18 @@ def generate_launch_description():
         "config",
         "ros2_controllers.yaml"
     )
-    controller_manager = Node(
-        package='controller_manager',
-        executable='ros2_control_node',
-        parameters=[
-            # {'use_sim_time': False},
-            controllers_yaml_path
-        ],
-        remappings=[
-            ("/controller_manager/robot_description", "/robot_description")
-        ],
-        output='screen',
-    )
+    # controller_manager = Node(
+    #     package='controller_manager',
+    #     executable='ros2_control_node',
+    #     parameters=[
+    #         # {'use_sim_time': False},
+    #         controllers_yaml_path
+    #     ],
+    #     remappings=[
+    #         ("/controller_manager/robot_description", "/robot_description")
+    #     ],
+    #     output='screen',
+    # )
 
     controller_manager = Node(
         package='controller_manager',
@@ -341,7 +341,7 @@ def generate_launch_description():
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
-        arguments=['-topic', 'robot_description', '-x', '0.0', '-y','0.0',  '-z','0.0',  '-R','0.0',  '-P', '0.0', '-Y','0.0'],
+        arguments=['-topic', 'robot_description'], # To pass spawn location args: ['-x', '0.0', '-y','0.0',  '-z','0.0',  '-R','0.0',  '-P', '0.0', '-Y','0.0'
         condition=LaunchConfigurationEquals('gazebo', 'true'),
     )
 
