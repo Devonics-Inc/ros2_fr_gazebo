@@ -5,21 +5,21 @@
     <joint name="${parent}_to_table" type="fixed">
       <parent link="${parent}"/>
       <child link="modular_table_base"/>
-      <origin xyz="0 0 0" rpy="0  0 0"/>
+      <origin xyz="0 0 0.2" rpy="0  0 0"/>
     </joint>
 
     <link name="modular_table_base">
       <visual>
         <geometry>
-          <mesh filename="package://rail_description/config/modular_table/MTDv2.STL" />
+          <mesh filename="package://rail_description/config/modular_table/MTDv2.stl" scale="0.1 0.1 0.1"/>
         </geometry>
         <material name="grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
       </visual>
-      <!-- <collision>
+      <collision>
         <geometry>
-          <mesh filename="package://rail_description/config/modular_table/MTDv2.STL" />
+          <mesh filename="package://rail_description/config/modular_table/MTDv2_Collision.stl" scale="0.1 0.1 0.1" />
         </geometry>
-      </collision> -->
+      </collision>
       <inertial>
         <mass value="0.001"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -29,22 +29,12 @@
       </inertial>
     </link>
 
-    <link name="modular_table_carriage">
-      <!-- <visual>
-        <geometry>
-          <box size="0.3 0.3 0.05"/>
-        </geometry>
-      </visual> -->
-      <!-- <collision>
-        <geometry>
-          <box size="0.3 0.3 0.05"/>
-        </geometry>
-      </collision> -->
-    </link>
+    <link name="modular_table_carriage"/>
 
     <joint name="modular_table_joint" type="fixed">
       <parent link="modular_table_base"/>
       <child link="modular_table_carriage"/>
+      <origin xyz="0 0 0.7"/>
     </joint>
 
   </xacro:macro>

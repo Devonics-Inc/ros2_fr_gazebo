@@ -57,7 +57,7 @@ def generate_launch_description():
     world = LaunchConfiguration('world')
     world_arg = DeclareLaunchArgument(
         'world',
-        default_value="empty.sdf",
+        default_value="empty",
         description="Name of world file to spawn robot into"
     )
     # Declare robot model
@@ -319,7 +319,7 @@ def generate_launch_description():
 
     # Spawn gazebo
     world_string = PythonExpression([
-        "'src/fairino_gazebo_config/worlds/", LaunchConfiguration('world'), "'"
+        "'src/fairino_gazebo_config/worlds/", LaunchConfiguration('world'), ".sdf'"
     ])
     gazebo = TimerAction(
         period=2.0,
