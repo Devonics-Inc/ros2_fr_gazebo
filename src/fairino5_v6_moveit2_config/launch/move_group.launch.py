@@ -100,7 +100,7 @@ def generate_launch_description():
     for arg in sys.argv:
         if arg.startswith("robot_model:="):
             robot_model_str = arg.split(":=")[1]
-            moveit_pkg = moveit_pkg_map.get(robot_model_str, "fairino5_v6_moveit2_config")
+            moveit_pkg = moveit_pkg_map.get(robot_model_str, f"{robot_model_str}_v6_moveit2_config")
 
     # Find the path to the description package
     description_pkg_share = get_package_share_directory('fairino_description')

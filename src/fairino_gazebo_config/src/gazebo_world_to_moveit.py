@@ -54,7 +54,7 @@ class WorldToMoveIt(Node):
 
 
         # ADD ROBOT LINKS TO BE IGNORED HERE
-        link_names = ["base_link", "modular_table_base"]
+        link_names = ["base_link", "modular_table_base", "sync_table_base", "sync_table2_base"]
         
         # Loop through models in world and add to planning scene
         for model in models:

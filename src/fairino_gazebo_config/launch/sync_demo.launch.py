@@ -64,7 +64,7 @@ def generate_launch_description():
     robot_model = LaunchConfiguration('robot_model')
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
-        default_value="fairino5",
+        default_value="fairino3",
         description="Name of robot model to spawn (ie. Fairino3)",
         choices=[
             'fairino3',
@@ -87,7 +87,7 @@ def generate_launch_description():
     moveit = LaunchConfiguration('moveit')
     moveit_arg = DeclareLaunchArgument(
         'moveit',
-        default_value="false",
+        default_value="true",
         description="Set to true to use moveit controller and obscicle porting from gazebo"
     )
     
@@ -116,12 +116,12 @@ def generate_launch_description():
     }
 
     control_system_str = "moveit"  # default
-    robot_model_str = "fairino5"  # default
-    moveit_pkg = "fairino5_v6_moveit2_config"
+    robot_model_str = "fairino3"  # default
+    moveit_pkg = "fairino3_v6_moveit2_config"
     for arg in sys.argv:
         if arg.startswith("robot_model:="):
             robot_model_str = arg.split(":=")[1]
-            moveit_pkg = moveit_pkg_map.get(robot_model_str, f"{robot_model_str}_v6_moveit2_config")
+            moveit_pkg = moveit_pkg_map.get(robot_model_str, "fairino3_v6_moveit2_config")
             print("\n\n\n\nUSING " , robot_model_str, "\n\n\n")
         elif arg.startswith("hardware:="):
             control_system_str = arg.split(":=")[1]
@@ -148,9 +148,9 @@ def generate_launch_description():
             "test_fairino.urdf.xacro"
         ]),
         ' ',
-        "robot_model:=", robot_model_str,
+        "robot_model:=fairino3",
         ' ',
-        "robot_mount:=", LaunchConfiguration('mount'),
+        "robot_mount:=sync_table2"
         ' ',
         "control_system:=", control_system_str,
         ' ',
@@ -178,18 +178,6 @@ def generate_launch_description():
         "config",
         "ros2_controllers.yaml"
     )
-    # controller_manager = Node(
-    #     package='controller_manager',
-    #     executable='ros2_control_node',
-    #     parameters=[
-    #         # {'use_sim_time': False},
-    #         controllers_yaml_path
-    #     ],
-    #     remappings=[
-    #         ("/controller_manager/robot_description", "/robot_description")
-    #     ],
-    #     output='screen',
-    # )
 
     controller_manager = Node(
         package='controller_manager',
@@ -236,8 +224,8 @@ def generate_launch_description():
         ]),
         launch_arguments={
             'use_sim_time': str(control_system_str == "gazebo"),
-            'robot_model': robot_model_str,
-            'robot_mount': LaunchConfiguration('mount'),
+            'robot_model': "fairino3",
+            'robot_mount': "sync_table2",
             'control_system': control_system_str,
             'moveit_pkg': moveit_pkg,
         
@@ -248,9 +236,7 @@ def generate_launch_description():
     static_tfs = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
-                FindPackageShare(PythonExpression([
-                    "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
-                ])),
+                FindPackageShare("fairino3_v6_moveit2_config"),
                 'launch',
                 'static_virtual_joint_tfs.launch.py'
             ])
@@ -262,9 +248,7 @@ def generate_launch_description():
         package="rviz2",
         executable="rviz2",
         arguments=['-d', PathJoinSubstitution([
-            FindPackageShare(PythonExpression([
-                "'", LaunchConfiguration('robot_model'), "_v6_moveit2_config'"
-            ])),
+            FindPackageShare("fairino3_v6_moveit2_config"),
             'config',
             'moveit.rviz'
         ])],
@@ -272,17 +256,6 @@ def generate_launch_description():
         parameters=[{"use_sim_time": False}]
     )
 
-
-    # Grab controllers to load
-    fairino_controller_name = [PythonExpression([
-        "'", LaunchConfiguration('robot_model'), "_controller'"
-    ])]
-    
-    mount_controller = [PythonExpression([
-        "'", LaunchConfiguration('mount'), "_controller'"
-    ])]
-
-        
     # Pass controllers into controller spawner
     fairino_controller = TimerAction(
         period=1.0,
@@ -291,7 +264,7 @@ def generate_launch_description():
                 package="controller_manager",
                 executable="spawner",
                 arguments=[
-                    fairino_controller_name,
+                    "fairino3_controller",
                     "-c", "/controller_manager",
                     "--controller-manager-timeout", "10",
                     "--param-file", controllers_yaml_path,  # ← add this
@@ -301,20 +274,19 @@ def generate_launch_description():
         ],
     )
 
-    rail_controller = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=[mount_controller,
-                   "-c", "/controller_manager",
-                   "-t", "joint_trajectory_controller/JointTrajectoryController"
+    rail_controller = TimerAction(
+        period=1.0,
+        actions=[
+            Node(
+                package="controller_manager",
+                executable="spawner",
+                arguments=["sync_table2_controller",
+                        "-c", "/controller_manager",
+                        "-t", "joint_trajectory_controller/JointTrajectoryController"
+                ],
+                output="screen",
+            ),
         ],
-        condition=IfCondition(PythonExpression([
-            "'rail' ",
-            "in '",
-            LaunchConfiguration('mount'),
-            "'"
-        ])),
-        output="screen",
     )
 
     # Spawn gazebo

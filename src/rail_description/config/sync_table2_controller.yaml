@@ -1,0 +1,17 @@
+controller_manager:
+  ros__parameters:
+    # Do NOT define update_rate here (let the main arm file handle it)
+    sync_table2_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+sync_table2_controller:
+  ros__parameters:
+    joints:
+      - mill_to_door_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
