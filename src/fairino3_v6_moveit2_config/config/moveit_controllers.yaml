@@ -26,7 +26,7 @@ moveit_simple_controller_manager:
     action_ns: follow_joint_trajectory
     default: false
     joints:
-      - mill_to_door_joint
+      - sync_table2_joint
     command_interfaces:
       - position
     state_interfaces:

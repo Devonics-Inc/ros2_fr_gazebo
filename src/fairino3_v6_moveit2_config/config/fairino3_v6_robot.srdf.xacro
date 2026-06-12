@@ -13,10 +13,8 @@
     
     <group name="fairino3_v6_group">
         <xacro:if value="${'$(arg mount)' != 'world'}">
-            <joint name="mill_to_door_joint" value="0.0"/>
+            <joint name="$(arg mount)_joint" value="0.0"/>
         </xacro:if>
-        <!-- Temp -->
-        <joint name="roland_mill_door_joint"/>
         <joint name="j1"/>
         <joint name="j2"/>
         <joint name="j3"/>
@@ -27,7 +25,7 @@
     </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="pos1" group="fairino3_v6_group">
-        <xacro:if value="${'rail' in '$(arg mount)'}">
+        <xacro:if value="${'$(arg mount)' != 'world'}">
             <joint name="$(arg mount)_joint" value="0.0"/>
         </xacro:if>
         <joint name="j1" value="2.4468"/>
@@ -38,7 +36,7 @@
         <joint name="j6" value="0"/>
     </group_state>
     <group_state name="pos2" group="fairino3_v6_group">
-        <xacro:if value="${'rail' in '$(arg mount)'}">
+        <xacro:if value="${'$(arg mount)' != 'world'}">
             <joint name="$(arg mount)_joint" value="0.0"/>
         </xacro:if>
         <joint name="j1" value="0.8606"/>

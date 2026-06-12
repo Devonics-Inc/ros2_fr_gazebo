@@ -121,7 +121,7 @@ def generate_launch_description():
     for arg in sys.argv:
         if arg.startswith("robot_model:="):
             robot_model_str = arg.split(":=")[1]
-            moveit_pkg = moveit_pkg_map.get(robot_model_str, "fairino3_v6_moveit2_config")
+            moveit_pkg = moveit_pkg_map.get(robot_model_str, "fairino5_v6_moveit2_config")
             print("\n\n\n\nUSING " , robot_model_str, "\n\n\n")
         elif arg.startswith("hardware:="):
             control_system_str = arg.split(":=")[1]

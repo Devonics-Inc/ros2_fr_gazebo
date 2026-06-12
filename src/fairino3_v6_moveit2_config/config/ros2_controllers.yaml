@@ -29,7 +29,7 @@ fairino3_controller:
 sync_table2_controller:
   ros__parameters:
     joints:
-      - mill_to_door_joint
+      - sync_table2_joint
     command_interfaces:
       - position
     state_interfaces:

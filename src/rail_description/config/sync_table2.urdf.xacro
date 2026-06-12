@@ -58,7 +58,7 @@
     </link>
 
     <!-- MILL TO MILL DOOR -->
-    <joint name="mill_to_door_joint" type="prismatic">
+    <joint name="sync_table2_joint" type="prismatic">
       <parent link="roland_mill_base"/>
       <child link="roland_mill_door"/>
       <origin xyz="0.4175 -0.35 0.73" rpy="5.93403 0 0"/>
@@ -72,7 +72,7 @@
         <geometry>
           <mesh filename="package://rail_description/config/sync_table/RolandMillDoor.stl" scale="0.00115 0.001 0.0009"/>
         </geometry>
-        <material name="transp_grey"><color rgba="0.8 0.8 0.8 0.5"/></material>
+        <material name="transp_grey"><color rgba="0.7 0.7 0.7 0.7"/></material>
       </visual>
       <collision>
         <geometry>
@@ -90,7 +90,7 @@
 
     <link name="sync_table2_carriage"/>
 
-    <joint name="sync_table2_joint" type="fixed">
+    <joint name="sync_table2_mount_joint" type="fixed">
       <parent link="sync_table2_base"/>
       <child link="sync_table2_carriage"/>
       <origin xyz="0 0 0.7"/>

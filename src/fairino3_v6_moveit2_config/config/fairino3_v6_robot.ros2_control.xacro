@@ -55,7 +55,7 @@
               </state_interface>
           </joint>
           <xacro:if value="${ros2_control_header != 'world'}">
-              <joint name="mill_to_door_joint">
+              <joint name="${ros2_control_header}_joint">
                   <command_interface name="position"/>
                   <state_interface name="position">
                     <param name="initial_value">0.0</param>
