@@ -214,23 +214,30 @@ def generate_launch_description():
     # -------------------- MOVEIT 2 CONTROLLER --------------------
 
     # Move Group parameters for moveit control - NOW WITH KINEMATICS CONFIG
-    move_group = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare("fairino_gazebo_config"),
-                'launch',
-                'move_group.launch.py'
-            ])
-        ]),
-        launch_arguments={
-            'use_sim_time': str(control_system_str == "gazebo"),
-            'robot_model': "fairino3",
-            'robot_mount': "sync_table2",
-            'control_system': control_system_str,
-            'moveit_pkg': moveit_pkg,
-        
-        }.items(),
-        condition=IfCondition(LaunchConfiguration('moveit'))
+
+    move_group = TimerAction(
+        period=2.0,
+        actions=[
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([
+                    PathJoinSubstitution([
+                        FindPackageShare("fairino_gazebo_config"),
+                        'launch',
+                        'move_group.launch.py'
+                    ])
+                ]),
+                launch_arguments={
+                    'use_sim_time': str(control_system_str == "gazebo"),
+                    'robot_model': "fairino3",
+                    'robot_mount': "sync_table2",
+                    'control_system': control_system_str,
+                    'moveit_pkg': moveit_pkg,
+                
+                }.items(),
+                condition=IfCondition(LaunchConfiguration('moveit'))
+            )
+        ]    
+
     )
 
     static_tfs = IncludeLaunchDescription(

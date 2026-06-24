@@ -309,10 +309,9 @@ def generate_launch_description():
                    "-t", "joint_trajectory_controller/JointTrajectoryController"
         ],
         condition=IfCondition(PythonExpression([
-            "'rail' ",
-            "in '",
+            "'",
             LaunchConfiguration('mount'),
-            "'"
+            "' != 'world'",
         ])),
         output="screen",
     )
