@@ -46,7 +46,7 @@
     <xacro:if value="${robot_model == 'fairino5'}">
         <xacro:fairino5/>
         <xacro:fairino5_v6_robot_ros2_control
-            name="FakeSystem"
+            name="Fairino5_Controller"
             initial_positions_file="${initial_positions_file}"
             ros2_control_header="$(arg robot_mount)" 
             control_system="$(arg control_system)"/>    
@@ -54,7 +54,7 @@
     <xacro:if value="${robot_model == 'fairino10'}">
         <xacro:fairino10/>
         <xacro:fairino10_v6_robot_ros2_control
-            name="FakeSystem"
+            name="Fairino10_Controller"
             initial_positions_file="${initial_positions_file}"
             ros2_control_header="$(arg robot_mount)" 
             control_system="$(arg control_system)"/>  
@@ -62,7 +62,7 @@
     <xacro:if value="${robot_model == 'fairino16'}">
         <xacro:fairino16/>
         <xacro:fairino16_v6_robot_ros2_control
-            name="FakeSystem"
+            name="Fairino16_Controller"
             initial_positions_file="${initial_positions_file}"
             ros2_control_header="$(arg robot_mount)" 
             control_system="$(arg control_system)"/>  
@@ -70,7 +70,7 @@
     <xacro:if value="${robot_model == 'fairino20'}">
         <xacro:fairino20/>
         <xacro:fairino20_v6_robot_ros2_control
-            name="FakeSystem"
+            name="Fairino20_Controller"
             initial_positions_file="${initial_positions_file}"
             ros2_control_header="$(arg robot_mount)" 
             control_system="$(arg control_system)"/>  
@@ -78,7 +78,7 @@
     <xacro:if value="${robot_model == 'fairino30'}">
         <xacro:fairino30/>
         <xacro:fairino30_v6_robot_ros2_control
-            name="FakeSystem"
+            name="Fairino30_Controller"
             initial_positions_file="${initial_positions_file}"
             ros2_control_header="$(arg robot_mount)" 
             control_system="$(arg control_system)"/>  
