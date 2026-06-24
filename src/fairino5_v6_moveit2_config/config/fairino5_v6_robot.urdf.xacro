@@ -15,7 +15,11 @@
         <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf.xacro"/>
         <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro"/>
 
+<<<<<<< HEAD
         <xacro:call macro="$(arg robot_mount)" parent="world"/>
+=======
+        <xacro:test_rail parent="world" />
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
 
         <joint name="world_to_rail" type="fixed">
             <parent link="world"/>
@@ -25,7 +29,11 @@
         <joint name="robot_to_rail" type="fixed">
             <parent link="$(arg robot_mount)_carriage"/>
             <child link="base_link"/>
+<<<<<<< HEAD
             <origin xyz="0 0 0.0" rpy="0 0 0"/>
+=======
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         </joint>
     </xacro:if>
 

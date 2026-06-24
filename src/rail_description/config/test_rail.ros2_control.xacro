@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <ros2_control name="RailControl" type="system">
+<<<<<<< HEAD
+=======
+    <!-- <hardware> -->
+      <!-- <plugin>gz_ros2_control/GazeboSimSystem</plugin> -->
+      <!-- <plugin>mock_components/GenericSystem</plugin> -->
+    <!-- </hardware> -->
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
     <joint name="test_rail_joint">
       <command_interface name="position">
         <param name="min">-0.9</param>
@@ -9,4 +16,8 @@
       <state_interface name="position"/>
     </joint>
   </ros2_control>
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
 </robot>

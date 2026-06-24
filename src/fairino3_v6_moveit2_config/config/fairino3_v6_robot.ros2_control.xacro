@@ -17,7 +17,18 @@
                   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
               </xacro:if>
           </hardware>
+<<<<<<< HEAD
           
+=======
+          <xacro:if value="${ros2_control_header != 'world'}">
+              <joint name="${ros2_control_header}_joint">
+                  <command_interface name="position"/>
+                  <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                  </state_interface>
+              </joint>
+          </xacro:if>
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
           <joint name="j1">
               <command_interface name="position"/>
               <state_interface name="position">
@@ -54,6 +65,7 @@
                 <param name="initial_value">${initial_positions['j6']}</param>
               </state_interface>
           </joint>
+<<<<<<< HEAD
           <xacro:if value="${ros2_control_header != 'world'}">
               <joint name="${ros2_control_header}_joint">
                   <command_interface name="position"/>
@@ -62,6 +74,8 @@
                   </state_interface>
               </joint>
           </xacro:if>
+=======
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         </ros2_control>
         <xacro:if value="${control_system == 'gazebo'}">
             <gazebo>

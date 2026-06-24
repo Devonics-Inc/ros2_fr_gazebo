@@ -13,7 +13,11 @@
     
     <group name="fairino5_v6_group">
         <xacro:if value="${'$(arg mount)' != 'world'}">
+<<<<<<< HEAD
             <joint name="$(arg mount)_joint"/>
+=======
+            <joint name="$(arg mount)_joint" value="0.0"/>
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         </xacro:if>
         <joint name="j1"/>
         <joint name="j2"/>

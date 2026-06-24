@@ -2,7 +2,11 @@
 
 initial_positions:
   j1: 0
+<<<<<<< HEAD
   j2: -1
+=======
+  j2: 0
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
   j3: 0
   j4: 0
   j5: 0

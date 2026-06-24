@@ -54,6 +54,7 @@ class WorldToMoveIt(Node):
 
 
         # ADD ROBOT LINKS TO BE IGNORED HERE
+<<<<<<< HEAD
         link_names = ["base_link", "modular_table_base", "sync_table_base", "sync_table2_base"]
         
         # Loop through models in world and add to planning scene
@@ -68,6 +69,20 @@ class WorldToMoveIt(Node):
                             self.update_acm(acm, model['name'], link, True)
             except:
                 continue
+=======
+        link_names = ["base_link"]
+        
+        # Loop through models in world and add to planning scene
+        for model in models:
+            co = self.create_collision_object(model)
+            if co:
+                ps.world.collision_objects.append(co)
+                
+                if "ground" in model['name'].lower():
+                    for link in link_names:
+                        self.update_acm(acm, model['name'], link, True)
+
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         # Apply allowed collision matrix
         ps.allowed_collision_matrix = acm
 

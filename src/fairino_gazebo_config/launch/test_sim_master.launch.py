@@ -178,19 +178,6 @@ def generate_launch_description():
         "config",
         "ros2_controllers.yaml"
     )
-    # controller_manager = Node(
-    #     package='controller_manager',
-    #     executable='ros2_control_node',
-    #     parameters=[
-    #         # {'use_sim_time': False},
-    #         controllers_yaml_path
-    #     ],
-    #     remappings=[
-    #         ("/controller_manager/robot_description", "/robot_description")
-    #     ],
-    #     output='screen',
-    # )
-
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
@@ -313,6 +300,7 @@ def generate_launch_description():
             LaunchConfiguration('mount'),
             "' != 'world'",
         ])),
+
         output="screen",
     )
 

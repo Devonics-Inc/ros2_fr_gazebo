@@ -7,7 +7,10 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
     test_rail_controller:
       type: joint_trajectory_controller/JointTrajectoryController
+<<<<<<< HEAD
       
+=======
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
 fairino5_controller:
   ros__parameters:
     joints:

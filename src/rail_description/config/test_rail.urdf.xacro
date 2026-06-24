@@ -52,5 +52,9 @@
       <dynamics damping="10.0" friction="1.0"/>
     </joint>
 
+<<<<<<< HEAD
   </xacro:macro>
+=======
+    </xacro:macro>
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
 </robot>

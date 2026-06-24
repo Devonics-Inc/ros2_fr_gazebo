@@ -3,9 +3,13 @@
     <xacro:macro name="fairino5_v6_robot_ros2_control" params="name initial_positions_file ros2_control_header:=world control_system:=moveit">
         <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
         <!-- Xacro arg for control system (Defualted to Rviz/Moveit-->
+<<<<<<< HEAD
         <!-- <xacro:property name="controllers_yaml_name" value="${'ros2_controllers.yaml' if 'rail' not in ros2_control_header else 'fairino5_' + ros2_control_header + '_ros2_controllers.yaml'}"/>      -->
         <xacro:property name="controllers_yaml_name" value="ros2_controllers.yaml"/>     
 
+=======
+        <xacro:property name="controllers_yaml_name" value="${'ros2_controllers.yaml' if ros2_control_header == 'world' else 'fairino5_' + ros2_control_header + '_ros2_controllers.yaml'}"/>     
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         <ros2_control name="${name}" type="system">
             <hardware>
               <xacro:if value="${control_system == 'moveit'}">
@@ -18,7 +22,18 @@
                   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
               </xacro:if>
           </hardware>
+<<<<<<< HEAD
 
+=======
+          <xacro:if value="${ros2_control_header != 'world'}">
+              <joint name="${ros2_control_header}_joint">
+                  <command_interface name="position"/>
+                  <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                  </state_interface>
+              </joint>
+          </xacro:if>
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
           <joint name="j1">
               <command_interface name="position"/>
               <state_interface name="position">
@@ -55,6 +70,7 @@
                 <param name="initial_value">${initial_positions['j6']}</param>
               </state_interface>
           </joint>
+<<<<<<< HEAD
           <xacro:if value="${'rail' in ros2_control_header}">
             <joint name="${ros2_control_header}_joint">
                 <command_interface name="position"/>
@@ -64,6 +80,8 @@
             </joint>
           </xacro:if>
             <!-- If mount is not a rail (using fixed joints) then it does not need to be added to contrl xacro -->
+=======
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         </ros2_control>
         <xacro:if value="${control_system == 'gazebo'}">
             <gazebo>
