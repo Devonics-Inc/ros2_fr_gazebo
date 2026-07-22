@@ -29,11 +29,11 @@
       </inertial>
     </link>
 
-    <!-- TABLE TO MILL DOOR -->
+    <!-- TABLE TO MILL -->
     <joint name="table_to_mill_joint" type="fixed">
       <parent link="sync_table2_base"/>
       <child link="roland_mill_base"/>
-      <origin xyz="1 0 0.71" rpy="0 0 -1.5707"/>
+      <origin xyz="1 -0.125 0.71" rpy="0 0 -1.5707"/>
     </joint>
     
     <link name="roland_mill_base">
@@ -88,12 +88,45 @@
       </inertial>
     </link>
 
+    <!-- MILL TO SLIDER -->
+    <joint name="sync_table2_slider_joint" type="fixed">
+      <parent link="roland_mill_base"/>
+      <child link="roland_slider"/>
+      <origin xyz="-0.05 0 0" rpy="1.57 0 4.71"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="0" upper="0.5" effort="1000.0" velocity="0.5"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+
+    <link name="roland_slider">
+      <visual>
+        <geometry>
+          <mesh filename="package://rail_description/config/sync_table/SyncSlider.stl"/>
+        </geometry>
+        <material name="grey"><color rgba="0.7 0.7 0.7 1"/></material>
+      </visual>
+      <!-- <collision>
+        <geometry>
+          <mesh filename="package://rail_description/config/sync_table/SyncSlider.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision> -->
+      <inertial>
+        <mass value="0.001"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0"
+                              iyy="0.0001" iyz="0"
+                                            izz="0.0001"/>
+      </inertial>
+    </link>
+
+
+
     <link name="sync_table2_carriage"/>
 
     <joint name="sync_table2_mount_joint" type="fixed">
       <parent link="sync_table2_base"/>
       <child link="sync_table2_carriage"/>
-      <origin xyz="0 0 0.7"/>
+      <origin xyz="0.125 -0.3 0.7" rpy="0 0 3.14"/>
     </joint>
 
   </xacro:macro>

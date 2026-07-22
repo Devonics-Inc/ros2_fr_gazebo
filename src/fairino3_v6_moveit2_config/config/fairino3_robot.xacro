@@ -459,5 +459,47 @@
         k_velocity="10" />
     </joint>
 
+    <link
+    name="Gripper">
+        <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+        <mass
+            value="0.53877" />
+        <inertia
+            ixx="0.00028785"
+            ixy="-2.0584E-09"
+            ixz="-1.3892E-07"
+            iyy="0.00028896"
+            iyz="1.8115E-07"
+            izz="0.00042655" />
+        <visual>
+            <origin
+                xyz="0 0 0.102"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://fairino_description/meshes/fairino3_v6/SyncGripper.STL" scale="0.1 0.1 0.1"/>
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.89804 0.91765 0.92941 1" />
+            </material>
+        </visual>
+  </link>
+    <joint
+        name="gripper_joint"
+        type="fixed">
+        <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+        <parent
+        link="wrist3_link" />
+        <child
+        link="Gripper" />
+    </joint>
+
+
   </xacro:macro>
 </robot>
