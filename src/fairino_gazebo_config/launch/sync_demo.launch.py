@@ -64,15 +64,15 @@ def generate_launch_description():
     robot_model = LaunchConfiguration('robot_model')
     robot_model_arg = DeclareLaunchArgument(
         'robot_model',
-        default_value="fairino3",
-        description="Name of robot model to spawn (ie. Fairino3)",
+        default_value="fairino5",
+        description="Name of robot model to spawn (ie. fairino5)",
         choices=[
             'fairino3',
             'fairino5',
             'fairino10',
             'fairino16',
             'fairino20',
-            'fairino30',
+            'fairino50',
         ]
     )
     # Declare robot mount
@@ -107,17 +107,17 @@ def generate_launch_description():
 
 
     moveit_pkg_map = {
-        "fairino3":  "fairino3_v6_moveit2_config",
+        "fairino5":  "fairino5_v6_moveit2_config",
         "fairino5":  "fairino5_v6_moveit2_config",
         "fairino10": "fairino10_v6_moveit2_config",
         "fairino16": "fairino16_v6_moveit2_config",
         "fairino20": "fairino20_v6_moveit2_config",
-        "fairino30": "fairino30_v6_moveit2_config",
+        "fairino50": "fairino50_v6_moveit2_config",
     }
 
     control_system_str = "moveit"  # default
-    robot_model_str = "fairino3"  # default
-    moveit_pkg = "fairino3_v6_moveit2_config"
+    robot_model_str = "fairino5"  # default
+    moveit_pkg = "fairino5_v6_moveit2_config"
     for arg in sys.argv:
         if arg.startswith("robot_model:="):
             robot_model_str = arg.split(":=")[1]
@@ -148,7 +148,7 @@ def generate_launch_description():
             "test_fairino.urdf.xacro"
         ]),
         ' ',
-        "robot_model:=fairino3",
+        "robot_model:=fairino5",
         ' ',
         "robot_mount:=sync_table2"
         ' ',
@@ -228,7 +228,7 @@ def generate_launch_description():
                 ]),
                 launch_arguments={
                     'use_sim_time': str(control_system_str == "gazebo"),
-                    'robot_model': "fairino3",
+                    'robot_model': "fairino5",
                     'robot_mount': "sync_table2",
                     'control_system': control_system_str,
                     'moveit_pkg': moveit_pkg,
@@ -243,7 +243,7 @@ def generate_launch_description():
     static_tfs = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
-                FindPackageShare("fairino3_v6_moveit2_config"),
+                FindPackageShare("fairino5_v6_moveit2_config"),
                 'launch',
                 'static_virtual_joint_tfs.launch.py'
             ])
@@ -255,7 +255,7 @@ def generate_launch_description():
         package="rviz2",
         executable="rviz2",
         arguments=['-d', PathJoinSubstitution([
-            FindPackageShare("fairino3_v6_moveit2_config"),
+            FindPackageShare("fairino5_v6_moveit2_config"),
             'config',
             'moveit.rviz'
         ])],
@@ -271,7 +271,7 @@ def generate_launch_description():
                 package="controller_manager",
                 executable="spawner",
                 arguments=[
-                    "fairino3_controller",
+                    "fairino5_controller",
                     "-c", "/controller_manager",
                     "--controller-manager-timeout", "10",
                     "--param-file", controllers_yaml_path,  # ← add this

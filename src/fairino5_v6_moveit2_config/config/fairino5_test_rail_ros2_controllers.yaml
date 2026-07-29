@@ -1,17 +1,14 @@
 # # This config file is used by ros2_control
 controller_manager:
   ros__parameters:
-    update_rate: 1000
-    
+    update_rate: 125
     fairino5_controller:
       type: joint_trajectory_controller/JointTrajectoryController
-    
-    test_rail_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-
+    sync_table2_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+      
 fairino5_controller:
   ros__parameters:
     joints:
@@ -26,12 +23,15 @@ fairino5_controller:
     state_interfaces:
       - position
 
-test_rail_controller:
+sync_table2_controller:
   ros__parameters:
     joints:
-      - test_rail_joint
+      - sync_table2_joint
     command_interfaces:
       - position
-
     state_interfaces:
       - position
+
+
+joint_state_broadcaster:
+  ros__parameters: {}

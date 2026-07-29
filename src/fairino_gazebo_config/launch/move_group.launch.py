@@ -53,7 +53,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'robot_model',
-            default_value="fairino3",
+            default_value="fairino5",
             description="Robot model to use"
         )
     )
@@ -81,7 +81,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'moveit_pkg',
-            default_value='fairino3_v6_robot',
+            default_value='fairino5_v6_robot',
             description='Which moveit pkg to pull data from'
         )
     )
@@ -92,11 +92,11 @@ def generate_launch_description():
         "fairino10": "fairino10_v6_moveit2_config",
         "fairino16": "fairino16_v6_moveit2_config",
         "fairino20": "fairino20_v6_moveit2_config",
-        "fairino30": "fairino30_v6_moveit2_config",
+        "fairino50": "fairino50_v6_moveit2_config",
     }
 
-    robot_model_str = "fairino3"  # default
-    moveit_pkg = "fairino3_v6_moveit2_config"
+    robot_model_str = "fairino5"  # default
+    moveit_pkg = "fairino5_v6_moveit2_config"
     for arg in sys.argv:
         if arg.startswith("robot_model:="):
             robot_model_str = arg.split(":=")[1]
