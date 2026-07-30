@@ -490,7 +490,7 @@
             type="fixed">
             <origin
             xyz="0 0 0"
-            rpy="0 0 1.8326" />
+            rpy="0 0 -1.309" />
             <parent
             link="wrist3_link" />
             <child

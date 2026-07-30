@@ -92,7 +92,7 @@
     <joint name="sync_table2_slider_joint" type="fixed">
       <parent link="roland_mill_base"/>
       <child link="roland_slider"/>
-      <origin xyz="0.75 0 0" rpy="1.57 0 4.71"/>
+      <origin xyz="0.75 -0.025 0" rpy="1.57 0 4.71"/>
       <axis xyz="0 0 1"/>
       <limit lower="0" upper="0.5" effort="1000.0" velocity="0.5"/>
       <dynamics damping="0.0" friction="0.0"/>
