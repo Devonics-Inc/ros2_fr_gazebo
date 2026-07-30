@@ -63,7 +63,7 @@
       <child link="roland_mill_door"/>
       <origin xyz="0.4175 -0.35 0.73" rpy="5.93403 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit lower="0" upper="0.5" effort="1000.0" velocity="0.5"/>
+      <limit lower="0" upper="0.4" effort="100.0" velocity="0.5"/>
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
 
@@ -119,7 +119,7 @@
       <parent link="roland_slider"/>
       <child link="bottom_drawer"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <axis xyz="0 1 0"/>
+      <axis xyz="1 0 0"/>
       <limit lower="0" upper="0.5" effort="1000.0" velocity="0.5"/>
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
@@ -144,7 +144,7 @@
       <parent link="roland_slider"/>
       <child link="top_drawer"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <axis xyz="0 1 0"/>
+      <axis xyz="1 0 0"/>
       <limit lower="0" upper="0.5" effort="1000.0" velocity="0.5"/>
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
@@ -172,7 +172,7 @@
     <joint name="sync_table2_mount_joint" type="fixed">
       <parent link="sync_table2_base"/>
       <child link="sync_table2_carriage"/>
-      <origin xyz="0 -0.2 0.7" rpy="0 0 3.14"/>
+      <origin xyz="0 -0.2 0.7" rpy="0 0 -1.57"/>
     </joint>
 
   </xacro:macro>

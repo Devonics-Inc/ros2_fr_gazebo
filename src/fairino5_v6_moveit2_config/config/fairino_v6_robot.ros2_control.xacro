@@ -61,6 +61,20 @@
                   </state_interface>
               </joint>
           </xacro:if>
+          <xacro:if value="${'sync' in ros2_control_header}">
+              <joint name="top_drawer_joint">
+                  <command_interface name="position"/>
+                  <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                  </state_interface>
+              </joint>
+               <joint name="bottom_drawer_joint">
+                  <command_interface name="position"/>
+                  <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                  </state_interface>
+              </joint>
+          </xacro:if>
             <!-- If mount is not a rail (using fixed joints) then it does not need to be added to contrl xacro -->
         </ros2_control>
         <xacro:if value="${control_system == 'gazebo'}">

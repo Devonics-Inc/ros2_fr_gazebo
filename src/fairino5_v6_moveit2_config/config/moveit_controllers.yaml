@@ -27,6 +27,8 @@ moveit_simple_controller_manager:
     default: false
     joints:
       - sync_table2_joint
+      - top_drawer_joint
+      - bottom_drawer_joint
     command_interfaces:
       - position
     state_interfaces:

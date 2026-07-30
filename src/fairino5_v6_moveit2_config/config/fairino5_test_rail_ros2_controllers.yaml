@@ -27,6 +27,8 @@ sync_table2_controller:
   ros__parameters:
     joints:
       - sync_table2_joint
+      - bottom_drawer_joint
+      - top_drawer_joint
     command_interfaces:
       - position
     state_interfaces:
