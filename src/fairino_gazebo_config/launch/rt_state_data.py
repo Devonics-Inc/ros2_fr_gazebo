@@ -20,8 +20,8 @@ class rt_state_data(Node):
 
         # --- Parameters ---
         self.declare_parameter('robot_model', 'fairino5')
-        self.declare_parameter('robot_ip', '192.168.56.2')
-        self.declare_parameter('robot_port', 20004)
+        self.declare_parameter('robot_ip', '127.0.0.1')
+        self.declare_parameter('robot_port', 5005)
 
         self.robot_model = self.get_parameter('robot_model').value
         self.robot_ip = self.get_parameter('robot_ip').value

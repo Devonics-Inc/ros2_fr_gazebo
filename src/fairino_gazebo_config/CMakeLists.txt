@@ -23,6 +23,7 @@ install(PROGRAMS
   launch/rt_state_data.py
   launch/rt_state_data_SDK.py
   src/gazebo_world_to_moveit.py
+  src/sdk_forwarder.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
