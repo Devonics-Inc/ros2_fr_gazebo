@@ -479,9 +479,9 @@
                     filename="package://fairino_description/meshes/fairino3_v6/SyncGripper.STL" scale="0.1 0.1 0.1"/>
                 </geometry>
                 <material
-                    name="">
+                    name="grey">
                     <color
-                    rgba="0.89804 0.91765 0.92941 1" />
+                    rgba="0.7 0.7 0.7 1" />
                 </material>
             </visual>
         </link>
