@@ -32,6 +32,17 @@ USE NORMAL CONTROL FOR YOUR ROBOT AND THE GAZEBO BOT WILL FOLLOW
 
 """
 
+WORKSPACE_PATH = os.getcwd()
+
+MOVEIT_PKG_MAP = {
+    "fairino3":  "fairino3_v6_moveit2_config",
+    "fairino5":  "fairino5_v6_moveit2_config",
+    "fairino10": "fairino10_v6_moveit2_config",
+    "fairino16": "fairino16_v6_moveit2_config",
+    "fairino20": "fairino20_v6_moveit2_config",
+    "fairino30": "fairino30_v6_moveit2_config",
+}
+
 def load_yaml(package_name, file_path):
     package_path = get_package_share_directory(package_name)
     absolute_file_path = os.path.join(package_path, file_path)
@@ -42,6 +53,9 @@ def load_yaml(package_name, file_path):
     except OSError:  # parent of IOError, OSError *and* WindowsError where available
         return None
 
+
+def load_rail_config(filename):
+    return
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('fairino_description')
@@ -106,14 +120,7 @@ def generate_launch_description():
     )    
 
 
-    moveit_pkg_map = {
-        "fairino3":  "fairino3_v6_moveit2_config",
-        "fairino5":  "fairino5_v6_moveit2_config",
-        "fairino10": "fairino10_v6_moveit2_config",
-        "fairino16": "fairino16_v6_moveit2_config",
-        "fairino20": "fairino20_v6_moveit2_config",
-        "fairino30": "fairino30_v6_moveit2_config",
-    }
+
 
     control_system_str = "moveit"  # default
     robot_model_str = "fairino5"  # default
@@ -121,7 +128,7 @@ def generate_launch_description():
     for arg in sys.argv:
         if arg.startswith("robot_model:="):
             robot_model_str = arg.split(":=")[1]
-            moveit_pkg = moveit_pkg_map.get(robot_model_str, f"{robot_model_str}_v6_moveit2_config")
+            moveit_pkg = MOVEIT_PKG_MAP.get(robot_model_str, f"{robot_model_str}_v6_moveit2_config")
             print("\n\n\n\nUSING " , robot_model_str, "\n\n\n")
         elif arg.startswith("hardware:="):
             control_system_str = arg.split(":=")[1]
