@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ============================================================
+       Self-collisions for the PGC140 gripper body
+       (no prefix - exact URDF link names: base_Link, finger1_link, finger2_link)
+
+       Simple 2-finger parallel jaw:
+         base_Link -> finger1_link (prismatic, driver)
+         base_Link -> finger2_link (prismatic, mimics finger1_joint)
+       ============================================================ -->
+
+  <!-- wrist mount to gripper body -->
+  <disable_collisions link1="wrist3_link" link2="base_Link" reason="Adjacent"/>
+  <disable_collisions link1="wrist3_link" link2="finger1_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="finger2_link" reason="Never"/>
+
+  <!-- base_Link to each finger (Adjacent - direct joints) -->
+  <disable_collisions link1="base_Link" link2="finger1_link" reason="Adjacent"/>
+  <disable_collisions link1="base_Link" link2="finger2_link" reason="Adjacent"/>
+
+  <!-- the two fingers face each other across the jaw opening -->
+  <disable_collisions link1="finger1_link" link2="finger2_link" reason="Never"/>
+
+</robot>

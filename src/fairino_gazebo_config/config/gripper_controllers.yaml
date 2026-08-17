@@ -1,0 +1,31 @@
+# This section registers the controllers with the controller manager plugin framework
+controller_manager:
+  ros__parameters:
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    gripper_controller2:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+# Configuration details for the dynamic OpaqueFunction node call
+gripper_controller:
+  ros__parameters:
+    joints:
+      - gripper_joint_X
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+
+
+# thic controller only works if you have the joint_X2
+gripper_controller2:
+  ros__parameters:
+    joints:
+      - gripper_joint_X
+      - gripper_joint_X2
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+    

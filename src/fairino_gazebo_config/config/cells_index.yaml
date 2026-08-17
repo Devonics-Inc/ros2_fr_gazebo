@@ -1,0 +1,5 @@
+# configuration file that point toward active cells
+
+cells:
+  cell1: "launch_params.yaml"
+  cell2: "launch_params.yaml"

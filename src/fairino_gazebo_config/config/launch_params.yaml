@@ -1,0 +1,34 @@
+robot:
+  robot_model: fairino5
+  # the robot is agnostic regarding the robot that is online 
+  robot_hardware_connected: "false"
+
+
+#environment:
+#  env_config: env_mix.yaml
+
+simulation:
+  gazebo_simulated_hardware: "false"
+  simulation_clean_start: "true"
+  moveit: "true"
+  rviz_enabled: "true"
+  # for the listen only mode you need a hardware or simulator running with ip address make sure you don't set the hardware to 
+  # you can't set this to true and hardware to false 
+  listen_only_mode: "true"
+
+
+# rail:
+#   # point to controller configuration
+#   rail_controller: test_rail_controllers2.yaml
+#   # is there a real hardware connected or not !
+#   base_hardware_connected: "false"
+#   # gemoetry / mount / etc ! 
+#   rail_geometric_config: rail_test.yaml
+
+  
+# gripper:
+#   # options: dh_ag95 | dh_ag145 | dh_pgc140 | dh_ag3
+#   gripper: dh_pgc140
+#   gripper_controller: gripper_controllers.yaml
+#   gripper_hardware_connected: "false"
+#   gripper_hardware_plugin: "fairino_hardware/GripperHardwareInterface_NOT_IMPLEMENTED"

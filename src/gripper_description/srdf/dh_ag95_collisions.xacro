@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Self-collisions for the AG95 gripper body (prefix = dh_ag95_) -->
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_ag95_base_link" reason="Adjacent"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_ag95_body" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_left_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_left_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_left_finger" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_left_finger_pad" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_right_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_right_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_right_finger" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_ag95_body" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_left_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_left_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_left_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_left_finger_pad" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_right_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_right_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_right_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_base_link" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_left_outer_knuckle" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_left_inner_knuckle" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_left_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_left_finger_pad" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_right_outer_knuckle" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_right_inner_knuckle" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_right_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_ag95_body" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_left_outer_knuckle" link2="dh_ag95_left_inner_knuckle" reason="Default"/>
+  <disable_collisions link1="dh_ag95_left_outer_knuckle" link2="dh_ag95_left_finger" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_left_outer_knuckle" link2="dh_ag95_left_finger_pad" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_outer_knuckle" link2="dh_ag95_right_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_outer_knuckle" link2="dh_ag95_right_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_outer_knuckle" link2="dh_ag95_right_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_outer_knuckle" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_left_inner_knuckle" link2="dh_ag95_left_finger" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_left_inner_knuckle" link2="dh_ag95_left_finger_pad" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_inner_knuckle" link2="dh_ag95_right_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_inner_knuckle" link2="dh_ag95_right_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_inner_knuckle" link2="dh_ag95_right_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_inner_knuckle" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_left_finger" link2="dh_ag95_left_finger_pad" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_left_finger" link2="dh_ag95_right_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_finger" link2="dh_ag95_right_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_finger" link2="dh_ag95_right_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_finger" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_left_finger_pad" link2="dh_ag95_right_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_finger_pad" link2="dh_ag95_right_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_finger_pad" link2="dh_ag95_right_finger" reason="Never"/>
+  <disable_collisions link1="dh_ag95_left_finger_pad" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_right_outer_knuckle" link2="dh_ag95_right_inner_knuckle" reason="Default"/>
+  <disable_collisions link1="dh_ag95_right_outer_knuckle" link2="dh_ag95_right_finger" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_right_outer_knuckle" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_right_inner_knuckle" link2="dh_ag95_right_finger" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag95_right_inner_knuckle" link2="dh_ag95_right_finger_pad" reason="Never"/>
+
+  <disable_collisions link1="dh_ag95_right_finger" link2="dh_ag95_right_finger_pad" reason="Adjacent"/>
+
+</robot>
