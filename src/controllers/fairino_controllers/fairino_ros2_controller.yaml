@@ -5,9 +5,7 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-    test_rail_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-      
+
 fairino_controller:
   ros__parameters:
     joints:
@@ -17,15 +15,6 @@ fairino_controller:
       - j4
       - j5
       - j6
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-
-test_rail_controller:
-  ros__parameters:
-    joints:
-      - test_rail_joint
     command_interfaces:
       - position
     state_interfaces:

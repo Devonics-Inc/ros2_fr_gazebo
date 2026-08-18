@@ -114,6 +114,7 @@ def generate_launch_description():
 
     # Find the path to the description package
     description_pkg_share = get_package_share_directory('fairino_description')
+    controller_pkg_share = get_package_share_directory('controllers')
     # control_system_arg = PythonExpression([
     #     "'gazebo' if '", LaunchConfiguration('gazebo'), "' == 'true' else 'moveit'"
     # ])
@@ -135,7 +136,7 @@ def generate_launch_description():
                 "mount": mount
             }
         )
-        .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .trajectory_execution(file_path=os.path.join(controller_pkg_share, "fairino_controllers/fairino_moveit_controller.yaml"))
         .planning_pipelines(pipelines=["ompl"])
         .to_moveit_configs()
     )

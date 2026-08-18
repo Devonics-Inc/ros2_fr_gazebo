@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>controllers</name>
+  <version>0.3.0</version>
+  <description>
+    Configuration for controllers used by Fairino ROS2 packages
+  </description>
+
+  <maintainer email="litao@frtech.fr">litao</maintainer>
+  <license>BSD</license>
+
+  <url type="website">http://moveit.ros.org/</url>
+  <url type="repository">https://github.com/ros-planning/moveit2</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

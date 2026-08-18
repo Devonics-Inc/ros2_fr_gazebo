@@ -191,11 +191,11 @@ def generate_launch_description():
     
 
     # Load controllers into controller manager
-    controllers_yaml = load_yaml(moveit_pkg, "config/ros2_controllers.yaml")
+    # controllers_yaml = load_yaml(moveit_pkg, "config/ros2_controllers.yaml")
     controllers_yaml_path = os.path.join(
-        get_package_share_directory(moveit_pkg),
-        "config",
-        "ros2_controllers.yaml"
+        get_package_share_directory("controllers"),
+        "fairino_controllers",
+        "fairino_ros2_controller.yaml"
     )
 
     ld.append(
@@ -234,7 +234,7 @@ def generate_launch_description():
 
 
     # Grab controllers to load
-    fairino_controller_name = [f"{robot_model}_controller"]
+    fairino_controller_name = ["fairino_controller"]
     mount_controller = [f"{mount}_controller"]
 
         
