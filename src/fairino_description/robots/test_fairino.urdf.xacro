@@ -37,7 +37,7 @@
     <xacro:if value="${robot_model == 'fairino3'}">
         <xacro:fairino3/>
         <xacro:fairino3_v6_robot_ros2_control
-            name="FakeSystem"
+            name="Fairino3_Controller"
             initial_positions_file="${initial_positions_file}"
             ros2_control_header="$(arg robot_mount)" 
             control_system="$(arg control_system)"/>    

@@ -14,12 +14,14 @@ find_package(ament_cmake REQUIRED)
 #install(TARGETS gazebo_world_to_moveit
 #	DESTINATION lib/${PROJECT_NAME})
 
-install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}
+install(DIRECTORY launch config  DESTINATION share/${PROJECT_NAME}
   PATTERN "setup_assistant.launch" EXCLUDE)
+
 
 install(PROGRAMS
   launch/SimJointPublisher.py
   launch/sim_trajectory_pub.py
+  launch/launch_helpers.py
   launch/rt_state_data.py
   launch/rt_state_data_SDK.py
   src/gazebo_world_to_moveit.py

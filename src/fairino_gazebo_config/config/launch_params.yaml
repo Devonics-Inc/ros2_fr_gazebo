@@ -14,7 +14,7 @@ simulation:
   rviz_enabled: "true"
   # for the listen only mode you need a hardware or simulator running with ip address make sure you don't set the hardware to 
   # you can't set this to true and hardware to false 
-  listen_only_mode: "true"
+  listen_only_mode: "false"
 
 
 # rail:

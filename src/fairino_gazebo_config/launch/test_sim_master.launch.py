@@ -17,6 +17,7 @@ from launch.substitutions import (
     TextSubstitution,
     PythonExpression
 )
+
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals, IfCondition
@@ -32,8 +33,6 @@ USE NORMAL CONTROL FOR YOUR ROBOT AND THE GAZEBO BOT WILL FOLLOW
 
 """
 
-WORKSPACE_PATH = os.getcwd()
-
 MOVEIT_PKG_MAP = {
     "fairino3":  "fairino3_v6_moveit2_config",
     "fairino5":  "fairino5_v6_moveit2_config",
@@ -42,7 +41,6 @@ MOVEIT_PKG_MAP = {
     "fairino20": "fairino20_v6_moveit2_config",
     "fairino30": "fairino30_v6_moveit2_config",
 }
-
 
 def _flatten(_dict):
     """Flattens nested dicts so existing flat defaults.get('key') calls keep working."""
@@ -275,7 +273,7 @@ def generate_launch_description():
                     ])
                 ]),
                 launch_arguments={
-                    'use_sim_time': gazebo,
+                    'use_sim_time': gazebo.capitalize(),
                     'robot_model': robot_model,
                     'robot_mount': mount,
                     'control_system': control_system,
@@ -300,15 +298,14 @@ def generate_launch_description():
             )
         )
 
-        # ld.append(
-        #     Node(
-        #         package="fairino_gazebo_config",
-        #         executable="gazebo_world_to_moveit.py",
-        #         arguments=[world_string],
-        #         condition=IfCondition(LaunchConfiguration('moveit')),
-        #         parameters=[{"use_sim_time": False}]
-        #     )
-        # )
+        ld.append(
+            Node(
+                package="fairino_gazebo_config",
+                executable="gazebo_world_to_moveit.py",
+                arguments=[world_string],
+                parameters=[{"use_sim_time": False}]
+            )
+        )
 
 
 
