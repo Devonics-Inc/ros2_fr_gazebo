@@ -1,5 +1,5 @@
 robot:
-  robot_model: fairino20
+  robot_model: fairino5
   # the robot is agnostic regarding the robot that is online 
   robot_hardware_connected: "false"
 
@@ -17,13 +17,13 @@ simulation:
   listen_only_mode: "false"
 
 
-# rail:
-#   # point to controller configuration
-#   rail_controller: test_rail_controllers2.yaml
-#   # is there a real hardware connected or not !
-#   base_hardware_connected: "false"
-#   # gemoetry / mount / etc ! 
-#   rail_geometric_config: rail_test.yaml
+rail:
+  # point to controller configuration
+  rail_controller: test_rail_controllers.yaml
+  # is there a real hardware connected or not !
+  base_hardware_connected: "false"
+  # gemoetry / mount / etc ! 
+  rail_geometric_config: rail_defaults.yaml
 
   
 # gripper:

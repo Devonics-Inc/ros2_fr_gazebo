@@ -1,6 +1,0 @@
-# options test_rail / sync_table2 / sync_table
-mount: sync_table
-
-# the rail length only applies if a rail exist otherwise they are skipped ! 
-rail_length: 2
-rail_width: 0.1

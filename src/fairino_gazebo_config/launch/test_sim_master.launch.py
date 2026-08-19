@@ -310,13 +310,20 @@ def generate_launch_description():
 
 
     if(mount != "world"):
+        mount_controllers_yaml_path = os.path.join(
+            get_package_share_directory("controllers"),
+            "ext_axis_controllers",
+            f"{mount}_controller.yaml"
+        )
+
         ld.append(
             Node(
                 package="controller_manager",
                 executable="spawner",
                 arguments=[mount_controller,
                         "-c", "/controller_manager",
-                        "-t", "joint_trajectory_controller/JointTrajectoryController"
+                        "--controller-manager-timeout", "10",
+                        "--param-file", mount_controllers_yaml_path,  # ← add this
                 ],
                 output="screen",
             )

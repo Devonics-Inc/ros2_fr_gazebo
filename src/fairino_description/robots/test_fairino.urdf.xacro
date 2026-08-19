@@ -10,12 +10,12 @@
     <xacro:property name="robot_config_package" value="${robot_model}_v6_moveit2_config" />
     <xacro:property name="initial_positions_file" value="$(find ${robot_config_package})/config/initial_positions.yaml"/>
 
+
     <xacro:include filename="$(find ${robot_config_package})/config/${robot_model}_robot.xacro"/>
     <link name="world"/>
 
     <xacro:if value="${'$(arg robot_mount)' != 'world'}">
         <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf.xacro"/>
-        
         <xacro:call macro="$(arg robot_mount)" parent="world"/>
 
         <joint name="robot_to_rail" type="fixed">

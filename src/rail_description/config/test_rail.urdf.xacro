@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="test_rail" params="parent">
+  <xacro:macro name="test_rail" params="parent length:=1.0 width:=1.0">
     
+    <xacro:property name="rail_description" value="$(find fairino_gazebo_config)/config/rail_defaults.yaml"/>
+    <xacro:property name="rail_rail_config" value="${xacro.load_yaml(rail_description)}"/>
+
     <joint name="${parent}_to_test_rail" type="fixed">
       <parent link="${parent}"/>
       <child link="test_rail_base"/>
@@ -11,7 +14,7 @@
     <link name="test_rail_base">
       <visual>
         <geometry>
-          <box size="2.0 0.2 0.1"/>
+          <box size="${rail_rail_config['rail_length']} ${rail_rail_config['rail_width']} 0.1"/>
         </geometry>
         <material name="grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
       </visual>
@@ -39,7 +42,7 @@
       </visual>
       <!-- <collision>
         <geometry>
-          <box size="0.3 0.3 0.05"/>
+          <box size="0.3 ${width} 0.05"/>
         </geometry>
       </collision> -->
     </link>
@@ -48,7 +51,7 @@
       <parent link="test_rail_base"/>
       <child link="test_rail_carriage"/>
       <axis xyz="1 0 0"/>
-      <limit lower="-0.9" upper="0.9" effort="1000.0" velocity="0.5"/>
+      <limit lower="${-0.5 * rail_rail_config['rail_length']}" upper="${0.5 * rail_rail_config['rail_length']}" effort="1000.0" velocity="0.5"/>
       <dynamics damping="10.0" friction="1.0"/>
     </joint>
 
