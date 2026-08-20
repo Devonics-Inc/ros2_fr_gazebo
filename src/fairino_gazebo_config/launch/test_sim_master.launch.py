@@ -191,21 +191,29 @@ def generate_launch_description():
     
 
     # Load controllers into controller manager
-    # controllers_yaml = load_yaml(moveit_pkg, "config/ros2_controllers.yaml")
     controllers_yaml_path = os.path.join(
         get_package_share_directory("controllers"),
         "fairino_controllers",
         "fairino_ros2_controller.yaml"
     )
 
+    controller_params = [{'use_sim_time': _truthy(gazebo)}]
+    controller_params.append(controllers_yaml_path)
+
+    mount_controllers_yaml_path = os.path.join(
+        get_package_share_directory("controllers"),
+        "ext_axis_controllers",
+        f"{mount}_controller.yaml"
+    )
+
+    if(mount != "world" and os.path.exists(mount_controllers_yaml_path)):
+        controller_params.append(mount_controllers_yaml_path)
+
     ld.append(
         Node(
             package='controller_manager',
             executable='ros2_control_node',
-            parameters=[
-                {'use_sim_time': False},
-                controllers_yaml_path,   # ← file path string, not parsed dict
-            ],
+            parameters=controller_params,
             remappings=[
                 ("/controller_manager/robot_description", "/robot_description")
             ],
@@ -224,7 +232,7 @@ def generate_launch_description():
                     arguments=[
                         "joint_state_broadcaster",
                         "-c", "/controller_manager",
-                        "--param-file", controllers_yaml_path,  # ← add this
+                        "--controller-manager-timeout", "10",
                     ],
                     output="screen",
                 )
@@ -234,8 +242,8 @@ def generate_launch_description():
 
 
     # Grab controllers to load
-    fairino_controller_name = ["fairino_controller"]
-    mount_controller = [f"{mount}_controller"]
+    fairino_controller_name = "fairino_controller"
+    mount_controller = f"{mount}_controller"
 
         
     # Pass controllers into controller spawner
@@ -250,7 +258,7 @@ def generate_launch_description():
                         fairino_controller_name,
                         "-c", "/controller_manager",
                         "--controller-manager-timeout", "10",
-                        "--param-file", controllers_yaml_path,  # ← add this
+                        # "--param-file", controllers_yaml_path,  # ← add this
                     ],
                     output="screen",
                 ),
@@ -298,14 +306,14 @@ def generate_launch_description():
             )
         )
 
-        ld.append(
-            Node(
-                package="fairino_gazebo_config",
-                executable="gazebo_world_to_moveit.py",
-                arguments=[world_string],
-                parameters=[{"use_sim_time": False}]
-            )
-        )
+        # ld.append(
+        #     Node(
+        #         package="fairino_gazebo_config",
+        #         executable="gazebo_world_to_moveit.py",
+        #         arguments=[world_string],
+        #         parameters=[{"use_sim_time": False}]
+        #     )
+        # )
 
 
 
@@ -317,17 +325,21 @@ def generate_launch_description():
         )
 
         ld.append(
-            Node(
-                package="controller_manager",
-                executable="spawner",
-                arguments=[mount_controller,
-                        "-c", "/controller_manager",
-                        "--controller-manager-timeout", "10",
-                        "--param-file", mount_controllers_yaml_path,  # ← add this
-                ],
-                output="screen",
+            TimerAction(
+                period=1.0,
+                actions=[
+                    Node(
+                        package="controller_manager",
+                        executable="spawner",
+                        arguments=[mount_controller,
+                                "-c", "/controller_manager",
+                                "--controller-manager-timeout", "10",
+                                # "--param-file", mount_controllers_yaml_path,  # ← add this
+                        ],
+                        output="screen",
+                    )]
+                )
             )
-        )
 
     
 

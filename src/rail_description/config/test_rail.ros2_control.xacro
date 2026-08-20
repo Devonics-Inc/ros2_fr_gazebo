@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <ros2_control name="RailControl" type="system">
+    <plugin>mock_components/GenericSystem</plugin>
     <joint name="test_rail_joint">
       <command_interface name="position">
         <param name="min">-0.9</param>

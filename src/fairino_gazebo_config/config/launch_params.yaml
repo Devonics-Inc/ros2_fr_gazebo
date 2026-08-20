@@ -17,13 +17,13 @@ simulation:
   listen_only_mode: "false"
 
 
-rail:
-  # point to controller configuration
-  rail_controller: test_rail_controllers.yaml
-  # is there a real hardware connected or not !
-  base_hardware_connected: "false"
-  # gemoetry / mount / etc ! 
-  rail_geometric_config: rail_defaults.yaml
+# rail:
+#   # point to controller configuration
+#   rail_controller: test_rail_controllers.yaml
+#   # is there a real hardware connected or not !
+#   base_hardware_connected: "false"
+#   # gemoetry / mount / etc ! 
+#   rail_geometric_config: rail_defaults.yaml
 
   
 # gripper:

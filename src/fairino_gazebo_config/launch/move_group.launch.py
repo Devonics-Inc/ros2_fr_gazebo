@@ -79,6 +79,19 @@ def _truthy(value: str) -> bool:
     return value.strip().lower() == "true"
 
 
+def deep_merge(files):
+    merged = {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
+              "moveit_simple_controller_manager": {"controller_names": []}}
+    for f in files:
+        data = load_yaml(*f)
+        scm = data.get("moveit_simple_controller_manager", {})
+        merged["moveit_simple_controller_manager"]["controller_names"] += scm.get("controller_names", [])
+        for k, v in scm.items():
+            if k != "controller_names":
+                merged["moveit_simple_controller_manager"][k] = v
+    return merged
+
+
 def generate_launch_description():
     pkg_share = get_package_share_directory('fairino_description')
     rail_pkg_share = get_package_share_directory('rail_description')
@@ -89,6 +102,8 @@ def generate_launch_description():
     rail_config_filename = str(defaults.get("rail_geometric_config", "rail_default.yaml"))
     rail_defaults = load_rail_config(rail_config_filename)
 
+    mount = str(rail_defaults.get("mount", defaults.get("mount", "world")))
+    gripper = str(defaults.get("gripper", "none"))
 
     ####################
     # launch arguments #
@@ -140,6 +155,17 @@ def generate_launch_description():
         .planning_pipelines(pipelines=["ompl"])
         .to_moveit_configs()
     )
+
+
+    trajectory_files = [(controller_pkg_share, "fairino_controllers", "arm_moveit_controller.yaml")]
+    if 'rail' in mount:
+        trajectory_files.append((controller_pkg_share, "ext_axis_controllers", f"{mount}_moveit_controller.yaml"))
+    if gripper != 'none':
+        trajectory_files.append((controller_pkg_share, "gripper_controllers", "gripper_moveit_controller.yaml"))
+
+    # merged_traj = deep_merge(trajectory_files)
+
+    # moveit_config.trajectory_execution = merged_traj
     
     # Explicitly load kinematics
     kinematics_yaml = load_yaml(

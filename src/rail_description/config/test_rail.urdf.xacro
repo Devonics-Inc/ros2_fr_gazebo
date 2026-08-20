@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="test_rail" params="parent length:=1.0 width:=1.0">
+  <xacro:macro name="test_rail" params="parent">
     
     <xacro:property name="rail_description" value="$(find fairino_gazebo_config)/config/rail_defaults.yaml"/>
     <xacro:property name="rail_rail_config" value="${xacro.load_yaml(rail_description)}"/>

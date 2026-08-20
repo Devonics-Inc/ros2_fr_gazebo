@@ -15,6 +15,7 @@
     <link name="world"/>
 
     <xacro:if value="${'$(arg robot_mount)' != 'world'}">
+        <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro"/>
         <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf.xacro"/>
         <xacro:call macro="$(arg robot_mount)" parent="world"/>
 
