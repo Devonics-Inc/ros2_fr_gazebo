@@ -306,24 +306,19 @@ def generate_launch_description():
             )
         )
 
-        # ld.append(
-        #     Node(
-        #         package="fairino_gazebo_config",
-        #         executable="gazebo_world_to_moveit.py",
-        #         arguments=[world_string],
-        #         parameters=[{"use_sim_time": False}]
-        #     )
-        # )
-
-
-
-    if(mount != "world"):
-        mount_controllers_yaml_path = os.path.join(
-            get_package_share_directory("controllers"),
-            "ext_axis_controllers",
-            f"{mount}_controller.yaml"
+        ld.append(
+            Node(
+                package="fairino_gazebo_config",
+                executable="gazebo_world_to_moveit.py",
+                arguments=[world_string],
+                parameters=[{"use_sim_time": False}]
+            )
         )
 
+
+
+    if(mount != "world" and os.path.exists(mount_controllers_yaml_path)):
+        
         ld.append(
             TimerAction(
                 period=1.0,

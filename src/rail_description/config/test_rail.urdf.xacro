@@ -5,6 +5,10 @@
     <xacro:property name="rail_description" value="$(find fairino_gazebo_config)/config/rail_defaults.yaml"/>
     <xacro:property name="rail_rail_config" value="${xacro.load_yaml(rail_description)}"/>
 
+    <xacro:include filename="$(find rail_description)/config/test_rail.ros2_control.xacro"/>
+
+    <xacro:test_rail_ros2_control/>
+    
     <joint name="${parent}_to_test_rail" type="fixed">
       <parent link="${parent}"/>
       <child link="test_rail_base"/>

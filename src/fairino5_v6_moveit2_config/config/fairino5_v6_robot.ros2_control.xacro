@@ -55,14 +55,14 @@
                 <param name="initial_value">${initial_positions['j6']}</param>
               </state_interface>
           </joint>
-          <xacro:if value="${'rail' in ros2_control_header}">
+          <!-- <xacro:if value="${'rail' in ros2_control_header}">
             <joint name="${ros2_control_header}_joint">
                 <command_interface name="position"/>
                 <state_interface name="position">
                   <param name="initial_value">0.0</param>
                 </state_interface>
             </joint>
-          </xacro:if>
+          </xacro:if> -->
             <!-- If mount is not a rail (using fixed joints) then it does not need to be added to contrl xacro -->
         </ros2_control>
         <xacro:if value="${control_system == 'gazebo'}">
