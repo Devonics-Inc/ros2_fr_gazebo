@@ -389,9 +389,11 @@ def generate_launch_description():
             }
         )
         .robot_description_semantic(
-            file_path=f"config/{robot_model}_v6_robot.srdf.xacro",
+            file_path=os.path.join(description_pkg_share, 'robots', 'fairino_robot.srdf.xacro'),
             mappings={
-                "mount": mount
+                "mount": mount,
+                "gripper": gripper,
+                
             }
         )
         .planning_pipelines(pipelines=["ompl"])

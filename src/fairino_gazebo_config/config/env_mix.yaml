@@ -1,32 +1,52 @@
-primitives:
-  box:
-    modular_table_leg:
-      pose: [0.0, -1.0, 0.0, 0, 0, 0]
-      size: [0.05, 0.05, 0.75]
-  cylinder:
-    pillar_1:
-      pose: [-0.5, -0.7, 0.0, 0, 0, 0]
-      radius: 0.1
-      length: 0.5
+# primitives:
+#   box:
+#     modular_table_leg:
+#       pose: [0.0, -1.0, 0.0, 0, 0, 0]
+#       size: [0.05, 0.05, 0.75]
+#   cylinder:
+#     pillar_1:
+#       pose: [-0.5, -0.7, 0.0, 0, 0, 0]
+#       radius: 0.1
+#       length: 0.5
 
 
-stl:
-  test_object:
-    pose: [0.5, 0.0, 0.0, 0, 0, 0]
-    mesh: "package://fairino_universe/meshes/Tower.STL"
-    scale: [0.001, 0.001, 0.001]
+# stl:
+#   test_object:
+#     pose: [0.5, 0.0, 0.0, 0, 0, 0]
+#     mesh: "package://fairino_universe/meshes/Tower.STL"
+#     scale: [0.001, 0.001, 0.001]
 
-  test_object2:
-    pose: [0.5, 0.0, 0.0, 0, 0, 0]
-    mesh: "package://fairino_universe/meshes/Table_assembly.STL"
-    scale: [0.001, 0.001, 0.001]
-
-  
-  test_object2:
-    pose: [0.5, 0.0, 0.0, 0, 0, 0]
-    mesh: "package://fairino_universe/meshes/Milling_machine.STL"
-    scale: [0.001, 0.001, 0.001]
-
-
+#   test_object2:
+#     pose: [0.5, 0.0, 0.0, 0, 0, 0]
+#     mesh: "package://fairino_universe/meshes/Table_assembly.STL"
+#     scale: [0.001, 0.001, 0.001]
 
   
+#   test_object2:
+#     pose: [0.5, 0.0, 0.0, 0, 0, 0]
+#     mesh: "package://fairino_universe/meshes/Milling_machine.STL"
+#     scale: [0.001, 0.001, 0.001]
+
+
+
+  
+collision_objects:
+  - name: test_obstacle
+    type: box
+    size: [0.5, 0.5, 0.5] # [x,y,z] in meters
+    position: [1.0, 0.75, 0.0] # [x,y,z] in meters
+
+#   - name: environment_COL
+#     mesh: package://sim_config/models/collision/KNS_assem_NoRail_ENV_COL.STL
+#     position: [0.0, 0.0, 0.150] # [x,y,z] in meters
+#     orientation: [0.0, 0.0, -1.57]   # roll, pitch, yaw (radians)
+#     scale: [1.0, 1.0, 1.0]
+#     color: [0.8, 0.8, 0.8, 1.0]    # RGBA
+
+# visual_objects:
+#   - name: environment
+#     mesh: package://sim_config/models/viz/KNS_assem_NoRail_ENV3.STL
+#     position: [0.0, 0.0, 0.164]
+#     orientation: [0.0, 0.0, 0.0]   # roll, pitch, yaw (radians)
+#     scale: [1.0, 1.0, 1.0]
+#     color: [0.8, 0.8, 0.8, 1.0]    # RGBA

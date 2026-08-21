@@ -131,7 +131,8 @@ def generate_launch_description():
     robot_hardware_connected = str(defaults.get("robot_hardware_connected", "fairino5"))
     rviz = str(defaults.get("rviz_enabled", "true"))
     moveit_pkg = MOVEIT_PKG_MAP.get(robot_model, f"{robot_model}_v6_moveit2_config")
-    
+    env_file = str(defaults.get("env_config", "none"))
+    print("\n Env File: ", env_file, "\n\n")
 
     # GRIPPER DEFAULTS
     gripper = str(defaults.get("gripper", "none"))
@@ -306,14 +307,36 @@ def generate_launch_description():
             )
         )
 
-        ld.append(
-            Node(
-                package="fairino_gazebo_config",
-                executable="gazebo_world_to_moveit.py",
-                arguments=[world_string],
-                parameters=[{"use_sim_time": False}]
+        # ld.append(
+        #     Node(
+        #         package="fairino_gazebo_config",
+        #         executable="gazebo_world_to_moveit.py",
+        #         arguments=[world_string],
+        #         parameters=[{"use_sim_time": False}]
+        #     )
+        # )
+        # Spawn env file
+        if(env_file != "none"):
+            print("\n\n FOUND ENVIORMENT FILE!\n\n")
+            env_file = os.path.join(
+                get_package_share_directory('fairino_gazebo_config'),
+                'config',
+                env_file
             )
-        )
+
+
+            ld.append(
+                TimerAction(
+                    period=1.0,
+                    actions=[
+                        Node(
+                            package='fairino_gazebo_config',
+                            executable='scene_publisher.py',
+                            output='screen',
+                            parameters=[{'environment_file': env_file}],
+                        )]
+                )
+            )
 
 
 
