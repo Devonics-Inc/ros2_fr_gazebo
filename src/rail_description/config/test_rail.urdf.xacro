@@ -1,14 +1,73 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="test_rail" params="parent">
+  <xacro:macro name="test_rail" params="parent:=world axes:=z">
     
     <xacro:property name="rail_description" value="$(find fairino_gazebo_config)/config/rail_defaults.yaml"/>
-    <xacro:property name="rail_rail_config" value="${xacro.load_yaml(rail_description)}"/>
+    <xacro:property name="test_rail_config" value="${xacro.load_yaml(rail_description)}"/>
 
     <xacro:include filename="$(find rail_description)/config/test_rail.ros2_control.xacro"/>
 
-    <xacro:test_rail_ros2_control/>
     
+    
+    <xacro:macro name="build_joints" params="count">
+      <xacro:if value="${count}">
+        <!-- Call macro recursively with decreased count -->
+        <xacro:build_joints count="${count - 1}"/>
+        
+        <!-- SET UP DEFAULTS -->
+        <xacro:property name="joint_parent" value="test_rail_link_${count}"/>
+        <xacro:property name="joint_child" value="test_rail_link_${count-1}"/>
+        <xacro:property name="axis_control" value="0 0 0"/>
+        <xacro:property name="lower_limit" value="0"/>
+        <xacro:property name="upper_limit" value="0"/>
+
+
+        <xacro:if value="${count == len(axes)}">
+          <xacro:property name="joint_parent" value="test_rail_base"/>
+        </xacro:if>
+
+        <xacro:if value="${count != len(axes)}">
+          <link name="test_rail_link_${count}"/>
+        </xacro:if>
+        
+        <xacro:if value="${count == 1}">
+          <!-- <link name="test_rail_link_1"/> -->
+          <xacro:property name="joint_child" value="test_rail_carriage"/>
+        </xacro:if>
+
+        
+        <xacro:if value="${axes[count - 1] == 'x'}">
+          <xacro:property name="axis_control" value="1 0 0"/>
+          <xacro:property name="lower_limit" value="${test_rail_config['x_axis_limits'][0]}"/>
+          <xacro:property name="upper_limit" value="${test_rail_config['x_axis_limits'][1]}"/>
+        </xacro:if>
+
+        <xacro:if value="${axes[count - 1]  == 'y'}">
+          <xacro:property name="axis_control" value="0 1 0"/>
+          <xacro:property name="lower_limit" value="${test_rail_config['y_axis_limits'][0]}"/>
+          <xacro:property name="upper_limit" value="${test_rail_config['y_axis_limits'][1]}"/>
+        </xacro:if>
+
+        <xacro:if value="${axes[count - 1] == 'z'}">
+          <xacro:property name="axis_control" value="0 0 1"/>
+          <xacro:property name="lower_limit" value="${test_rail_config['z_axis_limits'][0]}"/>
+          <xacro:property name="upper_limit" value="${test_rail_config['z_axis_limits'][1]}"/>
+        </xacro:if>
+
+        <joint name="test_rail_joint_${count}" type="prismatic">
+          <parent link="${joint_parent}"/>
+          <child link="${joint_child}"/>
+          <axis xyz="${axis_control}"/>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <limit lower="${lower_limit}" upper="${upper_limit}" effort="1000.0" velocity="0.5"/>
+          <dynamics damping="10.0" friction="1.0"/>
+        </joint>
+      </xacro:if>
+    </xacro:macro>
+
+
+
+
     <joint name="${parent}_to_test_rail" type="fixed">
       <parent link="${parent}"/>
       <child link="test_rail_base"/>
@@ -18,7 +77,7 @@
     <link name="test_rail_base">
       <visual>
         <geometry>
-          <box size="${rail_rail_config['rail_length']} ${rail_rail_config['rail_width']} 0.1"/>
+          <box size="${test_rail_config['rail_length']} ${test_rail_config['rail_width']} ${test_rail_config['rail_height']}"/>
         </geometry>
         <material name="grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
       </visual>
@@ -37,6 +96,8 @@
       
     </link>
 
+    <xacro:build_joints count="${len(axes)}"/>
+
     <link name="test_rail_carriage">
       <visual>
         <geometry>
@@ -50,14 +111,8 @@
         </geometry>
       </collision> -->
     </link>
-
-    <joint name="test_rail_joint" type="prismatic">
-      <parent link="test_rail_base"/>
-      <child link="test_rail_carriage"/>
-      <axis xyz="1 0 0"/>
-      <limit lower="${-0.5 * rail_rail_config['rail_length']}" upper="${0.5 * rail_rail_config['rail_length']}" effort="1000.0" velocity="0.5"/>
-      <dynamics damping="10.0" friction="1.0"/>
-    </joint>
+    
+    <xacro:test_rail_ros2_control num_axes="${len(test_rail_config['axes'])}"/>
 
   </xacro:macro>
 </robot>

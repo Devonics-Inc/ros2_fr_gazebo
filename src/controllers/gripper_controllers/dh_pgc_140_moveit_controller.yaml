@@ -1,14 +1,14 @@
+# MoveIt uses this configuration for controller management
+
 moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
 
 moveit_simple_controller_manager:
   controller_names:
-    - test_rail_controller
+    - dh_pgc_140_controller
 
-  test_rail_controller:
+  dh_pgc_140_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
-    # joints:
-    #   - test_rail_joint_1
-    #   - test_rail_joint_2
-
+    joints:
+      - dh_pgc_140_joint

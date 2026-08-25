@@ -144,6 +144,8 @@ def generate_launch_description():
     rail_controller = str(defaults.get("rail_controller", "base_config.yaml"))
     rail_width = str(rail_defaults.get("rail_width", defaults.get("rail_width", "0.2")))
     rail_length = str(rail_defaults.get("rail_length", defaults.get("rail_length", "0.2")))
+    rail_axes = str(rail_defaults.get("axes", "x"))
+    print("Rail axes: ", rail_axes, " len: ", len(rail_axes))
     mount = str(rail_defaults.get("mount", defaults.get("mount", "world")))
 
     # Spawn gazebo
@@ -174,6 +176,7 @@ def generate_launch_description():
         ' ',
         "control_system:=", control_system,
         ' ',
+        "axes:=", rail_axes
     ])
 
 
@@ -209,6 +212,10 @@ def generate_launch_description():
 
     if(mount != "world" and os.path.exists(mount_controllers_yaml_path)):
         controller_params.append(mount_controllers_yaml_path)
+        # rail_joints = []
+        # for i in range(len(rail_axes), 0, -1):
+        #     rail_joints.append(f"{mount}_joint{i}")
+        # controller_params[f'{mount}_controller']['ros_parameters']['joints'] = rail_joints
 
     ld.append(
         Node(

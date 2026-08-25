@@ -4,9 +4,11 @@
     <xacro:arg name="robot_model" default="fairino5" />
     <xacro:arg name="robot_mount" default="world" />
     <xacro:arg name="control_system" default="moveit" />
+    <xacro:arg name="axes" default="z" />
 
     <xacro:property name="robot_model" value="$(arg robot_model)" />
     <xacro:property name="robot_mount_name" value="$(arg robot_mount)" />
+    <xacro:property name="rail_axes" value="$(arg axes)" />
     <xacro:property name="robot_config_package" value="${robot_model}_v6_moveit2_config" />
     <xacro:property name="initial_positions_file" value="$(find ${robot_config_package})/config/initial_positions.yaml"/>
 
@@ -17,7 +19,8 @@
     <xacro:if value="${'$(arg robot_mount)' != 'world'}">
         <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).ros2_control.xacro"/>
         <xacro:include filename="$(find rail_description)/config/$(arg robot_mount).urdf.xacro"/>
-        <xacro:call macro="$(arg robot_mount)" parent="world"/>
+        <xacro:call macro="$(arg robot_mount)" parent="world" axes="${rail_axes}"/>
+        
 
         <joint name="robot_to_rail" type="fixed">
             <parent link="$(arg robot_mount)_carriage"/>
