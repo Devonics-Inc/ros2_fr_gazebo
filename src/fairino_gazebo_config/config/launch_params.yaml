@@ -1,5 +1,5 @@
 robot:
-  robot_model: fairino10
+  robot_model: fairino5
   # the robot is agnostic regarding the robot that is online 
   robot_hardware_connected: "false"
 

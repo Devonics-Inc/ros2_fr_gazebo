@@ -118,8 +118,12 @@ def deep_merge(files, joints_map=None):
 
     return merged
 
+def launch_setup(context):
+    return 
+
 
 def generate_launch_description():
+    print(f"\n[MOVE GROUP LAUNCH] generate_launch_description() called, PID={os.getpid()}\n")
     pkg_share = get_package_share_directory('fairino_description')
     rail_pkg_share = get_package_share_directory('rail_description')
     gripper_pkg_share = get_package_share_directory("gripper_description")
@@ -164,7 +168,7 @@ def generate_launch_description():
         num_axes = len(str(rail_defaults.get("axes", "")))
         print("Num axes: ", num_axes)
         for i in range(num_axes):
-            rail_joints.append(f"{mount}_joint_{i}")
+            rail_joints.append(f"{mount}_joint_{i+1}")
             # rail_joints = [f"{mount}_joint"] if 'rail' in mount else []
     gripper_joints = [f"{gripper}_joint"] if gripper != "none" else []
 
@@ -174,6 +178,9 @@ def generate_launch_description():
     if gripper_joints:
         joints_map["gripper_controller"] = gripper_joints
 
+    print("[MOVE GROUP LAUNCH] Arm Joints: ", arm_joints)
+    print("[MOVE GROUP LAUNCH] Rail Joints: ", rail_joints)
+    print("[MOVE GROUP LAUNCH] Gripper Joints: ", gripper_joints)
     # Build MoveIt configuration — trajectory_execution intentionally NOT set
     # here; it's assigned post-hoc below from the merged per-controller files.
     moveit_config = (
@@ -192,7 +199,7 @@ def generate_launch_description():
             mappings={
                 "mount": mount,
                 "gripper": gripper,
-                "axes": str(num_axes)
+                "axes_count": str(num_axes)
             }
         )
         .planning_pipelines(pipelines=["ompl"])
@@ -207,6 +214,9 @@ def generate_launch_description():
         trajectory_files.append((controller_pkg_share, "gripper_controllers", "gripper_moveit_controller.yaml"))
 
     moveit_config.trajectory_execution = deep_merge(trajectory_files, joints_map)
+
+    print(moveit_config.trajectory_execution)
+    print(moveit_config.trajectory_execution.values)
 
     # Explicitly load kinematics
     kinematics_yaml = load_yaml(

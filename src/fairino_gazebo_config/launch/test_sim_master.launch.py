@@ -26,6 +26,7 @@ from launch.substitutions import PathJoinSubstitution, TextSubstitution, LaunchC
 import xacro
 import yaml
 import sys
+import tempfile
 """
 THIS CREATES A DIGITAL FAIRINO, THAT MIRRORS THE ROBOT AT THE IP ADDRESS SET IN /rt_state_data
 
@@ -103,7 +104,10 @@ def _truthy(value: str) -> bool:
     return value.strip().lower() == "true"
 
 
+
+
 def generate_launch_description():
+    print(f"\n[MOVE GROUP LAUNCH] generate_launch_description() called, PID={os.getpid()}\n")
     # GET PACKAGE PATHS
     pkg_share = get_package_share_directory('fairino_description')
     rail_pkg_share = get_package_share_directory('rail_description')
@@ -111,7 +115,7 @@ def generate_launch_description():
 
     # GET DEFAULTS
     defaults = load_launch_defaults()
-    rail_config_filename = str(defaults.get("rail_geometric_config", "rail_default.yaml"))
+    rail_config_filename = str(defaults.get("rail_geometric_config", "rail_defaults.yaml"))
     rail_defaults = load_rail_config(rail_config_filename)
 
     if('IGN_GAZEBO_RESOURCE_PATH' in os.environ):
@@ -144,7 +148,7 @@ def generate_launch_description():
     rail_controller = str(defaults.get("rail_controller", "base_config.yaml"))
     rail_width = str(rail_defaults.get("rail_width", defaults.get("rail_width", "0.2")))
     rail_length = str(rail_defaults.get("rail_length", defaults.get("rail_length", "0.2")))
-    rail_axes = str(rail_defaults.get("axes", "x"))
+    rail_axes = str(rail_defaults.get("axes", ""))
     print("Rail axes: ", rail_axes, " len: ", len(rail_axes))
     mount = str(rail_defaults.get("mount", defaults.get("mount", "world")))
 
@@ -189,7 +193,7 @@ def generate_launch_description():
             executable="robot_state_publisher",
             respawn=True,
             output="screen",
-            parameters=[{"robot_description": robot_description}, {"use_sim_time":False}],
+            parameters=[{"robot_description": robot_description}, {"use_sim_time":_truthy(gazebo)}],
         )
     )
     
@@ -210,12 +214,30 @@ def generate_launch_description():
         f"{mount}_controller.yaml"
     )
 
+    mount_controller = f"{mount}_controller"  # move this up so it's defined here
+
     if(mount != "world" and os.path.exists(mount_controllers_yaml_path)):
-        controller_params.append(mount_controllers_yaml_path)
-        # rail_joints = []
-        # for i in range(len(rail_axes), 0, -1):
-        #     rail_joints.append(f"{mount}_joint{i}")
-        # controller_params[f'{mount}_controller']['ros_parameters']['joints'] = rail_joints
+        controller_params.append(mount_controllers_yaml_path)  # keep: gives command/state interfaces
+
+        num_axes = len(rail_axes)
+        rail_joints = [f"{mount}_joint_{i}" for i in range(1, num_axes + 1)]
+
+        joints_override = {
+            mount_controller: {
+                "ros__parameters": {
+                    "joints": rail_joints
+                }
+            }
+        }
+
+        joints_override_path = os.path.join(
+            tempfile.gettempdir(), f"{mount}_controller_joints_override.yaml"
+        )
+        with open(joints_override_path, "w") as f:
+            yaml.safe_dump(joints_override, f)
+
+        controller_params.append(joints_override_path)
+
 
     ld.append(
         Node(
@@ -251,7 +273,6 @@ def generate_launch_description():
 
     # Grab controllers to load
     fairino_controller_name = "fairino_controller"
-    mount_controller = f"{mount}_controller"
 
         
     # Pass controllers into controller spawner
@@ -347,7 +368,7 @@ def generate_launch_description():
 
 
 
-    if(mount != "world" and os.path.exists(mount_controllers_yaml_path)):
+    if(mount != "world" and os.path.exists(mount_controllers_yaml_path) and rail_axes != ""):
         
         ld.append(
             TimerAction(
@@ -359,6 +380,7 @@ def generate_launch_description():
                         arguments=[mount_controller,
                                 "-c", "/controller_manager",
                                 "--controller-manager-timeout", "10",
+                                  "-t", "joint_trajectory_controller/JointTrajectoryController"
                                 # "--param-file", mount_controllers_yaml_path,  # ← add this
                         ],
                         output="screen",

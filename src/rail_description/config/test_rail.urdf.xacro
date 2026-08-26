@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="test_rail" params="parent:=world axes:=z">
+  <xacro:macro name="test_rail" params="parent:=world ">
     
     <xacro:property name="rail_description" value="$(find fairino_gazebo_config)/config/rail_defaults.yaml"/>
     <xacro:property name="test_rail_config" value="${xacro.load_yaml(rail_description)}"/>
-
+    <xacro:property name="axes" value="${test_rail_config['axes']}"/>
+    <xacro:property name="num_axes" value="${len(axes)}"/>
+    
+  
     <xacro:include filename="$(find rail_description)/config/test_rail.ros2_control.xacro"/>
 
     
@@ -96,7 +99,18 @@
       
     </link>
 
-    <xacro:build_joints count="${len(axes)}"/>
+
+    <xacro:build_joints count="${num_axes}"/>
+    <xacro:test_rail_ros2_control num_axes="${num_axes}"/>
+
+    <xacro:if value="${num_axes == 0}">
+      <joint name="base_to_carriage" type="fixed">
+      <parent link="test_rail_base"/>
+      <child link="test_rail_carriage"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    </xacro:if>
+
 
     <link name="test_rail_carriage">
       <visual>
@@ -111,8 +125,6 @@
         </geometry>
       </collision> -->
     </link>
-    
-    <xacro:test_rail_ros2_control num_axes="${len(test_rail_config['axes'])}"/>
 
   </xacro:macro>
 </robot>

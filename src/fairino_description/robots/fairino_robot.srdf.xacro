@@ -4,7 +4,7 @@
     <xacro:arg name="prefix" default=""/>
     <xacro:arg name="mount" default="world"/>
     <xacro:arg name="gripper" default="none"/>
-    <xacro:arg name="axes_count" default="1"/>
+    <xacro:arg name="axes_count" default="0"/>
 
     <xacro:property name="prefix_arg"  value="$(arg prefix)"/>
     <xacro:property name="mount_arg"  value="$(arg mount)"/>
@@ -21,8 +21,15 @@
         </xacro:if>
     </xacro:macro>
 
+    <xacro:macro name="build_joints_with_poses" params="count">
+        <xacro:if value="${count}">
+            <xacro:build_joints count="${count - 1}"/>
+            <joint name="${mount_arg}_joint_${count}" value="0.0"/>
+        </xacro:if>
+    </xacro:macro>
+
     <group name="${prefix_arg}fairino_v6_group">
-        <xacro:if value="${mount_arg != 'world'}">
+        <xacro:if value="${mount_arg != 'world' and int(num_axes) > 0}">
             <xacro:build_joints count="${num_axes}"/>
             <xacro:property name="chain_base"  value="${mount_arg}_base"/>
         </xacro:if>
@@ -42,7 +49,9 @@
     </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="pos1" group="${prefix_arg}fairino_v6_group">
-
+        <xacro:if value="${mount_arg != 'world' and int(num_axes) > 0}">
+            <xacro:build_joints_with_poses count="${num_axes}"/>
+        </xacro:if>
         <joint name="j1" value="2.1093"/>
         <joint name="j2" value="-1.9252"/>
         <joint name="j3" value="1.8901"/>
@@ -54,7 +63,9 @@
         </xacro:if>
     </group_state>
     <group_state name="pos2" group="${prefix_arg}fairino_v6_group">
-
+        <xacro:if value="${mount_arg != 'world' and int(num_axes) > 0}">    
+            <xacro:build_joints_with_poses count="${num_axes}"/>
+        </xacro:if>
         <joint name="j1" value="1.0631"/>
         <joint name="j2" value="-1.6889"/>
         <joint name="j3" value="1.9839"/>

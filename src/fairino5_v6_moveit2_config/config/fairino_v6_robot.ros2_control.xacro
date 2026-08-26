@@ -3,7 +3,6 @@
     <xacro:macro name="fairino_v6_robot_ros2_control" params="name initial_positions_file ros2_control_header:=world control_system:=moveit">
         <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
         <!-- Xacro arg for control system (Defualted to Rviz/Moveit-->
-        <xacro:property name="controllers_yaml_name" value="${'ros2_controllers.yaml' if 'rail' not in ros2_control_header else 'fairino_' + ros2_control_header + '_ros2_controllers.yaml'}"/>     
         <ros2_control name="${name}" type="system">
             <hardware>
               <xacro:if value="${control_system == 'moveit'}">
@@ -53,14 +52,6 @@
                 <param name="initial_value">${initial_positions['j6']}</param>
               </state_interface>
           </joint>
-          <xacro:if value="${'rail' in ros2_control_header}">
-            <joint name="${ros2_control_header}_joint">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">0.0</param>
-                </state_interface>
-            </joint>
-          </xacro:if>
             <!-- If mount is not a rail (using fixed joints) then it does not need to be added to contrl xacro -->
         </ros2_control>
         <xacro:if value="${control_system == 'gazebo'}">

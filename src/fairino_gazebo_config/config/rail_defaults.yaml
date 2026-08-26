@@ -5,8 +5,8 @@ mount: test_rail
 rail_length: 2
 rail_width: 0.2
 rail_height: 0.1
-axes: "zy"   # For axes, set to be the direction of freedom based in the robot base coordinate system. examples: "xy", "z", "yz", "y", etc. NOTE: Controllers will always be named from right to left.
+axes: "zx"   # For axes, set to be the direction of freedom based in the robot base coordinate system. examples: "xy", "z", "yz", "y", etc. NOTE: Controllers will always be named from right to left.
             # For Example, axes "xyz" will be built with the "x" axis as test_rail_joint_3, "y" axis would be test_rail_joint_2, and "z" axis as test_rail_joint_1,
 x_axis_limits: [-1.0, 1.0]
 y_axis_limits: [0.0, 0.5]
-z_axis_limits: [0.0, 1.0]
+z_axis_limits: [0.0, 2.0]
