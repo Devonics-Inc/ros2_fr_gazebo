@@ -35,13 +35,18 @@ collision_objects:
     type: box
     size: [0.5, 0.5, 0.5] # [x,y,z] in meters
     position: [1.0, 0.75, 0.0] # [x,y,z] in meters
+  
+  - name: test_obstacle2
+    type: box
+    size: [1.5, 0.5, 0.5] # [x,y,z] in meters
+    position: [-1.0, 0.5, 0.0] # [x,y,z] in meters
 
-#   - name: environment_COL
-#     mesh: package://sim_config/models/collision/KNS_assem_NoRail_ENV_COL.STL
-#     position: [0.0, 0.0, 0.150] # [x,y,z] in meters
-#     orientation: [0.0, 0.0, -1.57]   # roll, pitch, yaw (radians)
-#     scale: [1.0, 1.0, 1.0]
-#     color: [0.8, 0.8, 0.8, 1.0]    # RGBA
+  - name: environment_COL
+    mesh: package://rail_description/config/sync_table/RolandMill.stl
+    position: [-2.0, 0.0, 0.150] # [x,y,z] in meters
+    orientation: [0.0, 0.0, 1.570]   # roll, pitch, yaw (radians)
+    scale: [0.001, 0.001, 0.001]
+    color: [0.8, 0.8, 0.8, 1.0]    # RGBA
 
 # visual_objects:
 #   - name: environment
