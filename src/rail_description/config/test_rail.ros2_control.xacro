@@ -1,13 +1,38 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <ros2_control name="RailControl" type="system">
-<<<<<<< HEAD
-=======
-    <!-- <hardware> -->
-      <!-- <plugin>gz_ros2_control/GazeboSimSystem</plugin> -->
-      <!-- <plugin>mock_components/GenericSystem</plugin> -->
-    <!-- </hardware> -->
->>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
+  <xacro:macro name="test_rail_ros2_control" params="name:=test_rail control_system:=moveit num_axes:=1">
+    
+    <ros2_control name="${name}" type="system">
+      <hardware>
+        <xacro:if value="${control_system == 'moveit'}">
+            <plugin>mock_components/GenericSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${control_system == 'hardware'}">
+            <plugin>fairino_hardware/FairinoHardwareInterface</plugin>
+        </xacro:if>
+        <xacro:if value="${control_system == 'gazebo'}">
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </xacro:if>
+      </hardware>
+
+      <xacro:macro name="build_links" params="count">
+        <xacro:if value="${count}">
+          <!-- Call macro recursively with decreased count -->
+          <xacro:build_links count="${count - 1}" />
+          
+          <joint name="test_rail_joint_${count}">
+            <command_interface name="position"/>
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+          </joint>
+        </xacro:if>
+      </xacro:macro>
+
+      <xacro:build_links count="${num_axes}"/>
+
+    </ros2_control>
+  </xacro:macro>
     <joint name="test_rail_joint">
       <command_interface name="position">
         <param name="min">-0.9</param>
@@ -16,8 +41,5 @@
       <state_interface name="position"/>
     </joint>
   </ros2_control>
-<<<<<<< HEAD
-=======
-  
->>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
+
 </robot>

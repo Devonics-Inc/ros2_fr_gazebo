@@ -4,13 +4,10 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 
 moveit_simple_controller_manager:
   controller_names:
-    - fairino3_controller
-<<<<<<< HEAD
+    - fairino_controller
     - sync_table2_controller
-=======
->>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
 
-  fairino3_controller:
+  fairino_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
@@ -22,7 +19,6 @@ moveit_simple_controller_manager:
       - j5
       - j6
     action_ns: follow_joint_trajectory
-<<<<<<< HEAD
     default: true
 
   sync_table2_controller:
@@ -35,6 +31,3 @@ moveit_simple_controller_manager:
       - position
     state_interfaces:
       - position
-=======
-    default: true
->>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf

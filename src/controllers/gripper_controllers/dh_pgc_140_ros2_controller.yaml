@@ -1,0 +1,16 @@
+controller_manager:
+  ros__parameters:
+    # Do NOT define update_rate here (let the main arm file handle it)
+    dh_pgc_140_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+dh_pgc_140_controller:
+  ros__parameters:
+    joints:
+      - dh_pgc_140_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

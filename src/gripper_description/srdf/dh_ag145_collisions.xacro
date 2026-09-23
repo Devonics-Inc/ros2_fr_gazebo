@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ============================================================
+       Self-collisions for the AG145 gripper body (prefix-based)
+
+       This is a 4-bar linkage parallel gripper per finger:
+         base_link -> knuckle_link -> finger_link (rod)
+         base_link -> inner_knuckle_link -> finger_tip_link (distal phalanx)
+
+       finger_link and finger_tip_link are NOT connected by a <joint>
+       in the URDF (the closed kinematic loop is faked via mimic
+       multipliers), but they are physically pinned together and
+       always touch -> marked Adjacent despite no direct joint.
+       ============================================================ -->
+
+  <!-- wrist mount to gripper body -->
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_base_link" reason="Adjacent"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger1_knuckle_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger2_knuckle_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger1_inner_knuckle_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger2_inner_knuckle_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger1_finger_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger1_finger_tip_link" reason="Never"/>
+  <disable_collisions link1="wrist3_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Never"/>
+
+  <!-- base_link to each finger's two mounting links (Adjacent - direct joints) -->
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger1_knuckle_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger2_knuckle_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger1_inner_knuckle_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger2_inner_knuckle_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger1_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger1_finger_tip_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_base_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Never"/>
+
+  <!-- ===================== finger1 four-bar chain ===================== -->
+  <disable_collisions link1="dh_ag145_gripper_finger1_knuckle_link" link2="dh_ag145_gripper_finger1_inner_knuckle_link" reason="Default"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_knuckle_link" link2="dh_ag145_gripper_finger1_finger_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_knuckle_link" link2="dh_ag145_gripper_finger1_finger_tip_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_inner_knuckle_link" link2="dh_ag145_gripper_finger1_finger_tip_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_inner_knuckle_link" link2="dh_ag145_gripper_finger1_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_link" link2="dh_ag145_gripper_finger1_finger_tip_link" reason="Adjacent"/>
+
+  <!-- ===================== finger2 four-bar chain ===================== -->
+  <disable_collisions link1="dh_ag145_gripper_finger2_knuckle_link" link2="dh_ag145_gripper_finger2_inner_knuckle_link" reason="Default"/>
+  <disable_collisions link1="dh_ag145_gripper_finger2_knuckle_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_finger2_knuckle_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger2_inner_knuckle_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Adjacent"/>
+  <disable_collisions link1="dh_ag145_gripper_finger2_inner_knuckle_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger2_finger_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Adjacent"/>
+
+  <!-- ===================== cross-finger pairs (never touch) ===================== -->
+  <disable_collisions link1="dh_ag145_gripper_finger1_knuckle_link" link2="dh_ag145_gripper_finger2_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_knuckle_link" link2="dh_ag145_gripper_finger2_inner_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_knuckle_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_knuckle_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Never"/>
+
+  <disable_collisions link1="dh_ag145_gripper_finger1_inner_knuckle_link" link2="dh_ag145_gripper_finger2_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_inner_knuckle_link" link2="dh_ag145_gripper_finger2_inner_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_inner_knuckle_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_inner_knuckle_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Never"/>
+
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_link" link2="dh_ag145_gripper_finger2_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_link" link2="dh_ag145_gripper_finger2_inner_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Never"/>
+
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_tip_link" link2="dh_ag145_gripper_finger2_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_tip_link" link2="dh_ag145_gripper_finger2_inner_knuckle_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_tip_link" link2="dh_ag145_gripper_finger2_finger_link" reason="Never"/>
+  <disable_collisions link1="dh_ag145_gripper_finger1_finger_tip_link" link2="dh_ag145_gripper_finger2_finger_tip_link" reason="Never"/>
+
+</robot>
