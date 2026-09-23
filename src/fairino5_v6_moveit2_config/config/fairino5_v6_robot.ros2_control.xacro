@@ -56,6 +56,7 @@
               </state_interface>
           </joint>
           <!-- <xacro:if value="${'rail' in ros2_control_header}">
+          <xacro:if value="${'rail' in ros2_control_header}">
             <joint name="${ros2_control_header}_joint">
                 <command_interface name="position"/>
                 <state_interface name="position">

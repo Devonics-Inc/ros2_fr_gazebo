@@ -29,9 +29,14 @@ In this README I will cover the steps needed to configure your ROS2 environment 
 - ### Installing ROS2 control libraries:
     - Run the following commands to install the ROS2 humble control packges:
     >
+<<<<<<< HEAD
         sudo apt update
         sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers sudo apt install ros-humble>-ros-gz
 
+=======
+        sudo apt udpate
+        sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
 
 - ### Install Gazebo Ignition 6.17
 
@@ -126,4 +131,8 @@ Now rebuild your workspace.
     If you prefer to use the Fairino ROS2 API instead of the /joint_trajectories, you'll need to change the IP address in your workspace to match your SimMachine (defaulted to 192.168.58.2) and use <b> ros2 run fairino_hardware ros2_cmd_server</b> which runs
     <b> `src/fairino_hardware/include/src/command_server_node.cpp` </b> 
 
+<<<<<<< HEAD
     An example program of this is in <b>~/ros2_fr_gz/src/fairino_hardware/examples/src/test_msg.py </b> -->
+=======
+    An example program of this is in <b>~/ros2_fr_gz/src/fairino_hardware/examples/src/test_msg.py </b> -->
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf

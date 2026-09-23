@@ -1,6 +1,7 @@
 from moveit_configs_utils import MoveItConfigsBuilder
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+<<<<<<< HEAD
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -15,6 +16,13 @@ import os
 from ament_index_python.packages import get_package_share_directory
 import yaml
 import sys
+=======
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+import os
+from ament_index_python.packages import get_package_share_directory
+import yaml
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
 
 def load_yaml(package_name, file_path):
     package_path = get_package_share_directory(package_name)
@@ -29,15 +37,19 @@ def load_yaml(package_name, file_path):
 def generate_launch_description():
     # Declare arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
+<<<<<<< HEAD
     robot_model = LaunchConfiguration('robot_model')
     robot_mount = LaunchConfiguration('robot_mount')
     control_system = LaunchConfiguration('control_system')
     moveit_pkg = LaunchConfiguration('moveit_pkg')
+=======
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
     
     declared_arguments = []
     declared_arguments.append(
         DeclareLaunchArgument(
             'use_sim_time',
+<<<<<<< HEAD
             default_value='true',
             description='Use simulation (Gazebo) clock if true'
         )
@@ -125,6 +137,18 @@ def generate_launch_description():
                 "mount": robot_mount
             }
         )
+=======
+            default_value='false',
+            description='Use simulation (Gazebo) clock if true'
+        )
+    )
+    
+    # Build MoveIt configuration
+    moveit_config = (
+        MoveItConfigsBuilder("fairino3_v6_robot", package_name="fairino3_v6_moveit2_config")
+        .robot_description(file_path="config/fairino3_v6_robot.urdf.xacro")
+        .robot_description_semantic(file_path="config/fairino3_v6_robot.srdf")
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .planning_pipelines(pipelines=["ompl"])
         .to_moveit_configs()
@@ -132,7 +156,11 @@ def generate_launch_description():
     
     # Explicitly load kinematics
     kinematics_yaml = load_yaml(
+<<<<<<< HEAD
         moveit_pkg, 
+=======
+        'fairino3_v6_moveit2_config', 
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
         'config/kinematics.yaml'
     )
     
@@ -146,7 +174,10 @@ def generate_launch_description():
         "publish_robot_description_semantic": True,
     }
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 283bdb1ee8ab1ba60250def566606a6668c2fdaf
     # Build the complete parameters list
     move_group_parameters = [
         moveit_config.to_dict(),
