@@ -136,7 +136,9 @@ def generate_launch_description():
     rviz = str(defaults.get("rviz_enabled", "true"))
     moveit_pkg = MOVEIT_PKG_MAP.get(robot_model, f"{robot_model}_v6_moveit2_config")
     env_file = str(defaults.get("env_config", "none"))
-    print("\n Env File: ", env_file, "\n\n")
+    listen_only = str(defaults.get("listen_only_mode", "false"))
+
+    # print("\n Env File: ", env_file, "\n\n")
 
     # GRIPPER DEFAULTS
     gripper = str(defaults.get("gripper", "none"))
