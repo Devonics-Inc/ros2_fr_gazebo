@@ -329,7 +329,7 @@ def generate_launch_description():
                 package="rviz2",
                 executable="rviz2",
                 arguments=['-d', PathJoinSubstitution([
-                    FindPackageShare(f"{robot_model}_v6_moveit2_config"),
+                    FindPackageShare(f"fairino_gazebo_config"),
                     'config',
                     'moveit.rviz'
                 ])],
